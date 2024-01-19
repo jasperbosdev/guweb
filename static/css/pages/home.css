@@ -92,6 +92,16 @@
 .feat-column {
   display: flex;
   justify-content: center;
+  align-items: center; 
+  text-align: center;
+}
+
+.column.is-10 {
+  width: 30% !important;
+  margin-left: 25px;
+  margin-right: 25px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .modimg-plane {
@@ -103,8 +113,9 @@
 
 .modimg-relax {
   position: absolute;
-  top: -100px;
-  left: 1125px;
+  top: -110px;
+  left: 1150px;
+  right: -80px;
   z-index: -2;
 }
 
@@ -117,7 +128,6 @@
   transform: rotate(25deg);
   max-width: 100%;
 }
-
 
 #title, #mascot {
   animation: appear 0.4s ease;
