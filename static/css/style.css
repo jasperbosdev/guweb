@@ -91,6 +91,33 @@ footer {
   font-weight: normal;
 }
 
+.hr-s {
+  border-radius: 9999px;
+  background-color: hsl(var(--main), 60%, 50%);
+  width: 2.95rem;
+  height: 0.325rem;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.hr-m {
+  border-radius: 9999px;
+  background-color: hsl(var(--main), 60%, 50%);
+  width: 3.5rem;
+  height: 0.325rem;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.hr-l {
+  border-radius: 9999px;
+  background-color: hsl(var(--main), 60%, 50%);
+  width: 5.5rem;
+  height: 0.325rem;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
 .main-block {
   width: inherit;
   background: hsl(var(--main), 10.7%, 24.7%);
