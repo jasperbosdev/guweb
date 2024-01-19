@@ -26,7 +26,7 @@ html {
 
 .main-block {
   width: inherit;
-  background: hsl(var(--main), 10%, 15%);
+  background: hsl(var(--main), 10.7%, 24.7%);
 }
 
 /* stuffs */
@@ -169,15 +169,31 @@ a.foot-link {
 /* navbar */
 
 .navbar {
+  background-color: transparent !important;
   position: fixed !important;
   width: 100%;
   transition: 0.2s ease;
-  min-height: 0rem;
+  min-height: 68px;
+  /* border-bottom: 3px hsla(var(--main), 100%, 67%, 1) solid; */
+}
+
+.navbar-content {
+  display: flex;
+  /* color: white; */
+  align-items: center;
+  /* margin-left: 12px; */
+  max-width: 1244px;
+  height: 68px;
+  margin: auto;
 }
 
 .navbar-logo {
   font-size: 22px;
   font-weight: 500;
+}
+
+.navbar-logo img {
+  max-height: 3.5rem;
 }
 
 .navbar.is-spaced {
