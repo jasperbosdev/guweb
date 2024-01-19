@@ -1,21 +1,71 @@
 /* gulag mascot/avatar */
 
 .gulag-avatar {
-  background-image: url("/static/images/pippi.png");
+  background-image: url("/static/images/miyu.png");
   background-repeat: no-repeat;
   /*     available avatar widths & heights      */
   /* gulag.png:   width: 512px; height: 363px;  */
   /* pippi.png:   width: 372px; height: 432px;  */
-  width: 365px;
-  height: 579px;
+  /* miyu.png:   width: 521px; height: 773px;  */
+  width: 521;
+  height: 773;
   left: 50px;
   margin: 0;
   padding: 0;
   position: relative;
 }
 
+.home-container {
+    -webkit-animation: slideup 0.2s ease;
+    transition: 0.2s ease;
+    justify-content: space-around;
+}
+
 .main-block {
   width: 1024px;
+}
+
+.centertxt {
+  text-align: center;
+}
+
+.server-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: auto;
+}
+
+.server-desc {
+  text-align: center;
+}
+
+.player-info {
+  display: flex;
+  justify-content: space-around;
+  background-color: hsl(var(--main), 30%, 40%);
+  width: 260px;
+  max-height: 25px;
+  padding: 10px;
+  font-weight: 500;
+  align-items: center;
+  font-size: 13px;
+  border-radius: 15px;
+}
+
+.player-info-onl {
+  display: flex;
+  /* margin-left: 30px; */
+  justify-content: flex-start;
+  color: greenyellow;
+}
+
+.player-info-reg {
+  display: flex;
+  /* margin-left: 30px; */
+  justify-content: flex-start;
+  color: lightskyblue;
+
 }
 
 .my-con {
@@ -23,6 +73,51 @@
   width: 100%;
   max-width: inherit;
 }
+
+.feature-container {
+  z-index: 0;
+  -webkit-animation: slideup 0.2s ease;
+  transition: 0.2s ease;
+  background-color: hsl(var(--main), 1.4%, 15.5%);
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-text {
+  text-align: center;
+  z-index: -1;
+}
+
+.feat-column {
+  display: flex;
+  justify-content: center;
+}
+
+.modimg-plane {
+  position: absolute;
+  top: -100px;
+  left: -200px;
+  z-index: -2;
+}
+
+.modimg-relax {
+  position: absolute;
+  top: -100px;
+  left: 1125px;
+  z-index: -2;
+}
+
+.img-plane {
+  transform: rotate(10deg);
+  max-width: 100%;
+}
+
+.img-relax {
+  transform: rotate(25deg);
+  max-width: 100%;
+}
+
 
 #title, #mascot {
   animation: appear 0.4s ease;
@@ -36,6 +131,24 @@
   100% {
     -webkit-transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 1725px) {
+  .modimg-plane {
+    display: none;
+  }
+  .modimg-relax {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1870px) {
+  .modimg-plane {
+    display: none;
+  }
+  .modimg-relax {
+    display: none;
   }
 }
 
@@ -59,10 +172,35 @@
   #home-hero {
     height: 300px;
   }
+  .home-bg {
+    background-attachment: unset;
+  }
+  .feature-container {
+    margin-top: 1rem;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .columns:not(.is-desktop) {
+      display: flex !important;
+      justify-content: center !important;
+  }
 }
 
 .splash {
-  background: hsl(var(--main), 40%, 40%);
+  /* background: hsl(var(--main), 10.7%, 24.7%); */
+  background-color: hsl(var(--main),10%,10%);
+}
+
+.home-bg {
+  background-image: url(/static/images/background.png); /* fuck okayu pasted pserver for ripping this image from my old komako home page lol get original nerds */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position-x: center;
+  background-size: cover;
+  border-radius: 40px;
+  margin: 25px;
+  padding: 50px;
 }
 
 .footer {
