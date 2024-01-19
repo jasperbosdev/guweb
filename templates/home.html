@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Home {% endblock %}
+{% block title %} home {% endblock %}
 
 {% block header %}
 <link rel="stylesheet" href="/static/css/pages/home.css">
@@ -70,23 +70,23 @@
 <section class="section">
   <div class="feature-container has-text-centered py-4">
     <h2 class="title mb-6 mt-6">Some of our coolest features</h2>
-    <div class="columns has-text-left mb-6">
-      <div class="feat-column">
-        <div class="column is-10 feature-text">
+    <div class="columns has-text-centered mb-6"> <!-- Updated has-text-left to has-text-centered -->
+      <div class="feat-column column is-10">
+        <div class="feature-text">
           <h4 class="title is-spaced is-4">PP for Relax and Autopilot</h4>
-          <p class="subtitle is-6">Our server has a unique pp formula for relax and autopilot. Good at waving your cursor or just smashing your keyboard? Join {{ appName() }} and get a fair reward for your skills!</p>
+          <p class="subtitle is-6">Our server has unique pp formula for relax and autopilot. Good at waving your cursor or just smashing your keyboard? Join Komako and get a fair reward for your skills!</p>
         </div>
       </div>
-      <div class="feat-column">
-        <div class="column is-10 feature-text">
-          <h4 class="title is-spaced is-4">Free osu!direct</h4>
-          <p class="subtitle is-6">You won't have to pay for osu!supporter to have a convenient gameplay experience in the client - osu!direct is available for everyone! Keep in mind supporting us still grants a huge set of cool perks but the absence of it doesn't affect your game sessions!</p>
+      <div class="feat-column column is-10">
+        <div class="feature-text">
+          <h4 class="title is-spaced is-4">Free supporter features</h4>
+          <p class="subtitle is-6">You won't have to pay for osu!supporter to have a cool-looking profile page! - profile backgrounds and banners are available for everyone! Keep in mind supporting us still grants a huge set of cool perks, but absence of it doesn't affect your game sessions!</p>
         </div>
       </div>
-      <div class="feat-column">
-        <div class="column is-10 feature-text">
-          <h4 class="title is-spaced is-4">Flexible library</h4>
-          <p class="subtitle is-6">We're written on top of cmyui's multipurpose library allowing for a fully asynchronous environment, both improving performance and the user's experience in the long term!</p>
+      <div class="feat-column column is-10">
+        <div class="feature-text">
+          <h4 class="title is-spaced is-4">Unique Discord Bot</h4>
+          <p class="subtitle is-6">We have a unique discord bot written specifically for Gulag that offers many functions! You are able to flex your top plays, recent score and much more! This works for all gamemodes! Check the GitHub for a list of commands.</p>
         </div>
       </div>
       <div class="modimg-plane">
