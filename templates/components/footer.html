@@ -1,4 +1,4 @@
-<footer class="footer">
+<!-- <footer class="footer">
     <div class="content">
         <span>{{ appName() }} <strong>v{{ appVersion() }}</strong></span>
         <a class="foot-link" href="/github"><i class="fab fa-github"></i> GitHub</a>
@@ -6,5 +6,46 @@
         <a class="foot-link" href="/youtube"><i class="fab fa-youtube"></i> YouTube</a>
         <a class="foot-link" href="/twitter"><i class="fab fa-twitter"></i> Twitter</a>
         <a class="foot-link" href="/instagram"><i class="fab fa-instagram"></i> Instagram</a>
+    </div>
+</footer> -->
+
+<footer>
+    <div class="footer-container">
+        <div class="footer">
+            <div class="logo-menu">
+                <div class="footer-logo">
+                    <span>osu!komako</span>
+                    <a class="logo-subtitle" href="https://leeuwz.pet" target="_blank">designed and coded by Lionz.</a>
+                </div>
+            </div>
+            <div class="footer-info-rows">
+                <div class="footer-info-block"><span class="footer-title">Help</span>
+                    <div class="hr-m"></div>
+                    <ul>
+                        <li><a href="/documentation">Documentation</a></li>
+                        <li><a href="/rules">Rules</a></li>
+                        <li><a href="/documentation/connect">Connect</a></li>
+                    </ul>
+                </div>
+                <div class="footer-info-block"><span class="footer-title">Socials</span>
+                    <div class="hr-l"></div>
+                    <ul>
+                        <li><a href="/youtube" target="_blank">Youtube</a></li>
+                        <li><a href="/twitter" target="_blank">Twitter</a></li>
+                        {% if session.authenticated %}
+                            <li><a href="https://discord.gg/8fabsvYBhx" target="_blank">Discord</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="footer-info-block"><span class="footer-title">Dev</span>
+                    <div class="hr-s"></div>
+                    <ul>
+                        <li><a href="/team">Team</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#" target="_blank">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
