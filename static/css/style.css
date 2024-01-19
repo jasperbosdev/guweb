@@ -19,9 +19,76 @@ html {
   min-height: 100%;
 }
 
+.footer-container {
+  max-width: 1244px;
+}
+
+.footer-container {
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+  width: 100%;
+  max-width: 1244px; /* Set the maximum width for the footer */
+  margin: 0 auto; /* Center the footer within the page */
+}
+
+footer {
+  background-color: hsl(var(--main),10%,15%);
+}
+
 .footer {
-  padding: 20px;
-  margin-top: 39px;
+  display: flex;
+  padding: 24px;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+.logo-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  color: #fff;
+  display: flex;
+  font-size: 36px;
+  font-weight: 600;
+  flex-direction: column;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.footer-info-rows {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-info-block {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.footer-info-block:not(:last-child) {
+  padding-right: 38px;
+}
+
+.footer-info-block .footer-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: white;
+}
+
+/* Add the following media query for responsiveness */
+@media (max-width: 1244px) {
+  .footer {
+    padding: 24px 20px; /* Adjust padding for smaller screens */
+  }
+}
+
+.logo-subtitle {
+  font-size: 16px;
+  font-weight: normal;
 }
 
 .main-block {
@@ -187,6 +254,18 @@ a.foot-link {
   margin: auto;
 }
 
+.navbar-start {
+  align-items: center !important;
+  display: flex;
+}
+
+.navtem {
+  background-color: hsl(var(--main), 1.4%, 15.5%);
+  border-radius: 18px;
+  padding: 8px 12px;
+  margin-right: 0.5em;
+}
+
 .navbar-logo {
   font-size: 22px;
   font-weight: 500;
@@ -260,7 +339,7 @@ a.foot-link {
 .navbar.is-primary .navbar-start > a.navbar-item.is-active,
 .navbar.is-primary .navbar-start > a.navbar-item:focus,
 .navbar.is-primary .navbar-start > a.navbar-item:hover {
-  background-color: transparent;
+  background-color: hsl(var(--main), 1.4%, 15.5%) !important;
   color: #fff;
 }
 
@@ -290,7 +369,12 @@ a.foot-link {
 }
 
 .navbar-dropdown {
-  width: 152px;
+  margin-top: 1px;
+  background-color: hsl(var(--main), 1.4%, 15.5%);
+  border-radius: 18px;
+  width: auto;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .input,
