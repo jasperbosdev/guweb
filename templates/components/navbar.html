@@ -14,57 +14,57 @@
     
         <div id="navbar" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href="/leaderboard">
+                <a class="navbar-item navtem" href="/leaderboard">
                     leaderboards
                 </a>
                 
-                <a class="navbar-item" href="/home">
+                <a class="navbar-item navtem" href="/home">
                     beatmaps
                 </a>
             
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
+                    <a class="navbar-link navtem">
                         community
                     </a>
                     <div class="navbar-dropdown">
                         <a class="navbar-item" href="#">
-                            news
+                            <i class="fa-solid fa-newspaper"></i>&nbsp; news
                         </a>
                         <a class="navbar-item" href="#">
-                            tournaments
+                            <i class="fa-solid fa-gamepad"></i>&nbsp; tournaments
                         </a>
                         <a class="navbar-item" href="#">
-                            livestreams
+                            <i class="fa-solid fa-video"></i>&nbsp; livestreams
                         </a>
                         {% if session.authenticated %}
                         <hr class="navbar-divider">
                         <a class="navbar-item" href="https://discord.gg/8fabsvYBhx" target="_blank">
-                            discord
+                            <i class="fa-brands fa-discord"></i>&nbsp; discord
                         </a>
                         {% endif %}
                     </div>
                 </div>
             
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
+                    <a class="navbar-link navtem">
                         help
                     </a>
                     <div class="navbar-dropdown">
                         <a class="navbar-item" href="#">
-                            rules
+                            <i class="fa-solid fa-gavel"></i>&nbsp; rules
                         </a>
                         <a class="navbar-item" href="#">
-                            connect
+                            <i class="fa-solid fa-rss"></i>&nbsp; connect
                         </a>
                         <a class="navbar-item" href="#">
-                            documentation
+                            <i class="fa-solid fa-user-secret"></i>&nbsp; privacy policy
                         </a>
                         <a class="navbar-item" href="#">
-                            privacy policy
+                            <i class="fa-solid fa-book"></i>&nbsp; documentation
                         </a>
                         <hr class="navbar-divider">
                         <a class="navbar-item" href="#">
-                            team
+                            <i class="fa-solid fa-people-group"></i>&nbsp; team
                         </a>
                     </div>
                 </div>
