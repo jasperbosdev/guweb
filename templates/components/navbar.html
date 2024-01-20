@@ -92,25 +92,34 @@
                 </div>
             
                 <div class="navbar-item navtem nav-profile has-dropdown is-hoverable">
-                    <a class="header-avatar" style="background-image:url('https://a.komako.pw/{{ session.user_data['id'] }}');"></a>
+                    <a class="header-avatar" style="background-image:url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></a>
                     <a class="navbar-link" style=":hover {background-color: transparent;}">
                     {{ session.user_data['name'] }}
                     </a>
-                    <div class="navbar-dropdown">
-                    <a class="navbar-item" href="/u/{{ session.user_data['id'] }}">
-                        <i class="fa-solid fa-user"></i>&nbsp; profile
-                    </a>
-                    <a class="navbar-item" href="/friends">
-                        <i class="fa-solid fa-heart"></i>&nbsp; friends
-                    </a>
-                    <a class="navbar-item" href="/settings">
-                        <i class="fa-solid fa-gear"></i>&nbsp; settings
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item" href="/logout">
-                        <i class="fa-solid fa-door-open"></i>&nbsp; logout
-                    </a>
-                </div>
+                    <div class="navbar-dropdown navbar-dropdown-profile">
+                        <div class="user-card-block">
+                            <a href="/u/{{ session.user_data['id'] }}" class="user-card bordered d-flex">
+                                <div class="user-dropdown-avatar" style="background-image: url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></div>
+                                <div class="text-wrap user-card-data d-flex flex-column ">
+                                    <span class="user-card_username">{{ session.user_data['name'] }}</span>
+                                    <span class="user-card_subtitle twemoji" style="padding: 0px; white-space: pre-line;">{{ session.user_data['pp'] }}pp</span>
+                                    <span class="user-card-data_angle"><i class="fa-solid fa-angle-right"></i></span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="user-dropdown-content">
+                            <a class="navbar-item" href="/friends">
+                                <i class="fa-solid fa-heart"></i>&nbsp; friends
+                            </a>
+                            <a class="navbar-item" href="/settings">
+                                <i class="fa-solid fa-gear"></i>&nbsp; settings
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/logout">
+                                <i class="fa-solid fa-door-open"></i>&nbsp; logout
+                            </a>
+                        </div>
+                    </div>
                 {% else %}
                 <div class="navbar-item">
                     <div class="buttons">
