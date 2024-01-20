@@ -52,11 +52,21 @@
           </h2>
           <div class="player-info">
             <div class="player-info-onl">
-              <span><span id="online" style="color: greenyellow;"></span>69 online</span>
+              <span><span id="online" style="color: greenyellow;"></span> online</span>
             </div>
             <div class="player-info-reg">
-              <span><span id="registered" style="color: lightskyblue;"></span>420 registered</span>
+              <span><span id="registered" style="color: lightskyblue;"></span> registered</span>
             </div>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+              axios.get('https://api.{{ domain() }}/v1/get_player_count')
+              .then((response) => {
+                var online = response.data.counts.online;
+                var registered = response.data.counts.total; // - 3;
+                document.getElementById('online').innerHTML = online;
+                document.getElementById('registered').innerHTML = registered;
+              });
+            </script>
           </div>
         </div>
         <div class="column flex flex-lcenter" id="mascot">
