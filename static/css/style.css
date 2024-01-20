@@ -186,6 +186,7 @@ footer {
 
 .nav-profile {
   align-items: center !important;
+  padding: 0 6px 0 6px !important;
 }
 
 .header-avatar {
@@ -445,6 +446,98 @@ a.foot-link {
 .bg-seccond {
   background-color: hsl(var(--main),10%,15%);
 }
+
+.user-card-block {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  margin: 6px 6px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+a.user-card {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  /* padding: 10px 10px 10px 10px;
+  background-color: hsl(var(--main) 10% 21.5%); */
+  position: relative;
+  overflow: hidden;
+  min-height: 65px;
+}
+
+.user-dropdown-avatar {
+  height: 52px;
+  width: 52px;
+  margin-right: 12px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position-x: 50%;
+}
+
+.user-card-data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  /* padding-right: 16px; */
+}
+
+.user-card_username {
+  font-weight: 700;
+  margin-bottom: -2px;
+  font-size: 18px;
+}
+
+span.user-card_subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  padding-right: 12px;
+  padding-top: 8px;
+  font-weight: 500;
+  line-height: 1;
+  word-break: break-word;
+}
+
+span.user-card-data_angle {
+  position: absolute;
+  right: 14px;
+  color: #fff;
+  opacity: 0.7;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.user-dropdown-content {
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 16px; */
+  /* font-size: 12px; */
+  /* font-weight: 500; */
+}
+
+.navbar-dropdown-profile {
+  margin-top: 1px;
+  background-color: hsl(var(--main), 1.4%, 15.5%);
+  border-radius: 18px;
+  width: 230px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* .user-dropdown-content--single {
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  color: #fff !important;
+  text-decoration: none !important;
+  background-color: transparent;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 15px;
+} */
 
 /* navigation search-bar */
 
