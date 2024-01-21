@@ -102,20 +102,20 @@
                                 <div class="user-dropdown-avatar" style="background-image: url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></div>
                                 <div class="text-wrap user-card-data d-flex flex-column ">
                                     <span class="user-card_username">{{ session.user_data['name'] }}</span>
-                                    <span class="user-card_subtitle twemoji" style="padding: 0px; white-space: pre-line;">{{ session.user_data['pp'] }}pp</span>
+                                    <span class="user-card_subtitle twemoji" style="padding: 0px; white-space: pre-line;">{{ session.user_data['stats']['pp'] }}pp</span>
                                     <span class="user-card-data_angle"><i class="fa-solid fa-angle-right"></i></span>
                                 </div>
                             </a>
                         </div>
                         <div class="user-dropdown-content">
-                            <a class="navbar-item" href="/friends">
+                            <a class="navbar-item prof-navtem" href="/friends">
                                 <i class="fa-solid fa-heart"></i>&nbsp; friends
                             </a>
-                            <a class="navbar-item" href="/settings">
+                            <a class="navbar-item prof-navtem" href="/settings">
                                 <i class="fa-solid fa-gear"></i>&nbsp; settings
                             </a>
                             <hr class="navbar-divider">
-                            <a class="navbar-item" href="/logout">
+                            <a class="navbar-item prof-navtem" href="/logout">
                                 <i class="fa-solid fa-door-open"></i>&nbsp; logout
                             </a>
                         </div>
@@ -136,4 +136,7 @@
         </div>
         </div>
     </div>
+
+    <script src='/static/js/search.js'></script>
+
 </nav>
