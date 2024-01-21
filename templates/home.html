@@ -3,6 +3,14 @@
 
 {% block header %}
 <link rel="stylesheet" href="/static/css/pages/home.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+
+<meta property="og:title" content="osu!komako" />
+<meta property="og:description" content="Komako is my goofy ahh osu! private server, come farm pp!">
+<meta property="og:image:type" content="image/gif"/>
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://media.tenor.com/ZvGFU6xEUIIAAAAC/azur-lane-bisoku-zenshin-ayanami.gif" />
+<meta name="theme-color" content="#FF00FF">
 {% endblock %}
 
 {% block content %}
@@ -112,13 +120,157 @@
 {% endif %}
 
 {% if session.authenticated %}
-<section class="hero splash">
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <h1 class="title is-spaced">authenticated version is a wip.</h1>
+<div class="container-home">
+
+  <div class="main-block home-block"> <!--top row message/buttons-->
+    <div class="col-lg-12">
+      <div class="row kolhoz-row" style="padding-left: 20px;">
+        <div class="col-lg-7 rounded-block buttons-row"><a href="/documentation/connect" style="background: rgb(140, 210, 55);"> How to connect </a>
+          <a href="https://m1.ppy.sh/r/osu!install.exe" style="background: rgb(255, 102, 170);"> osu! </a>
+          <a href="/discord" style="background: rgb(35, 184, 255);"> Discord </a>
+          <a href="/support" style="background: rgb(86, 44, 255);"> Support us! </a>
+        </div>
+        <div class="col-lg-5 rounded-block druzhban-block">
+          <a href="/u/3" class="avatar" style="background-image: url(https://a.{{ domain() }}/3);"></a>
+          <a href="/discord" class="user-block"><span class="username">Lionz</span>
+            <span>Join the discord to be notified of cool new updates!</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</section>
-{% endif %}
 
+  <div class="main-block home-block">
+    <div class="col-lg-12">
+      <div class="row kolhoz-row">
+        <div class="col-lg-4">
+          <div class="rounded-block flex-column align-items-baseline welcome-block">
+            <div class="d-flex flex-column">
+              Welcome,<b style="color: rgb(236, 74, 236);"> Lionz</b>
+            </div>
+            <div class="server-stats">
+              <div class="stats-block d-flex flex-column">
+                players
+                <b><b id="registered" class="newmaps-color" style="color: rgb(236, 74, 236); font-size: 21px;"></b></b>
+              </div>
+              <div class="stats-block d-flex flex-column">
+                online<b><b id="online" class="newmaps-color" style="color: greenyellow; font-size: 21px;"></b></b>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+              <script>
+                axios.get('https://api.{{ domain() }}/v1/get_player_count')
+                .then((response) => {
+                  var online = response.data.counts.online;
+                  var registered = response.data.counts.total;
+                  document.getElementById('online').innerHTML = online;
+                  document.getElementById('registered').innerHTML = registered;
+                });
+              </script>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 kolhoz-row" style="padding-left: 20px;">
+          <div class="rounded-block stream-block">
+            <iframe src="https://www.youtube.com/embed/FxJYARuyJNk?si=kIGY0cm4Ujxhcza6" height="278px" frameborder="0" class="video-block"></iframe>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-block home-block">
+    <div class="category-block d-flex">
+      <div class="category-title"> Statistics </div>
+      <a href="/topscores" class="category-link" style="color: #ec4aec"> More <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="beatmaps-categories">
+      <div class="block-header newmaps-color">Best Performences</div>
+      <div class="beatmaps-row">
+        {% for result in pp_records %}
+          <a href="/score/{{ result.id }}" class="beatmap-block">
+            <div class="beatmap-preview" style="background-image: url('https://assets.ppy.sh/beatmaps/{{ result.set_id }}/covers/card.jpg')"></div>
+            <div class="beatmap-stats">
+              <span class="beatmap-title">{{ result.title }}</span>
+              <span class="beatmap-artist">{{ result.version }}</span>
+              <div class="beatmap-footer">
+                <span class="beatmap-mapper">
+                  {{ result.mode_str }} by
+                  <span class="newmaps-color">{{ result.name }}</span>
+                </span>
+                <div class="d-flex align-items-baseline">
+                  <span>{{ result.pp }}PP</span>
+                  <div class="target-button newmaps-color">
+                    <i class="fas fa-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+      <div class="block-header popular-color">Most Played</div>
+      <div class="beatmaps-row">
+        {% for maps in most_played %}
+          <a href="/b/{{ maps.id }}" class="beatmap-block">
+            <div
+              class="beatmap-preview"
+              style="background-image: url('https://assets.ppy.sh/beatmaps/{{ maps.set_id }}/covers/card.jpg')"
+            ></div>
+            <div class="beatmap-stats">
+              <span class="beatmap-title"> {{ maps.title }} </span>
+              <span class="beatmap-artist"> {{ maps.version }} </span>
+              <div class="beatmap-footer">
+                <span class="beatmap-mapper">
+                  by <span class="popular-color"> {{ maps.creator }} </span>
+                </span>
+                <div class="d-flex align-items-baseline">
+                  <span>{{ maps.plays }} plays</span>
+                  <div class="target-button popular-color">
+                    <i class="fas fa-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="main-block home-block">
+    <div class="category-block d-flex">
+      <div class="category-title"> Recent Activity </div>
+      <div class="activity-container">
+        <div class="activity-content">
+          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
+          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
+          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
+          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
+          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if recent_active %}
+    <div class="main-block home-block">
+      <div class="category-block d-flex">
+        <div class="category-title"> Recently Active </div>
+        <a href="/userlist" class="category-link" style="color: #ec4aec"> All users <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="donors-row">
+        {% for user in recent_active %}
+        <a href="/u/{{ user.id }}" class="donor-block" style="background-image: hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 60%), url(/banners/{{ user.id }});">
+          <div class="user-avatar donor-avatar" style="background-image: url(https://a.{{ domain() }}/{{ user.id }});"></div>
+          <div class="donor-info text-wrap">
+            <div class="donor-title"> {{ user.name }} </div>
+            <div class="subtitle"> {{ timeago.format(user['latest_activity']) }} </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+{% endif %}
 {% endblock %}
