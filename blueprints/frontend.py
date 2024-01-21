@@ -6,6 +6,8 @@ import bcrypt
 import hashlib
 import os
 import time
+import timeago
+import datetime
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
@@ -18,6 +20,7 @@ from quart import render_template
 from quart import request
 from quart import session
 from quart import send_file
+from quart import redirect, url_for
 
 from constants import regexes
 from objects import glob
@@ -42,7 +45,46 @@ def login_required(func):
 @frontend.route('/home')
 @frontend.route('/')
 async def home():
-    return await render_template('home.html')
+
+    pp_records = await glob.db.fetchall(
+        '(SELECT scores.*, maps.*, scores.userid, users.priv, users.name, 0 as mode '
+        'FROM scores '
+        'JOIN maps ON scores.map_md5 = maps.md5 '
+        'LEFT JOIN users ON scores.userid = users.id '
+        'WHERE scores.mode = 0 AND users.priv <> 2 '
+        'AND scores.status = 2 and maps.status = 2 ORDER BY scores.pp DESC LIMIT 1) '
+
+        'UNION '
+
+        '(SELECT scores.*, maps.*, scores.userid, users.priv, users.name, 4 as mode '
+        'FROM scores '
+        'JOIN maps ON scores.map_md5 = maps.md5 '
+        'LEFT JOIN users ON scores.userid = users.id '
+        'WHERE scores.mode = 4 AND users.priv <> 2 '
+        'AND scores.status = 2 and maps.status = 2 ORDER BY scores.pp DESC LIMIT 1) '
+
+        'UNION '
+
+        '(SELECT scores.*, maps.*, scores.userid, users.priv, users.name, 8 as mode '
+        'FROM scores '
+        'JOIN maps ON scores.map_md5 = maps.md5 '
+        'LEFT JOIN users ON scores.userid = users.id '
+        'WHERE scores.mode = 8 AND users.priv <> 2 '
+        'AND scores.status = 2 and maps.status = 2 ORDER BY scores.pp DESC LIMIT 1)'
+    )
+
+    for result in pp_records:
+        result['mode_str'] = (
+            'vn!std' if result['mode'] == 0 else
+            'rx!std' if result['mode'] == 4 else
+            'ap!std' if result['mode'] == 8 else ''
+        )
+
+    most_played = await glob.db.fetchall('SELECT * FROM maps ORDER BY maps.plays DESC LIMIT 3')
+    recent_active = await glob.db.fetchall('SELECT * FROM users WHERE priv <> 2 and priv <> 1 ORDER BY latest_activity DESC LIMIT 4')
+
+    return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active,
+                                 timeago=timeago)
 
 @frontend.route('/home/account/edit')
 async def home_account_edit():
@@ -372,6 +414,15 @@ async def login_post():
         [utils.get_safe_name(username)]
     )
 
+    # fetch user stats
+    user_info_stats = await glob.db.fetch(
+        'SELECT id, mode, tscore, rscore, pp, plays, playtime, acc, max_combo, '
+        'total_hits, replay_views, xh_count, x_count, sh_count, s_count, a_count '
+        'FROM stats '
+        'WHERE id = %s',
+        [user_info['id']]
+    )
+
     # user doesn't exist; deny post
     # NOTE: Bot isn't a user.
     if not user_info or user_info['id'] == 1:
@@ -423,6 +474,9 @@ async def login_post():
         'email': user_info['email'],
         'priv': user_info['priv'],
         'silence_end': user_info['silence_end'],
+        'stats': {
+            'pp': user_info_stats['pp']
+        },
         'is_staff': user_info['priv'] & Privileges.Staff != 0,
         'is_donator': user_info['priv'] & Privileges.Donator != 0
     }
@@ -431,7 +485,7 @@ async def login_post():
         login_time = (time.time_ns() - login_time) / 1e6
         log(f'Login took {login_time:.2f}ms!', Ansi.LYELLOW)
 
-    return await flash('success', f'Hey, welcome back {username}!', 'home')
+    return redirect(url_for('frontend.home'))
 
 @frontend.route('/register')
 async def register():
@@ -601,6 +655,7 @@ async def instagram_redirect():
 
 # profile customisation
 BANNERS_PATH = Path.cwd() / '.data/banners'
+DEFAULT_BANNER_PATH = Path.cwd() / 'static/images/default.jpg'
 BACKGROUND_PATH = Path.cwd() / '.data/backgrounds'
 @frontend.route('/banners/<user_id>')
 async def get_profile_banner(user_id: int):
@@ -610,7 +665,7 @@ async def get_profile_banner(user_id: int):
         if path.exists():
             return await send_file(path)
 
-    return b'{"status":404}'
+    return await send_file(DEFAULT_BANNER_PATH)
 
 
 @frontend.route('/backgrounds/<user_id>')
