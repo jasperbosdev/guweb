@@ -355,7 +355,7 @@ span.beatmap-mapper {
 }
 
 .act-player {
-  color: #f6a;
+  color: hsl(var(--main), 90%, 55%);
   font-weight: 600;
 }
 
@@ -396,6 +396,12 @@ a.donor-block:before {
   background-size: cover;
   background-position: center;
   display: flex;
+}
+
+.donor-block:hover {
+  background-color: hsl(var(--main), 10.7%, 33.7%);
+  color: #fff;
+  transform: translateY(-5px);
 }
 
 .donor-avatar {
