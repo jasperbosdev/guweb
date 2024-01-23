@@ -239,14 +239,21 @@
 
   <div class="main-block home-block">
     <div class="category-block d-flex">
-      <div class="category-title"> Recent Activity (w.i.p.)</div>
+      <div class="category-title"> Recent Activity</div>
       <div class="activity-container">
         <div class="activity-content">
-          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
-          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
-          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
-          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
-          <a class="activity-text" href="#"><i class="fa-solid fa-trophy"></i><span class="act-player">Lionz</span> has set a new score within their top 10! on <span class="act-title">A zhong Bu Dai Xi - Gu Niang De Jiu Wo [Light Insane]</span> (osu!)</a>
+          {% for score_logs in recent_activity %}
+          <span class="activity-text">
+            {% if score_logs.event == 'new_rank_1' %}
+            <i class="fa-solid fa-trophy"></i><a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a> has achieved #1 on <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a> (osu!) {{ timeago.format(score_logs.timestamp) }}
+            {% elif score_logs.event == 'sniped' %}
+            <i class="fa-solid fa-bomb"></i><a href="/u/{{ score_logs.got_sniped_by }}" class="act-player">{{ score_logs.got_sniped_by }}</a> has sniped <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a> on <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a> (osu!) {{ timeago.format(score_logs.timestamp) }}
+            {% else %}
+            Error: Unkown event
+            {% endif %}
+          </span>
+            <!-- <i class="fa-solid fa-trophy"></i><a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a> has set a new score within their top 10! on <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a> (osu!)</span> -->
+          {% endfor %}
         </div>
       </div>
     </div>
