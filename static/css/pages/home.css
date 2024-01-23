@@ -343,6 +343,7 @@ span.beatmap-mapper {
   border-radius: 8px;
   padding: 18px 22px;
   margin-top: 24px;
+  font-size: large;
 }
 
 .activity-content {
@@ -366,13 +367,14 @@ span.beatmap-mapper {
 
 .activity-text {
   color: #fff;
-  font-size: 17px;
-  white-space: nowrap;
+  font-size: 18px;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   box-sizing: border-box;
-  text-align: justify;
+  text-align: center;
+  display: inline-block;
 }
 
 .donors-row {
