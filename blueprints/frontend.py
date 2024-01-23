@@ -83,8 +83,16 @@ async def home():
     most_played = await glob.db.fetchall('SELECT * FROM maps ORDER BY maps.plays DESC LIMIT 3')
     recent_active = await glob.db.fetchall('SELECT * FROM users WHERE priv <> 2 and priv <> 1 ORDER BY latest_activity DESC LIMIT 4')
 
+    recent_activity = await glob.db.fetchall(
+        'SELECT sl.*, u.name, m.id AS map_id, m.title AS map_title, m.version '
+        'FROM score_logs sl '
+        'JOIN users u ON sl.user_id = u.id '
+        'JOIN maps m ON sl.map_md5 = m.md5 '
+        'ORDER BY sl.timestamp DESC '
+    )
+
     return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active,
-                                 timeago=timeago)
+                                 timeago=timeago, recent_activity=recent_activity)
 
 @frontend.route('/home/account/edit')
 async def home_account_edit():
