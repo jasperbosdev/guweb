@@ -35,6 +35,15 @@
           </div>
         </div>
         <div class="field">
+          <label for="" class="label">Key (<a href="https://lionz.gitbook.io/invite/" target="_blank">get a key here</a>)</label>
+          <div class="control has-icons-left">
+            <input type="key" name="key" placeholder="e.g. H4LOAL5VTHD9I6P20HCE" class="input" required>
+            <span class="icon is-small is-left">
+              <i class="fa fa-key"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
           <label for="pass" class="label">Password</label>
           <div class="control has-icons-left">
             <input id="pass" type="password" name="password" placeholder="*************" class="input" autocomplete="new-password" required>
@@ -47,11 +56,6 @@
         <div class="dialog">
           Already have an account? <a href="/login">Login</a>
         </div>
-        {% if not captchaKey() == 'changeme' %}
-        <div class="field">
-          <div class="h-captcha" data-sitekey="{{ captchaKey() }}" data-theme="dark" style="display: flex; justify-content: center;"></div>
-        </div>
-        {% endif %}
         <div class="field">
           <button type="submit" class="button is-primary">
             Register
@@ -66,10 +70,6 @@
 <div class="paper-snackbar is-{{ status }}" style="opacity: 1;">
   {{ flash }}
 </div>
-{% endif %}
-
-{% if not captchaKey() == 'changeme' %}
-<script src="https://hcaptcha.com/1/api.js" async defer></script>
 {% endif %}
 
 {% endblock %}
