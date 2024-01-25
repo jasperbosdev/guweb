@@ -8,51 +8,62 @@
 {% block content %}
 
 <div class="main-block is-marginless is-paddingless is-auth">
-  <div class="columns is-reset is-weeb">
-    <div class="column title-block">
+  <div class="register-block">
+    <div class="column title-block title-bg make-room">
       <h1 class="title" id="regtitle">Login</h1>
     </div>
   </div>
-  <div class="columns is-reset flex-lcenter is-block">
+  <div class="columns is-reset flex-lcenter is-block drilla-fix">
     <div class="box">
-     <div class="content">
-    <form action="/login" method="post" class="form-content">
-      <div class="field">
-        <label for="user" class="label">Username</label>
-        <div class="control has-icons-left">
-          <input id="user" type="text" name="username" placeholder="Username" class="input" autocomplete="username" required>
-          <span class="icon is-small is-left">
-            <i class="fa fa-envelope"></i>
-          </span>
+      <div class="content login-section" style="margin-bottom: 0rem;">
+        <div class="login-block input-block">
+          <form action="/login" method="post" class="form-content" style="margin-block-end: 0em;">
+            <div class="field">
+              <label for="user" class="label">Username</label>
+              <div class="control has-icons-left">
+                <input id="user" type="text" name="username" placeholder="Username" class="input"
+                  autocomplete="username" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="pass" class="label">Password</label>
+              <div class="control has-icons-left">
+                <input id="pass" type="password" name="password" placeholder="Password" class="input"
+                  autocomplete="current-password" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="mt-5"></div>
+            <div class="dialog">
+              Don't have an account?
+              <a href="/register">
+                Register
+              </a>
+            </div>
+            <div class="field flex-vcenter">
+              <div class="buttons">
+                <button type="submit" class="button is-primary">
+                  Login
+                </button>
+                <a href="/forgot" class="button is-info">
+                  <!-- will probably have paths "/forgot/username" and "/forgot/password" -->
+                  Forgot login?
+                </a>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-      <div class="field">
-        <label for="pass" class="label">Password</label>
-        <div class="control has-icons-left">
-          <input id="pass" type="password" name="password" placeholder="Password" class="input" autocomplete="current-password" required>
-          <span class="icon is-small is-left">
-            <i class="fa fa-lock"></i>
-          </span>
+      <div class="box">
+        <div class="column flex flex-lcenter drillav2" id="mascot">
+          <div class="gulag-avatar"></div>
         </div>
       </div>
-      <div class="mt-5"></div>
-      <div class="dialog">
-        Don't have an account?
-        <a href="/register">
-          Register
-        </a>
-      </div>
-      <div class="field flex-vcenter">
-        <div class="buttons">
-          <button type="submit" class="button is-primary">
-            Login
-          </button>
-          <a href="/forgot" class="button is-info"> <!-- will probably have paths "/forgot/username" and "/forgot/password" -->
-            Forgot login?
-          </a>
-        </div>
-      </div>
-    </form></div>
     </div>
   </div>
 </div>
