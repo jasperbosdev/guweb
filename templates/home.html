@@ -124,7 +124,7 @@
 
   <div class="main-block home-block"> <!--top row message/buttons-->
     <div class="col-lg-12">
-      <div class="row kolhoz-row" style="padding-left: 20px;">
+      <div class="row kolhoz-row gayrow-buttons" style="padding-left: 20px;">
         <div class="col-lg-7 rounded-block buttons-row"><a href="/documentation/connect" style="background: rgb(140, 210, 55);"> How to connect </a>
           <a href="https://m1.ppy.sh/r/osu!install.exe" style="background: rgb(255, 102, 170);"> osu! </a>
           <a href="/discord" style="background: rgb(35, 184, 255);"> Discord </a>
@@ -133,7 +133,7 @@
         <div class="col-lg-5 rounded-block druzhban-block">
           <a href="/u/3" class="avatar" style="background-image: url(https://a.{{ domain() }}/3);"></a>
           <a href="/discord" class="user-block"><span class="username">Lionz</span>
-            <span>Join the discord to be notified of cool new updates!</span>
+            <span>You should buy supporter! :3</span>
           </a>
         </div>
       </div>
@@ -237,27 +237,50 @@
     </div>
   </div>
 
-  <div class="main-block home-block">
+  <div class="main-block home-block" id="activ"> <!-- activity block currently only gets #1's and snipes, hiding #1 achieved from the sniper and only showing that and limit to 10 -->
     <div class="category-block d-flex">
-      <div class="category-title"> Recent Activity</div>
-      <div class="activity-container">
-        <div class="activity-content">
-          {% for score_logs in recent_activity %}
-          <span class="activity-text">
-            {% if score_logs.event == 'new_rank_1' %}
-            <i class="fa-solid fa-trophy"></i><a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a> has achieved #1 on <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a> (osu!) {{ timeago.format(score_logs.timestamp) }}
-            {% elif score_logs.event == 'sniped' %}
-            <i class="fa-solid fa-bomb"></i><a href="/u/{{ score_logs.got_sniped_by }}" class="act-player">{{ score_logs.got_sniped_by }}</a> has sniped <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a> on <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a> (osu!) {{ timeago.format(score_logs.timestamp) }}
-            {% else %}
-            Error: Unkown event
-            {% endif %}
-          </span>
-            <!-- <i class="fa-solid fa-trophy"></i><a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a> has set a new score within their top 10! on <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a> (osu!)</span> -->
-          {% endfor %}
-        </div>
+        <div class="category-title">Recent Activity</div>
+        <a href="/activity" class="category-link" style="color: hsl(var(--main), 90%, 55%)"> More <i class="fas fa-arrow-right"></i></a>
+          <div class="activity-container">
+              <div class="activity-content">
+                  {% set mode_strings = {
+                      '0': "(osu!std)",
+                      '4': "(osu!rx)",
+                      '8': "(osu!ap)"
+                  } %}
+                
+                  {% for score_logs in recent_activity %}
+                    <span class="activity-text">
+                      {% if score_logs.event == 'new_rank_1' %}
+                          {% if not (recent_activity|selectattr('event', 'equalto', 'sniped')
+                                      |selectattr('timestamp', 'equalto', score_logs.timestamp)
+                                      |selectattr('sniper_id', 'equalto', score_logs.user_id)
+                                      |list) and score_logs.map_md5 not in user_rank_1_maps %}
+                              {% set _ = user_rank_1_maps.add(score_logs.map_md5) %}
+                              <i class="fa-solid fa-trophy"></i>
+                              <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
+                              has achieved #1 on
+                              <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a>
+                              {{ mode_strings[score_logs.mode] }} {{ timeago.format(score_logs.timestamp) }}
+                          {% endif %}
+                      {% elif score_logs.event == 'sniped' %}
+                          <i class="fa-solid fa-bomb"></i>
+                          <a href="/u/{{ score_logs.sniper_id }}" class="act-player">{{ score_logs.got_sniped_by }}</a>
+                          has sniped
+                          <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
+                          on
+                          <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a>
+                          {{ mode_strings[score_logs.mode] }} {{ timeago.format(score_logs.timestamp) }}
+                      {% else %}
+                          Error: Unknown event
+                      {% endif %}
+                  </span>
+                  {% endfor %}
+              </div>
+          </div>
       </div>
-    </div>
   </div>
+
 
   {% if recent_active %}
     <div class="main-block home-block">
@@ -267,7 +290,7 @@
       </div>
       <div class="donors-row">
         {% for user in recent_active %}
-        <a href="/u/{{ user.id }}" class="donor-block" style="background-image: hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 60%), url(/banners/{{ user.id }});">
+        <a href="/u/{{ user.id }}" class="donor-block" style="background: linear-gradient(hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 60%)), url(/banners/{{ user.id }}); background-size: cover; background-position-y: center;">
           <div class="user-avatar donor-avatar" style="background-image: url(https://a.{{ domain() }}/{{ user.id }});"></div>
           <div class="donor-info text-wrap">
             <div class="donor-title"> {{ user.name }} </div>
