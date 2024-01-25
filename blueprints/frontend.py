@@ -92,6 +92,12 @@ async def home():
         'ORDER BY sl.timestamp DESC LIMIT 10'
     )
 
+    mode_strings = {
+        0: "(osu!std)",
+        4: "(osu!rx)",
+        8: "(osu!ap)"
+    }
+
     user_rank_1_maps = set()
 
     return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active,
