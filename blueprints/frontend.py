@@ -84,15 +84,18 @@ async def home():
     recent_active = await glob.db.fetchall('SELECT * FROM users WHERE priv <> 2 and priv <> 1 ORDER BY latest_activity DESC LIMIT 4')
 
     recent_activity = await glob.db.fetchall(
-        'SELECT sl.*, u.name, m.id AS map_id, m.title AS map_title, m.version '
+        'SELECT sl.*, u.name, m.id AS map_id, m.title AS map_title, m.version, sniped_user.id AS sniper_id, m.mode '
         'FROM score_logs sl '
         'JOIN users u ON sl.user_id = u.id '
         'JOIN maps m ON sl.map_md5 = m.md5 '
-        'ORDER BY sl.timestamp DESC '
+        'LEFT JOIN users sniped_user ON sl.got_sniped_by = sniped_user.name '
+        'ORDER BY sl.timestamp DESC LIMIT 10'
     )
 
+    user_rank_1_maps = set()
+
     return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active,
-                                 timeago=timeago, recent_activity=recent_activity)
+                                 timeago=timeago, recent_activity=recent_activity, user_rank_1_maps=user_rank_1_maps, mode_strings=mode_strings)
 
 @frontend.route('/home/account/edit')
 async def home_account_edit():
@@ -517,17 +520,10 @@ async def register_post():
     username = form.get('username', type=str)
     email = form.get('email', type=str)
     passwd_txt = form.get('password', type=str)
+    key = form.get('key')
 
     if username is None or email is None or passwd_txt is None:
         return await flash('error', 'Invalid parameters.', 'home')
-
-    if glob.config.hCaptcha_sitekey != 'changeme':
-        captcha_data = form.get('h-captcha-response', type=str)
-        if (
-            captcha_data is None or
-            not await utils.validate_captcha(captcha_data)
-        ):
-            return await flash('error', 'Captcha failed.', 'register')
 
     # Usernames must:
     # - be within 2-15 characters in length
@@ -555,6 +551,21 @@ async def register_post():
 
     if await glob.db.fetch('SELECT 1 FROM users WHERE email = %s', email):
         return await flash('error', 'Email already taken by another user.', 'register')
+
+    # handle invite key
+    if key == "H4LOAL5VTHD9I6P20HCE":
+        return await flash('error', 'Nice try...', 'register')
+
+    if await glob.db.fetch('SELECT 1 FROM beta_keys WHERE beta_key = %s', key):
+        key_valid = True
+    else:
+        return await flash('error', 'Invalid key.', 'register')
+
+    if key_valid:
+        used_key = await glob.db.fetch('SELECT used AS c FROM beta_keys WHERE beta_key = %s', key)
+        if int(used_key['c']):
+            return await flash('error', 'This key has already been used.', 'register')
+    # key handle end
 
     # Passwords must:
     # - be within 8-32 characters in length
@@ -619,6 +630,8 @@ async def register_post():
         log(f'{username} has registered - awaiting verification.', Ansi.LGREEN)
 
     # user has successfully registered
+    await glob.db.execute('UPDATE beta_keys SET used = 1 WHERE beta_key = %s', key)
+    await glob.db.execute('UPDATE beta_keys SET user = %s WHERE beta_key = %s', [username, key])
     return await render_template('verify.html')
 
 @frontend.route('/logout')
