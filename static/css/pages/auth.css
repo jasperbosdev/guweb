@@ -1,7 +1,86 @@
-.main-block{
-    background-color: hsl(var(--main),10%,15%);
+.gulag-avatar {
+    background-image: url("/static/images/miyu.png");
+    background-repeat: no-repeat;
+    background-size: 100%; /* Reduce the background image size by 50% */
+    /*     available avatar widths & heights      */
+    /* gulag.png:   width: 512px; height: 363px;  */
+    /* pippi.png:   width: 372px; height: 432px;  */
+    /* miyu.png:   width: 521px; height: 773px;  */
+    width: 286px; /* Adding 'px' unit */
+    height: 420px; /* Adding 'px' unit */
+    /* left: 50px; */
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* .main-block{
+    background-color: transparent !important;
     color: #fff;
     padding: 20px;
+} */
+
+.drilla-fix {
+    display: unset !important;
+}
+
+.drillav2 {
+    padding: 10px 0;
+}
+
+.main-block {
+    background-color: transparent !important;
+    color: #fff;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.input-block {
+    background-color: hsl(var(--main), 1.4%, 22.5%);
+    border-radius: 16px;
+    padding: 30px;
+    justify-content: center;
+    display: grid;
+}
+
+.title-bg {
+    background:
+        linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%),
+        linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%),
+        url("/static/images/banner.jpg");
+    background-size: cover;
+}
+
+.make-room {
+    margin-bottom: 40px;
+}
+
+.login-section {
+    display: flex;
+    align-items: center;
+}
+
+.login-link {
+    text-decoration: none;
+}
+
+.login-content {
+    /* margin-top: 20px; */
+}
+
+.login-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.login-content ul li{
+    list-style-type: circle;
+    color: #fff;
+    margin: 0;
 }
 
 .collumdis{
@@ -16,6 +95,7 @@
     display: flex;
     align-items: center;
     place-content: center;
+    border-radius: 16px;
 }
 
 .icon-block{
@@ -73,8 +153,10 @@ button:focus{
 }
 
 .is-auth {
-    width: 485px;
+    width: 1000px;
     border-radius: 36px;
+    /* justify-content: space-around; */
+    /* display: flex; */
 }
 
 .dialog {
@@ -83,11 +165,18 @@ button:focus{
 }
 
 .box {
-    padding: 2.25rem 1.75rem;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 1.75rem;
+}
+
+.box-fix {
+    padding: 2.25rem 0;
 }
 
 input.input {
     height: 46px;
+    width: 400px;
 }
 
 .control.has-icons-left .icon, .control.has-icons-right .icon {
