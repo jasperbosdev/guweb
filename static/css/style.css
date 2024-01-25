@@ -1169,3 +1169,37 @@ body::-webkit-scrollbar-thumb {
 [v-cloak] {
   display: none;
 }
+
+/* navbar responsive */
+
+@media (max-width: 1023px) {
+  .navbar-menu {
+    background: transparent !important;
+    margin-top: 450px;
+    box-shadow: transparent 0 0 0 0;
+  }
+  .navbar-start {
+    display: flow;
+  }
+  .navtem {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer {
+    display: block;
+    padding: 24px;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+  }
+  .footer-logo {
+    text-align: center;
+  }
+  .footer-info-rows {
+    display: flex;
+    justify-content: center;
+  }
+}
