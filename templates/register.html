@@ -7,61 +7,77 @@
 
 {% block content %}
 <div class="main-block is-marginless is-paddingless is-auth">
-  <div class="columns pm-reset is-weeb">
-    <div class="column title-block">
-      <h1 class="title" id="regtitle">Registration</h1>
+  <div class="register-block">
+    <div class="column title-block title-bg make-room">
+      <h1 class="title" id="regtitle">Register</h1>
     </div>
   </div>
   <div class="columns pm-reset flex-lcenter is-block">
-    <div class="box">
-      <div class="login-bg"></div>
-      <form action="/register" method="post" class="form-content">
-        <div class="field">
-          <label for="user" class="label">Username</label>
-          <div class="control has-icons-left">
-            <input id="user" type="text" name="username" placeholder="e.g. Aika" class="input" autocomplete="username" required>
-            <span class="icon is-small is-left">
-              <i class="fa fa-envelope"></i>
-            </span>
+    <div class="box box-fix">
+      <div class="login-bg input-block">
+        <form action="/register" method="post" class="form-content" style="margin-block-end: 0em;">
+          <div class="field">
+            <label for="user" class="label">Username</label>
+            <div class="control has-icons-left">
+              <input id="user" type="text" name="username" placeholder="e.g. Aika" class="input" autocomplete="username" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email" class="label">Email</label>
+            <div class="control has-icons-left">
+              <input id="email" type="email" name="email" placeholder="e.g. aika@gul.ag" class="input" autocomplete="email" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-lock"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="" class="label">Key (<a href="https://lionz.gitbook.io/invite/" target="_blank">get a key here</a>)</label>
+            <div class="control has-icons-left">
+              <input type="key" name="key" placeholder="e.g. H4LOAL5VTHD9I6P20HCE" class="input" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-key"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="pass" class="label">Password</label>
+            <div class="control has-icons-left">
+              <input id="pass" type="password" name="password" placeholder="*************" class="input" autocomplete="new-password" required>
+              <span class="icon is-small is-left">
+                <i class="fa fa-lock"></i>
+              </span>
+            </div>
+          </div>
+          <div class="mt-5"></div>
+          <div class="dialog">
+            Already have an account? <a href="/login">Login</a>
+          </div>
+          <div class="field">
+            <button type="submit" class="button is-primary">
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="box" style="padding: 0;">
+        <div class="login-block input-block">
+          <div class="login-title">
+            <span>Important Information</span>
+          </div>
+          <div class="login-content">
+            <ul>
+              <li class="login-item">Make sure you read the <a class="login-link" href="#">rules</a> before you start playing.</li>
+              <li class="login-item">For any questions, check out our <a class="login-link" href="#">documentation</a>.</li>
+              <li class="login-item">Check the <a class="login-link" href="#">news</a> page for recent changes.</li>
+              <li class="login-item">Make sure you read the <a class="login-link" href="#">rules</a> before you start playing.</li>
+            </ul>
           </div>
         </div>
-        <div class="field">
-          <label for="email" class="label">Email</label>
-          <div class="control has-icons-left">
-            <input id="email" type="email" name="email" placeholder="e.g. aika@gul.ag" class="input" autocomplete="email" required>
-            <span class="icon is-small is-left">
-              <i class="fa fa-lock"></i>
-            </span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="" class="label">Key (<a href="https://lionz.gitbook.io/invite/" target="_blank">get a key here</a>)</label>
-          <div class="control has-icons-left">
-            <input type="key" name="key" placeholder="e.g. H4LOAL5VTHD9I6P20HCE" class="input" required>
-            <span class="icon is-small is-left">
-              <i class="fa fa-key"></i>
-            </span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="pass" class="label">Password</label>
-          <div class="control has-icons-left">
-            <input id="pass" type="password" name="password" placeholder="*************" class="input" autocomplete="new-password" required>
-            <span class="icon is-small is-left">
-              <i class="fa fa-lock"></i>
-            </span>
-          </div>
-        </div>
-        <div class="mt-5"></div>
-        <div class="dialog">
-          Already have an account? <a href="/login">Login</a>
-        </div>
-        <div class="field">
-          <button type="submit" class="button is-primary">
-            Register
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
