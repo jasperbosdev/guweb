@@ -139,7 +139,7 @@
 {% block content %}
 <div id="app">
     <div class="main-block">
-        <div class="profile-bg">
+        <div class="profile-bg" style="min-height: 262px; background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 25%, 25%, 60%)), url('/banners/{{ user['id'] }}'); background-size: cover; background-position-y: center;" onError="this.onerror=null; this.src='/banners/c6.jpg';">
             <div class="info-block">
                 <h1 class="title">
                     <p class="ranks">
@@ -358,8 +358,9 @@
     {% if user['customisation']['banner'] == True %}
         .profile-bg {
             min-height: 262px;
-            background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 25%, 25%, 60%)), url("/banners/{{ user['id'] }}");
+            background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 25%, 25%, 60%)), url("/banners/3");
             background-size: cover;
+            background-position-y: center;
         }
     {% endif %}
     {% if user['customisation']['background'] == True %}
