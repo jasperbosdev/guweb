@@ -639,12 +639,77 @@ a.donor-block:before {
 }
 
 /* authed responsive */
+
+@media (max-width: 1339px) {
+  .container.is-fullhd {
+    margin: 0 auto;
+  }
+  .container-home {
+    padding: 30px;
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .container.is-fullhd {
+    margin: 0 auto;
+  }
+  .container-home {
+    padding: 30px;
+    margin-top: 50px;
+  }
+  .main-block {
+    height: unset;
+  }
+  .buttons-row {
+    display: none;
+    margin-left: 0px;
+  }
+  .gayrow-buttons {
+    padding-left: 0px !important;
+  }
+  .druzhban-block {
+    margin-left: 0px;
+  }
+  .stats-block {
+    justify-content: center;
+    text-align: center;
+  }
+  .stream-block {
+    display: none !important;
+  }
+  .align-items-baseline {
+    align-items: center !important;
+  }
+  .flex-column {
+    -ms-flex-direction: column !important;
+    flex-direction: column !important;
+    text-align: center;
+  }
+  .beatmaps-row {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: unset;
+  }
+  #activ {
+    display: none;
+  }
+  .donors-row {
+    padding: 0px;
+    padding-bottom: 0px;
+    display: grid;
+    row-gap: 10px;
+    column-gap: 20px;
+    grid-template-columns: unset !important;
+  }
+}
+
 @media (max-width: 767px) {
   .container.is-fullhd {
     margin: 0 auto;
-    padding: 30px;
   }
   .container-home {
+    padding: 30px;
     margin-top: 50px;
   }
   .main-block {
