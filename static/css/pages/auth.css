@@ -78,9 +78,11 @@
 }
 
 .login-content ul li{
+    margin: 35 0px;
     list-style-type: circle;
     color: #fff;
-    margin: 0;
+    font-size: 18px;
+    /* margin: 0; */
 }
 
 .collumdis{
@@ -167,11 +169,11 @@ button:focus{
 .box {
     display: flex;
     justify-content: space-around;
-    padding: 0 1.75rem;
+    padding: 0 0 0 1.75rem;
 }
 
 .box-fix {
-    padding: 2.25rem 0;
+    padding: 2.25rem 1.75rem;
 }
 
 input.input {
@@ -220,5 +222,71 @@ select:-webkit-autofill:focus {
         display: none;
         align-items: center;
         place-content: center;
+    }
+}
+
+@media (max-width: 1399px) {
+    .is-auth {
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .is-auth {
+        width: unset;
+    }
+    .box-login {
+        display: none;
+    }
+    .drillav2 {
+        display: none;
+    }
+    .login-box {
+        padding: 2.25rem 0 2.25rem 1.75rem !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .pm-reset {
+        padding: 20 0 30 0!important;
+    }
+    .my-con {
+        margin-top: 72px !important;
+    }
+    .main-block {
+        position: unset !important;
+        transform: unset !important;
+    }
+    .box {
+        display: block;
+        padding: 1.25rem;
+    }
+    .box-login {
+        display: none;
+    }
+    .login-content {
+        margin: 0;
+    }
+    .input-block {
+        background-color: transparent;
+        padding: 30px 0;
+    }
+    .register-block {
+        display: none;
+    }
+    .make-room {
+        margin: 0;
+    }
+    input.input {
+        width: 250px;
+    }
+    .navbar-content {
+        padding: 0 25px;
+    }
+    .drillav2 {
+        display: none;
+    }
+    .login-box {
+        padding: 1.25rem !important
     }
 }
