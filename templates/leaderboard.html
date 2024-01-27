@@ -56,6 +56,39 @@
     </div>
     <div class="main-block">
         <div class="leaderboard-main-bg table-responsive">
+            <div class="leaderboard-country-block">
+                <div class="country-selector">
+                    <a class="country-btn" v-bind:class="{ 'active': !country || country === 'all' }"
+                       @click="LoadLeaderboard(sort, mode, mods, 'all')">
+                       <img src="/static/images/flags/global.png">
+                    </a>   
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'NL' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'NL')"><img src="/static/images/flags/NL.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'US' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'US')"><img src="/static/images/flags/US.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'RU' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'RU')"><img src="/static/images/flags/RU.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'KR' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'KR')"><img src="/static/images/flags/KR.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'PL' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'PL')"><img src="/static/images/flags/PL.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'GB' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'GB')"><img src="/static/images/flags/GB.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'NZ' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'NZ')"><img src="/static/images/flags/NZ.png">
+                    </a>
+                    <a class="country-btn" v-bind:class="{ 'active': country === 'CC' }"
+                    @click="LoadLeaderboard(sort, mode, mods, 'CC')"><img src="/static/images/flags/CC.png">
+                    </a>
+                    <a class="country-btn"><i class="fa-solid fa-lg fa-ellipsis"></i></a>
+                </div>
+            </div>
             <div v-if="boards.length != undefined && boards.length != 0">
                 <table class="leaderboard-table table-responsive">
                     <thead>
@@ -71,36 +104,76 @@
                             <th class="t-heading"> Max Combo </th>
                         </tr>
                     </thead>
+                    <!-- leaderboard layout for #1 player -->
+                    <div class="leaderboard-first-child" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://{{ domain() }}/banners/' + boards[0].player_id + '); background-size: cover; background-position-y: center;'">
+                        <div v-if="boards.length > 0" class="first-player-container">
+                            <!-- <div class="rank-content">
+                                <div class="first-player-rank">#1</div>
+                            </div> -->
+                            <div class="left-content">
+                                <div class="first-player-name">
+                                    <a class="fplayer-name" :href="'/u/' + boards[0].player_id"><% boards[0].name %></a>
+                                </div>
+                                <div class="first-player-country">
+                                    <a :title="flags[boards[0].country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + boards[0].country.toUpperCase() + '.png)'" class="player-flag">
+                                        <div class="flag-dropdown">
+                                            <% getCountryName(boards[0].country.toUpperCase()) %>
+                                        </div>
+                                    </a>
+                                    <span class="first-country-name"><% getCountryName(boards[0].country.toUpperCase()) %></span>
+                                </div>
+                            </div>
+                            <div class="middle-content">
+                                <div class="first-player-name">
+                                    <a class="first-player-avatar" :href="'/u/' + boards[0].player_id" 
+                                        :style="'background-image: url(https://a.{{ domain() }}/' + boards[0].player_id + ')'">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="right-content">
+                                <div class="first-pp-count">
+                                    <% (sort=='pp' ? boards[0].pp+'pp' : "" ) %>
+                                    <% (sort=='rscore' ? scoreFormat(boards[0].rscore) : "" ) %>
+                                    <span class="first-pp">Performance</span>
+                                </div>  
+                                <div class="first-acc-count">
+                                    <% boards[0].acc.toFixed(2) %>%
+                                    <span class="first-acc">Accuracy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- rest of the leaderboard -->
                     <tbody>
-                        <tr v-for="(user, index) in boards" class="leaderboard-column">
-                            <td class="column-player-rank">#<% index + 1 %>
-                            </td>
-                            <td class="column-player-name text-left">
-                                <a :title="flags[user.country.toUpperCase()]"
-                                    :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'"
-                                    class="player-flag">
-                                    <div class="flag-dropdown">
-                                        <% flags[user.country.toUpperCase()] %>
-                                    </div>
-                                </a>
-                                <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
-                                    <% user.name %>
-                                </a>
-                            </td>
-                            <td v-if="sort == 'pp' || sort == 'rscore'">
-                                <% (sort=='pp' ? user.pp+'pp' : "" ) %>
+                        <template v-for="(user, index) in boards.slice(1)">
+                            <tr class="leaderboard-column">
+                                <td class="column-player-rank">#<% index + 2 %></td>
+                                <td class="column-player-name text-left">
+                                    <a class="player-avatar" :style="'background-image: url(https://a.{{ domain() }}/' + user.player_id + ')'"></a>
+                                    <a :title="flags[user.country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'" class="player-flag">
+                                        <div class="flag-dropdown">
+                                            <% flags[user.country.toUpperCase()] %>
+                                        </div>
+                                    </a>
+                                    <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
+                                        <% user.name %>
+                                    </a>
+                                </td>
+                                <td v-if="sort == 'pp' || sort == 'rscore'">
+                                    <% (sort=='pp' ? user.pp+'pp' : "" ) %>
                                     <% (sort=='rscore' ? scoreFormat(user.rscore) : "" ) %>
-                            </td>
-                            <td>
-                                <% user.acc.toFixed(2) %>%
-                            </td>
-                            <td>
-                                <% addCommas(user.plays) %>
-                            </td>
-                            <td>
-                                <% addCommas(user.max_combo) %>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <% user.acc.toFixed(2) %>%
+                                </td>
+                                <td>
+                                    <% addCommas(user.plays) %>
+                                </td>
+                                <td>
+                                    <% addCommas(user.max_combo) %>
+                                </td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -115,4 +188,5 @@
 
 <script src="/static/js/asserts/vue-flags.js"></script>
 <script src="/static/js/pages/leaderboard.js"></script>
+
 {% endblock %}
