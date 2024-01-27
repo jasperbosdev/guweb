@@ -8,6 +8,7 @@ new Vue({
             mode : 'std',
             mods : 'vn',
             sort : 'pp',
+            country : 'all',
             load : false,
             no_player : false, // soon
         };
@@ -17,27 +18,40 @@ new Vue({
         this.LoadLeaderboard(sort, mode, mods);
     },
     methods: {
-        LoadData(mode, mods, sort) {
+        getCountryName(countryCode) {
+            return this.flags[countryCode.toUpperCase()] || "Unknown Country";
+        },
+        LoadData(mode, mods, sort, country) {
             this.$set(this, 'mode', mode);
             this.$set(this, 'mods', mods);
             this.$set(this, 'sort', sort);
+            this.$set(this, 'country', country);
         },
-        LoadLeaderboard(sort, mode, mods) {
+        LoadLeaderboard(sort, mode, mods, country) {
             if (window.event)
                 window.event.preventDefault();
-
-            window.history.replaceState('', document.title, `/leaderboard/${this.mode}/${this.sort}/${this.mods}`);
+            
             this.$set(this, 'mode', mode);
             this.$set(this, 'mods', mods);
             this.$set(this, 'sort', sort);
+            this.$set(this, 'country', country);
             this.$set(this, 'load', true);
-            this.$axios.get(`${window.location.protocol}//api.${domain}/v1/get_leaderboard`, { params: {
+        
+            let params = {
                 mode: this.StrtoGulagInt(),
                 sort: this.sort
-            }}).then(res => {
-                this.boards = res.data.leaderboard;
-                this.$set(this, 'load', false);
-            });
+            };
+        
+            if (country && country !== 'all') {
+                params.country = country;
+            }
+        
+            this.$axios.get(`${window.location.protocol}//api.${domain}/v1/get_leaderboard`, { params })
+                .then(res => {
+                    this.boards = res.data.leaderboard;
+                    this.$set(this, 'load', false);
+                    this.togglecountry(this.country);
+                });
         },
         scoreFormat(score) {
             var addCommas = this.addCommas;
@@ -58,6 +72,20 @@ new Vue({
                 x1 = x1.replace(rgx, '$1' + ',' + '$2');
             }
             return x1 + x2;
+        },
+        togglecountry(country) {
+            var banner = document.getElementById("lb-name");
+            if (banner) {
+                if (country && country !== 'all') {
+                    var countryName = this.flags[country.toUpperCase()] || "Unknown Country";
+                    banner.innerHTML = `<img id="lb-flag" class="player-flag" src="/static/images/flags/${country.toUpperCase()}.png" style="margin-right: 8px;">${countryName} Leaderboard`;
+                } else {
+                    banner.innerText = `Leaderboard`;
+                    this.LoadLeaderboard(this.sort, this.mode, this.mods, 'all');
+                }
+            } else {
+                console.error("Banner element not found.");
+            }
         },
         StrtoGulagInt() {
             switch (this.mode + "|" + this.mods) {
