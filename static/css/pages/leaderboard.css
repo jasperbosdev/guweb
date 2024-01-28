@@ -9,10 +9,15 @@ a:hover {
   box-sizing: border-box;
 }
 
+.my-con {
+  margin-bottom: 42px;
+}
+
 .main-block {
   background-color: hsl(var(--main), 1.4%, 15.5%);
   margin-top: 0;
   width: auto;
+  border-radius: 0 0 8px 8px;
 }
 
 .leaderboard-banner {
@@ -30,6 +35,25 @@ a:hover {
 .leaderboard-country-block {
   background: hsl(var(--main), 10.7%, 24.7%);
   border-radius: 8px;
+}
+
+.leaderboard-pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pager-btn {
+  margin: 12px 6px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: hsl(var(--main), 90%, 55%);
+  width: 32px;
+  height: 32px;
+  color: white;
 }
 
 .country-selector {
@@ -52,6 +76,103 @@ a:hover {
   margin: 2px;
   line-height: 0;
   margin-right: 12px;
+}
+
+.country-selector {
+  position: relative;
+}
+
+.country-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.country-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.country-modal-content {
+  background-color: hsl(var(--main), 1.4%, 15.5%);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #fff;
+}
+
+.country-list li {
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.country-list:lastchild li {
+  margin-bottom: 0 !important;
+}
+
+.country-list li:hover {
+  background-color: hsl(var(--main), 20%, 30%);
+}
+
+.country-modal-content::-webkit-scrollbar {
+  width: 12px;
+  background-color: hsl(var(--main), 10%, 25%);
+  border-bottom-right-radius: 8px;
+}
+
+.country-modal-content::-webkit-scrollbar-track {
+  background-color: hsl(var(--main), 10%, 25%);
+  border-radius: 8px;
+}
+
+.country-modal-content::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: hsl(var(--main), 15%, 40%);
+}
+
+.country-modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--main), 15%, 80%);
+}
+
+.country-flag {
+  width: 30px;
+  height: auto;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
+.country-name {
+  font-size: 15px;
 }
 
 .country-btn.active {
@@ -83,6 +204,87 @@ a:hover {
   width: 50px;
 }
 
+.profile-panel {
+  position: absolute;
+  display: flex !important;
+  width: 275px;
+  height: 100px;
+  z-index: 610;
+  opacity: 1;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  margin-top: -63px;
+  margin-left: 150px;
+  color: white;
+  background-color: hsl(var(--main), 10%, 20%);
+  transition: 200ms opacity, 200ms visibility;
+  transition-delay: 0s, 0s;
+  transition-delay: 250ms;
+  line-height: 1.35;
+  visibility: visible;
+}
+
+.profile-panel-background {
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+  position: absolute !important;
+  z-index: -1;
+  background-size: cover !important;
+  background-position-y: center !important;
+}
+
+.profile-panel > div {
+  position: relative;
+}
+
+.profile-panel-avatar {
+  border-radius: 8px;
+  margin-left: 10px;
+  height: 72px;
+  width: 72px;
+  background-size: cover;
+  background-position: center;
+}
+
+.profile-panel-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 8px;
+}
+
+.profile-panel-info .name {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  margin-right: 12px;
+  text-align: left;
+}
+
+.profile-panel-info .activity {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  margin-right: 12px;
+  text-align: left;
+}
+
+.profile-panel-info .badges {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.56);
+  height: fit-content;
+  padding: 4px;
+  width: fit-content;
+}
+
 .leaderboard-column {
   background-color: #eee;
   color: #222;
@@ -106,7 +308,7 @@ a:hover {
   padding: 0 20px;
   background-size: cover !important;
   background-position-y: center !important;
-  /* box-shadow: 0px 0px 15px 0px #ffd700 */
+  box-shadow: 0px 0px 15px 0px #ffd7005c;
 }
 
 .first-player-container {
@@ -138,6 +340,13 @@ a:hover {
 .first-pp-count, .first-acc-count {
   color: #fff;
   font-size: 30px;
+  font-weight: 600;
+  max-width: 125px;
+}
+
+.score-count {
+  color: #fff;
+  font-size: 23px;
   font-weight: 600;
   max-width: 125px;
 }
@@ -178,6 +387,10 @@ a:hover {
   align-items: center;
   gap: 20px;
   justify-content: center;
+}
+
+.filler-content {
+  min-width: 35.08px;
 }
 
 .middle-content {
@@ -290,6 +503,14 @@ tr.leaderboard-column td {
   text-align: center;
 }
 
+.leaderboard-column:nth-child(1) .column-player-rank {
+  color: rgb(192, 192, 192) !important;
+}
+
+.leaderboard-column:nth-child(2) .column-player-rank {
+  color: rgb(251 184 140) !important;
+}
+
 tr.leaderboard-column td:last-child {
   border-radius: 0 8px 8px 0;
 }
@@ -322,9 +543,17 @@ table th {
 }
 
 .banner-text {
+  text-align: center;
   font-size: 46px;
   color: #fff;
   font-weight: 600;
+}
+
+.selected-country {
+  font-size: 26px;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
 }
 
 .main-banner::before {
