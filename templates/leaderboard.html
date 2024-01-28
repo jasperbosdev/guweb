@@ -10,7 +10,7 @@
     var mods = "{{ mods }}";
     var sort = "{{ sort }}";
     var domain = "{{ domain() }}";
-</script>
+</script>  
 
 <link rel="stylesheet" href="/static/css/pages/leaderboard.css">
 {% endblock %}
@@ -36,13 +36,18 @@
                 <i class="mode-icon mode-mania"></i><span class="modetext"> osu!mania</span>
             </a>
         </div>
-        <div class="banner-text">Leaderboard</div>
+        <div class="banner-text">
+            <span class="banner-text">Leaderboard<br></span>
+            <span class="selected-country" v-if="country"><% getCountryName(country) %></span>
+        </div>
         <div class="selector">
             <div class="left">
                 <a class="simple-banner-switch" v-bind:class="{ 'active': sort === 'pp' }"
                 @click="LoadLeaderboard('pp', mode, mods, '')">PP</a>
                 <a class="simple-banner-switch" v-bind:class="{ 'active': sort === 'rscore' }"
                 @click="LoadLeaderboard('rscore', mode, mods, '')">Score</a>
+                <a class="simple-banner-switch" v-bind:class="{ 'active': sort === 'playtime' }"
+                @click="LoadLeaderboard('playtime', mode, mods, '')">Playtime</a>
             </div>
             <div class="right">
                 <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'vn' }"
@@ -83,10 +88,24 @@
                     <a class="country-btn" v-bind:class="{ 'active': country === 'NZ' }"
                     @click="LoadLeaderboard(sort, mode, mods, 'NZ')"><img src="/static/images/flags/NZ.png">
                     </a>
-                    <a class="country-btn" v-bind:class="{ 'active': country === 'CC' }"
-                    @click="LoadLeaderboard(sort, mode, mods, 'CC')"><img src="/static/images/flags/CC.png">
-                    </a>
-                    <a class="country-btn"><i class="fa-solid fa-lg fa-ellipsis"></i></a>
+                    <button class="country-btn" @click="toggleCountryMenu">
+                        <i class="fa-solid fa-lg fa-ellipsis"></i>
+                    </button>
+                    <div class="country-modal" v-if="showCountryMenu">
+                        <div class="country-modal-content">
+                            <span class="close-btn" @click="toggleCountryMenu">&times;</span>
+                            <ul class="country-list">
+                                <li :class="{ 'active': !country || country === 'all' }" @click="selectCountry('all')">
+                                    <img src="/static/images/flags/global.png" class="country-flag">
+                                    <span class="country-name">All countries</span>
+                                </li>
+                                <li v-for="country in countries" :key="country.code" @click="selectCountry(country.code)">
+                                    <img :src="country.flag" class="country-flag">
+                                    <span class="country-name"><% country.name %></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div v-if="boards.length != undefined && boards.length != 0">
@@ -102,14 +121,15 @@
                             <th class="t-heading"> Accuracy </th>
                             <th class="t-heading"> Playcount </th>
                             <th class="t-heading"> Max Combo </th>
+                            <th class="t-heading"> Playtime </th>
                         </tr>
                     </thead>
                     <!-- leaderboard layout for #1 player -->
-                    <div class="leaderboard-first-child" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://{{ domain() }}/banners/' + boards[0].player_id + '); background-size: cover; background-position-y: center;'">
+                    <div class="leaderboard-first-child" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://{{ domain() }}/banners/' + boards[0].player_id + '); background-size: cover; background-position-y: center;'"> <!-- stop trying to paste loser lol -->
                         <div v-if="boards.length > 0" class="first-player-container">
-                            <!-- <div class="rank-content">
-                                <div class="first-player-rank">#1</div>
-                            </div> -->
+                            <div class="rank-content">
+                                <div class="first-player-rank">#<% (currentPage - 1) * limit + 1 %></div>
+                            </div>
                             <div class="left-content">
                                 <div class="first-player-name">
                                     <a class="fplayer-name" :href="'/u/' + boards[0].player_id"><% boards[0].name %></a>
@@ -131,33 +151,29 @@
                                 </div>
                             </div>
                             <div class="right-content">
-                                <div class="first-pp-count">
-                                    <% (sort=='pp' ? boards[0].pp+'pp' : "" ) %>
-                                    <% (sort=='rscore' ? scoreFormat(boards[0].rscore) : "" ) %>
-                                    <span class="first-pp">Performance</span>
-                                </div>  
+                                <div class="first-pp-count" :class="{'score-count': sort === 'rscore' || sort === 'playtime'}">
+                                    <% (sort === 'pp' ? boards[0].pp + 'pp' : '' ) %>
+                                    <% (sort === 'rscore' ? scoreFormat(boards[0].rscore) : '' ) %>
+                                    <% (sort === 'playtime' ? formatPlaytime(boards[0].playtime) : '' ) %>
+                                    <span v-if="sort === 'pp'" class="first-pp">Performance</span>
+                                    <span v-else-if="sort === 'rscore'" class="first-pp">Score</span>
+                                    <span v-else-if="sort === 'playtime'" class="first-pp">Playtime</span>
+                                </div>
                                 <div class="first-acc-count">
                                     <% boards[0].acc.toFixed(2) %>%
                                     <span class="first-acc">Accuracy</span>
                                 </div>
                             </div>
+                            <div class="filler-content"></div>
                         </div>
                     </div>
                     <!-- rest of the leaderboard -->
                     <tbody>
                         <template v-for="(user, index) in boards.slice(1)">
-                            <tr class="leaderboard-column">
-                                <td class="column-player-rank">#<% index + 2 %></td>
+                            <tr class="leaderboard-column" :style="{ 'background-color': user.latest_activity >= 1677200400 ? 'hsl(var(--main), 15%, 25%)' : 'hsl(var(--main), 15%, 18%)' }">
+                                <td class="column-player-rank" :style="{ 'background-color': user.latest_activity >= 1677200400 ? 'hsl(var(--main), 10.7%, 24.7%)' : 'hsl(var(--main), 15%, 18%) !important' }">#<% (currentPage - 1) * limit + index + 2 %></td>
                                 <td class="column-player-name text-left">
-                                    <a class="player-avatar" :style="'background-image: url(https://a.{{ domain() }}/' + user.player_id + ')'"></a>
-                                    <a :title="flags[user.country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'" class="player-flag">
-                                        <div class="flag-dropdown">
-                                            <% flags[user.country.toUpperCase()] %>
-                                        </div>
-                                    </a>
-                                    <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
-                                        <% user.name %>
-                                    </a>
+                                    <user-profile :user="user" :mode="mode" :domain="domain"></user-profile>
                                 </td>
                                 <td v-if="sort == 'pp' || sort == 'rscore'">
                                     <% (sort=='pp' ? user.pp+'pp' : "" ) %>
@@ -172,13 +188,21 @@
                                 <td>
                                     <% addCommas(user.max_combo) %>
                                 </td>
+                                <td>
+                                    <% formatPlaytime(user.playtime) %>
+                                </td>
                             </tr>
                         </template>
-                    </tbody>
+                    </tbody>                    
                 </table>
+                <div class="leaderboard-pager">
+                    <a class="pager-btn" @click="prevPage"><i aria-hidden="true" class="fa-solid fa-chevron-left"></i></a>
+                    <span><% currentPage %> / <% totalPages %></span>
+                    <a class="pager-btn" @click="nextPage"><i aria-hidden="true" class="fa-solid fa-chevron-right"></i></a>
+                </div>
             </div>
             <div v-else>
-                <div class="text-center">
+                <div class="text-center" style="margin-top: 15px;">
                     there are no players to display!
                 </div>
             </div>
