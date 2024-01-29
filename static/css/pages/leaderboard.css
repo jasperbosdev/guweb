@@ -712,3 +712,28 @@ table th {
   visibility: visible;
   opacity: 1;
 }
+
+
+
+@media (max-width: 767px) {
+  body {
+    width: 162%;
+  }
+  #app {
+  width: unset;
+  transition: 0.2s ease; /* for responsive animation */
+  }
+  .first-player-name {
+    font-size: 22px;
+  }
+  .fplayer-name {
+    font-size: 22px;
+  }
+  .first-pp-count, .first-acc-count {
+    font-size: 22px;
+  }
+  .right-content {
+    flex-direction: column;
+    gap: 0px;
+  }
+}
