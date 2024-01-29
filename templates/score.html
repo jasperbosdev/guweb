@@ -21,19 +21,15 @@
     var domain = "{{ domain() }}";
 </script>
 
-{% if user_customizations %}
+{% if user_banner %}
 <style>
-    {% if user_customizations['background'] %}
-        body {
-            background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)), url("/backgrounds/{{ user['id'] }}");
-            background-size: cover;
-            background-clip: content-box;
-        }
-    {% endif %}
+    body {
+        background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)), url("{{ user_banner }}");
+        background-size: cover;
+        background-clip: content-box;
+    }
 </style>
 {% endif %}
-
-
 <link rel="stylesheet" href="/static/css/pages/score.css">
 {% endblock %}
 
@@ -97,7 +93,7 @@
     <!-- Main block -->
     <div class="main-block">
         <!-- User Card -->
-        <div class="user-card" style="background-image: {{ user['banner'] }}; background-size: cover; background-postition-y: center;">
+        <div class="user-card" style="background: linear-gradient(rgba(71, 67, 67, 0.1) 0%, rgba(71, 67, 67, 0) 100%) 30% / cover, linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.1) 100%), {{ user['banner'] }}; background-size: cover; background-position-y: center;">
             <div class="user-card-avatar">
                 <img src="https://a.{{ domain() }}/{{ user['id'] }}" class="user-card-avatar-image" onError="this.src='/static/images/avatar_notwork.png';">
             </div>
