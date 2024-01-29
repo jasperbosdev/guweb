@@ -11,6 +11,7 @@ import datetime
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
+from cmyui.osu import Mods
 from functools import wraps
 from PIL import Image
 from pathlib import Path
@@ -704,3 +705,130 @@ async def get_profile_background(user_id: int):
             return await send_file(path)
 
     return b'{"status":404}'
+
+@frontend.route('/score/<score_id>')
+@frontend.route('/score/<score_id>/<mods>')
+async def get_player_score(score_id:int=0, mods:str = "vn"):
+    if score_id == 0:
+        return await flash('error', "This score does not exist!", "home")
+    if mods.lower() not in ["vn", "rx", "ap"]:
+        return await flash('error', "Valid mods are vn, rx and ap!", "home")
+
+    # Check score
+    score = await glob.db.fetch("SELECT * FROM scores WHERE id=%s", score_id)
+    if not score:
+        return await flash('error', "Score not found!", "home")
+
+    # Get user
+    user = await glob.db.fetch("SELECT id, name, country, priv FROM users WHERE id=%s", score['userid'])
+
+    if Privileges.Normal not in Privileges(int(user['priv'])):
+        if not session:
+            return (await render_template('404.html'), 404)
+        elif Privileges.Admin not in Privileges(session['user_data']['priv']):
+            return (await render_template('404.html'), 404)
+
+    #Get Map
+    map_info = await glob.db.fetch("SELECT artist, title, version AS diffname, creator, "
+                                   "diff, mode, set_id, status, id, max_combo FROM maps WHERE md5=%s", score['map_md5'])
+    if not map_info:
+        log(f"Tried fetching scoreid {score_id} in {mods} (Route: /score/): Map with md5 '{score['map_md5']}' does not exist in database,"
+        " that shouldn't happen unless you deleted it manually", Ansi.RED)
+        return await flash('error', 'Could not display score, map does not exist in database', 'home')
+
+    # Determine user customizations
+    if 'customisation' in user:
+        user_customizations = {
+            'background': user['customisation'].get('background', False)
+        }
+    else:
+        user_customizations = {
+            'background': False
+        }
+
+
+    #Change variables and stuff like that
+    try:
+        map_info['diff'] = round(map_info['diff'], 2)
+    except:
+        map_info['diff'] = map_info['diff']
+    score['grade'] = score['grade'].upper()
+    user['country'] = user['country'].upper()
+    score['play_time'] = str(score['play_time'])
+    year = int(score['play_time'].split(" ")[0].split("-")[0])
+    month = int(score['play_time'].split(" ")[0].split("-")[1])
+    day = int(score['play_time'].split(" ")[0].split("-")[2])
+    hour = int(score['play_time'].split(" ")[1].split(":")[0])
+    minute = int(score['play_time'].split(" ")[1].split(":")[1])
+    second = int(score['play_time'].split(" ")[1].split(":")[2])
+    score['play_time'] = f"{year}-{str(month).zfill(2)}-{str(day).zfill(2)} {str(hour).zfill(2)}:{str(minute).zfill(2)}:{str(second).zfill(2)}"
+    user['banner'] = f"url(https://meow.nya/banners/{user['id']});"
+    map_info['banner_link'] = f"url('https://assets.ppy.sh/beatmaps/{map_info['set_id']}/covers/cover.jpg');"
+    score['acc'] = f"{round(float(score['acc']), 2)}%"
+    score['pp'] = round(float(score['pp']), 2)
+    score['max_combo_fix'] = f"{score['max_combo']}x"
+    #Calculation
+    grade_colors= {
+        "F": "#ff5959",
+        "D": "#ff5959",
+        "C": "#ff56da",
+        "B": "#3d97ff",
+        "A": "#2bff35",
+        "S": "#ffcc22",
+        "SH": "#cde7e7",
+        "X": "#ffcc22",
+        "XH": "#cde7e7",
+    }
+    try:
+        grade_shadow = grade_colors[score['grade'].upper()]
+    except:
+        grade_shadow = "#FFFFFF"
+
+    grade_convert = {"XH": "SS", "X": "SS", "SH": "S"}
+    try:
+        score['grade'] = grade_convert[score['grade']]
+    except:
+        score['grade'] = score['grade']
+    #add commas to score
+    score['score'] = "{:,}".format(int(score['score']))
+    #Make badges
+    user_priv = Privileges(user['priv'])
+    group_list = []
+    if Privileges.Normal not in user_priv:
+        group_list.append(["RESTRICTED", "#FFFFFF"])
+    else:
+        if int(user['id']) in [3]:
+            group_list.append(["OWNER", "#e84118"])
+        if Privileges.Dangerous in user_priv:
+            group_list.append(["DEV", "#9b59b6"])
+        elif Privileges.Admin in user_priv:
+            group_list.append(["ADM", "#fbc531"])
+        elif Privileges.Mod in user_priv:
+            group_list.append(["GMT", "#28a40c"])
+        if Privileges.Nominator in user_priv:
+            group_list.append(["BN", "#1e90ff"])
+        #if Privileges.Alumni in user_priv:
+            #group_list.append(["ALU", "#ea8685"])
+        if Privileges.Supporter in user_priv:
+            if Privileges.Premium in user_priv:
+                group_list.append(["❤❤", "#f78fb3"])
+            else:
+                group_list.append(["❤", "#f78fb3"])
+        elif Privileges.Premium in user_priv:
+            group_list.append(["❤❤", "#f78fb3"])
+        if Privileges.Whitelisted in user_priv:
+            group_list.append(["✔️", "#28a40c"])
+
+    #Get status
+    async with glob.http.get(f"https://api.komako.pw/get_player_status?id={user['id']}") as resp:
+        resp = await resp.json()
+        if resp['player_status']['online'] == True:
+            player_status = ["#38c714", "Online"]
+        else:
+            player_status = ["#000000", "Offline"]
+
+    #Mods
+        if score['mods'] != 0:
+            score['mods'] = f"{Mods(int(score['mods']))!r}"
+
+    return await render_template('score.html', user_customizations=user_customizations, score=score, user=user, map_info=map_info, grade_shadow=grade_shadow, group_list=group_list, player_status=player_status, mode_mods=mods)
