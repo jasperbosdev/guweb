@@ -736,17 +736,6 @@ async def get_player_score(score_id:int=0, mods:str = "vn"):
         " that shouldn't happen unless you deleted it manually", Ansi.RED)
         return await flash('error', 'Could not display score, map does not exist in database', 'home')
 
-    # Determine user customizations
-    if 'customisation' in user:
-        user_customizations = {
-            'background': user['customisation'].get('background', False)
-        }
-    else:
-        user_customizations = {
-            'background': False
-        }
-
-
     #Change variables and stuff like that
     try:
         map_info['diff'] = round(map_info['diff'], 2)
@@ -763,6 +752,7 @@ async def get_player_score(score_id:int=0, mods:str = "vn"):
     second = int(score['play_time'].split(" ")[1].split(":")[2])
     score['play_time'] = f"{year}-{str(month).zfill(2)}-{str(day).zfill(2)} {str(hour).zfill(2)}:{str(minute).zfill(2)}:{str(second).zfill(2)}"
     user['banner'] = f"url(https://meow.nya/banners/{user['id']});"
+    user['background'] = f"https://meow.nya/backgrounds/{user['id']}"
     map_info['banner_link'] = f"url('https://assets.ppy.sh/beatmaps/{map_info['set_id']}/covers/cover.jpg');"
     score['acc'] = f"{round(float(score['acc']), 2)}%"
     score['pp'] = round(float(score['pp']), 2)
@@ -831,4 +821,4 @@ async def get_player_score(score_id:int=0, mods:str = "vn"):
         if score['mods'] != 0:
             score['mods'] = f"{Mods(int(score['mods']))!r}"
 
-    return await render_template('score.html', user_customizations=user_customizations, score=score, user=user, map_info=map_info, grade_shadow=grade_shadow, group_list=group_list, player_status=player_status, mode_mods=mods)
+    return await render_template('score.html', user_banner=user['background'], score=score, user=user, map_info=map_info, grade_shadow=grade_shadow, group_list=group_list, player_status=player_status, mode_mods=mods)
