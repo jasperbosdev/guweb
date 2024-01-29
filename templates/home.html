@@ -242,15 +242,9 @@
         <div class="category-title">Recent Activity</div>
         <a href="/activity" class="category-link" style="color: hsl(var(--main), 90%, 55%)"> More <i class="fas fa-arrow-right"></i></a>
           <div class="activity-container">
-              <div class="activity-content">
-                  {% set mode_strings = {
-                      '0': "(osu!std)",
-                      '4': "(osu!rx)",
-                      '8': "(osu!ap)"
-                  } %}
-                
-                  {% for score_logs in recent_activity %}
-                    <span class="activity-text">
+            <div class="activity-content">
+              {% for score_logs in recent_activity %}
+                  <span class="activity-text">
                       {% if score_logs.event == 'new_rank_1' %}
                           {% if not (recent_activity|selectattr('event', 'equalto', 'sniped')
                                       |selectattr('timestamp', 'equalto', score_logs.timestamp)
@@ -275,8 +269,8 @@
                           Error: Unknown event
                       {% endif %}
                   </span>
-                  {% endfor %}
-              </div>
+              {% endfor %}
+            </div>          
           </div>
       </div>
   </div>
