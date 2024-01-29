@@ -5,6 +5,7 @@ __all__ = ()
 import bcrypt
 import hashlib
 import os
+import string
 import time
 import timeago
 import datetime
@@ -822,3 +823,20 @@ async def get_player_score(score_id:int=0, mods:str = "vn"):
             score['mods'] = f"{Mods(int(score['mods']))!r}"
 
     return await render_template('score.html', user_banner=user['background'], score=score, user=user, map_info=map_info, grade_shadow=grade_shadow, group_list=group_list, player_status=player_status, mode_mods=mods)
+
+@frontend.route('/b/<bid>')
+@frontend.route('/beatmaps/<bid>')
+async def beatmappage_id(bid):
+
+    beatmap_data = await glob.db.fetch("SELECT * FROM maps WHERE id = %s",
+        [bid]
+    )
+    
+    if not beatmap_data:
+        return (await render_template('404.html'), 404)
+
+    set_data = await glob.db.fetchall("SELECT * FROM maps WHERE set_id = %s",
+        [beatmap_data["set_id"]]
+    )
+
+    return await render_template('beatmap.html',bid=bid,beatmap_data=beatmap_data, set_data=set_data, timeago=timeago)
