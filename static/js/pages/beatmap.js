@@ -17,6 +17,9 @@ new Vue({
         this.LoadLeaderboard(sort, mode, mods);
     },
     methods: {
+        getCountryName(countryCode) {
+            return this.flags[countryCode.toUpperCase()] || "";
+        },
         LoadData(mode, mods, sort) {
             this.$set(this, 'mode', mode);
             this.$set(this, 'mods', mods);
@@ -29,8 +32,6 @@ new Vue({
             //window.history.replaceState('', document.title, `/leaderboard/${this.mode}/${this.sort}/${this.mods}`);
     
             let owo = window.location.href.split('/')[4];
-            
-            
 
             this.$set(this, 'mode', mode);
             this.$set(this, 'mods', mods);
@@ -55,6 +56,15 @@ new Vue({
             }
             return addCommas(score);
         },
+        scoreFormatFirstPlace(score) {
+            var addCommas = this.addCommas;
+            if (score > 1000 * 1000) {
+                if (score > 1000 * 1000 * 1000)
+                    return `${addCommas((score / 1000000000).toFixed(2))}b`;
+                return `${addCommas((score / 1000000).toFixed(2))}m`;
+            }
+            return addCommas(score);
+        },        
         addCommas(nStr) {
             nStr += '';
             var x = nStr.split('.');
