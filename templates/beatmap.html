@@ -55,7 +55,7 @@
 
 <style>
 .leaderboard-banner {
-    background: linear-gradient(hsl(var(--main), 300%, 15%, 25%), #2A222A), url(https://assets.ppy.sh/beatmaps/{{ beatmap_data["set_id"] }}/covers/cover@2x.jpg);
+    background: linear-gradient(hsl(var(--main), 300%, 15%, 25%), hsl(var(--main), 10%, 15%)), url(https://assets.ppy.sh/beatmaps/{{ beatmap_data["set_id"] }}/covers/cover@2x.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     height: 300px;
@@ -125,31 +125,14 @@
         <div class="map-info download-buttons">
             <a :href="'https://chimu.moe/d/' + {{ beatmap_data['set_id'] }}" class="pagination-prev-page"><i class="fa-solid fa-download"></i></a>
             <a :href="'osu://dl/' + {{ beatmap_data['set_id'] }}" class="pagination-prev-page"><i class="fas fa-star"></i></a>
-            <a :href="'https://osu.{{ domain() }}/beatmaps/' + {{ beatmap_data['id'] }}" class="pagination-prev-page"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a :href="'https://osu.ppy.sh/beatmaps/' + {{ beatmap_data['id'] }}" class="pagination-prev-page"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
             <a onclick="togglePlay()" class="pagination-prev-page"><i class="fa-solid fa-play icon" style="width: 18px !important; height: 6px !important; align-items: center !important; display: inline-flex !important; justify-content: center !important;" id="preview-icon"></i></a>
         </div>
     </div>
     <div class="main-block">
         <div class="leaderboard-main-bg table-responsive">
             <div v-if="boards.length != undefined && boards.length != 0">
-                <table class="leaderboard-table table-responsive"><!--
-                    <div class="first-place">
-                        <div class="user-block">
-                            <div style="display: flex; align-items: center; flex-direction: column;">
-                                <span class="score-rank">
-                                    #1
-                                    </span>
-                                    <span class="map-rank">
-                                        grade
-                                        </span>
-                                </div>
-                                    <a class="player-avatar" :style="'background-image: url(https://i.imgur.com/tDzc2UW.png;'"></a>
-                                <div class="user">
-                                    <a class="username">name</a>
-                                    <div style="font-size: 12px;">
-                                        play time
-                                    </div>
-                        <div class="d-flex flex-column" style="flex: 1 1 0%;">-->
+                <table class="leaderboard-table table-responsive">
                     <thead>
                         <tr>
                             <th class="t-heading"> Rank </th>
@@ -170,11 +153,92 @@
                             <th class="t-heading"> Date </th>
                             <th class="t-heading"> Details   </th>
                         </tr>
-                    </thead><!--
-                    <div style="margin: 40px 0 10px 0;"></div>-->
+                    </thead>
+                    <!-- #1 spot seperate -->
+                    <div class="leaderboard-first-child" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://{{ domain() }}/banners/' + boards[0].userid + '); background-size: cover; background-position-y: center;'"> <!-- stop trying to paste loser lol -->
+                        <div v-if="boards.length > 0" class="first-player-container">
+                            <div class="rank-content">
+                                <div class="first-player-rank">#1</div>
+                                <a class="first-player-grade" :style="'background-image: url(/static/images/ranks/' + boards[0].grade + '_rank.png)'"></a>
+                            </div>
+                            <div class="middle-content">
+                                <div class="first-player-name">
+                                    <a class="first-player-avatar" :href="'/u/' + boards[0].userid" 
+                                        :style="'background-image: url(https://a.{{ domain() }}/' + boards[0].userid + ')'">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="left-content">
+                                <div class="first-player-name">
+                                    <a class="fplayer-name" :href="'/u/' + boards[0].userid"><% boards[0].player_name %></a>
+                                </div>
+                                <div class="first-player-ago">
+                                    <span><% timeFirstReplace(boards[0].play_time) %> ago</span>
+                                </div>
+                                <div class="first-player-country">
+                                    <a :title="flags[boards[0].country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + boards[0].country.toUpperCase() + '.png)'" class="player-flag">
+                                        <div class="flag-dropdown">
+                                            <% getCountryName(boards[0].country.toUpperCase()) %>
+                                        </div>
+                                    </a>
+                                    <span class="first-country-name"><% getCountryName(boards[0].country.toUpperCase()) %></span>
+                                </div>
+                            </div>
+                            <div class="right-content">
+                                <div class="first-top-row">
+                                    <div class="first-acc-count">
+                                        <% scoreFormatFirstPlace(boards[0].score) %>
+                                        <span class="first-pp">Total Score</span>
+                                    </div>
+                                    <div class="first-acc-count">
+                                        <% Number(boards[0].acc).toFixed(2) %>%
+                                        <span class="first-pp">Accuracy</span>
+                                    </div>
+                                    <div class="first-acc-count score-mods">
+                                        <% boards[0].max_combo %>x
+                                        <span class="first-pp">Max Combo</span>
+                                    </div>
+                                </div>
+                                <div class="first-bottom-row"> 
+                                    <div class="first-bottom-txt">
+                                        <% boards[0].n300 %><br>
+                                        <span class="first-pp">300</span>
+                                    </div>
+                                    <div class="first-bottom-txt">
+                                        <% boards[0].n100 %><br>
+                                        <span class="first-pp">100</span>
+                                    </div>
+                                    <div class="first-bottom-txt">
+                                        <% boards[0].n50 %><br>
+                                        <span class="first-pp">50</span>
+                                    </div>
+                                    <div class="first-bottom-txt">
+                                        <% boards[0].nmiss %><br>
+                                        <span class="first-pp">Miss</span>
+                                    </div>
+                                    <div class="first-bottom-txt">
+                                        <% Math.round(boards[0].pp) %>pp<br>
+                                        <span class="first-pp">PP</span>
+                                    </div>
+                                    <div class="first-bottom-txt">
+                                        <% (Mods2str(boards[0].mods).mod_text).replace(" ", "") + " " %><br>
+                                        <span class="first-pp">Mods</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filler-content">
+                                <a v-bind:href="'https://{{ domain() }}/score/' + boards[0].id"><i class="fa fa-xl fa-eye"></i></a>
+                                {% if session.authenticated %}
+                                <a v-bind:href="'https://api.{{ domain() }}/v1/get_replay?id=' + boards[0].id"><i class="fa fa-xl fa-download"></i></a>
+                                {% else %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- rest of the leaderboard -->
                     <tbody>
-                        <tr v-for="(user, index) in boards" class="leaderboard-column">
-                            <td class="column-player-rank">#<% index + 1 %>
+                        <tr v-for="(user, index) in boards.slice(1)" class="leaderboard-column">
+                            <td class="column-player-rank">#<% index + 2 %>
                             </td>
                             <td class="column-player-name text-left">
                                 <a class="player-avatar" :style="'background-image: url(https://a.komako.pw/'+user.userid"></a>
@@ -298,44 +362,32 @@
         {mod_text: "NF", mod_bit: 1}
     ]
     function Mods2str(mod) {
-        let mod_text = '';
-        let mod_num = 0;
-
+        let mod_text = ' '
+        let mod_num = 0
         if (!isNaN(mod)) {
-            mod_num = mod;
-            let bit = mod.toString(2);
-            let fullbit = "0000000000000000000000000000000".substr(bit.length) + bit;
-
+            mod_num = mod
+            let bit = mod.toString(2)
+            let fullbit = "0000000000000000000000000000000".substr(bit.length) + bit
             for (let i = 30; i >= 0; i--) {
                 if (fullbit[i] == 1)  {
-                    mod_text += numbermods[i].mod_text;
+                    mod_text += numbermods[i].mod_text
                 }
             }
-        } else if (typeof mod === 'string') { // Check if mod is a string
-            console.log('Value of mod before toUpperCase():', mod); // Log the value of mod
-            mod = mod.toUpperCase();
+        } else {
+     
+            mod = mod.toUpperCase()
             if (mod !== 'NM') {
                 for (let i = 0; i < mod.length / 2; i++) {
-                    let find_mod = numbermods.find(m => m.mod_text == mod.substr(i*2, 2));
-                    if (find_mod) {
-                        mod_text += find_mod.mod_text;
-                        mod_num |= find_mod.mod_bit;
-                    }
+                    let find_mod = numbermods.find(m => m.mod_text == mod.substr(i*2, 2))
+                    mod_text += find_mod.mod_text
+                    mod_num |= find_mod.mod_bit
                 }
             }
         }
-
-        if (mod_text.includes('NC') && mod_text.includes('DT')) {
-            mod_text = mod_text.replace('DT', '');
-        }
-        if (mod_text.includes('PF') && mod_text.includes('SD')) {
-            mod_text = mod_text.replace('SD', '');
-        }
-        if (mod_num === 0) {
-            mod_text = 'NM';
-        }
-
-        return { mod_text: "+" + mod_text.toUpperCase(), mod_num: mod_num };
+        if (mod_text.includes('NC') && mod_text.includes('DT')) mod_text = mod_text.replace('DT', '');
+        if (mod_text.includes('PF') && mod_text.includes('SD')) mod_text = mod_text.replace('SD', '');
+        if (mod_num == 0) mod_text = 'NM';
+        return {mod_text: "+"+mod_text, mod_num: mod_num}
     }
     
 </script>
@@ -365,6 +417,40 @@
         }
     }
     return text
+}
+
+function timeFirstReplace(time){
+    let dateago = new Date(time);
+    dateago.setHours(dateago.getHours());
+    dateago = dateago.getTime();
+    let datenow = Date.now();
+    let datenew = new Date(datenow - dateago);
+    
+    let years = datenew.getUTCFullYear() - 1970;
+    let time_table = [
+        { value: years, suffix: years === 1 ? ' year' : ' years' },
+        { value: datenew.getUTCMonth(), suffix: ' months' },
+        { value: datenew.getUTCDate() - 1, suffix: ' days' },
+        { value: datenew.getUTCHours(), suffix: ' hours' },
+        { value: datenew.getUTCMinutes(), suffix: ' min' },
+        { value: datenew.getUTCSeconds(), suffix: ' sec' }
+    ];
+    
+    let text = '';
+    let count = 0;
+    
+    for (let i = 0; i < time_table.length; i++) {
+        if (count < 1) {
+            if (time_table[i].value > 0) {
+                text += `${time_table[i].value}${time_table[i].suffix} `;
+                count++;
+            } 
+        } else {
+            break;
+        }
+    }
+    
+    return text.trim();
 }
 </script>
 
