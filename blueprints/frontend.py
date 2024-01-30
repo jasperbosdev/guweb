@@ -8,7 +8,6 @@ import os
 import string
 import time
 import timeago
-import datetime
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
