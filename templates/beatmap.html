@@ -58,21 +58,20 @@
     background: linear-gradient(hsl(var(--main), 300%, 15%, 25%), hsl(var(--main), 10%, 15%)), url(https://assets.ppy.sh/beatmaps/{{ beatmap_data["set_id"] }}/covers/cover@2x.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    height: 300px;
+    height: 340px;
     border-radius: 0;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
 }
 </style>
 {% endblock %}
 
 {% block content %}
 <div id="app" :class="(load ? 'load' : '')">
-    <div class="leaderboard-banner main-banner">
-        <div class="main-selector selectmode">
-            <div class="top-right">
-                <div class="select-right">
-                    <a class="mode-select" v-bind:class="{ 'active': mode === 'std' }"
+    <div class="main-selector selectmode">
+        <div class="mode-select-left">
+            <i class="selector-icon fa-solid fa-xl fa-music" style="line-height: normal;"></i><span class="selector-title">Beatmap Info</span>
+        </div>
+        <div class="mode-select-middle">
+            <a class="mode-select" v-bind:class="{ 'active': mode === 'std' }"
             @click="LoadLeaderboard(sort, 'std', mods)">
                 <i class="mode-icon mode-osu"></i><span class="modetext"> osu!</span>
             </a>
@@ -88,29 +87,133 @@
             @click="LoadLeaderboard(sort, 'mania', mods)">
                 <i class="mode-icon mode-mania"></i><span class="modetext"> osu!mania</span>
             </a>
+        </div>
+        <div class="mode-select-right">
+            <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'vn' }"
+            @click="LoadLeaderboard(sort, mode, 'vn')">Vanilla</a>
+            <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'rx', 'disabled': mode === 'mania' }"
+            @click="LoadLeaderboard(sort, mode, 'rx')">Relax</a>
+            <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'ap', 'disabled': mode === 'taiko' || mode === 'catch' || mode === 'mania'  }"
+            @click="LoadLeaderboard(sort, mode, 'ap')">Autopilot</a>
+        </div>
+    </div>    
+    <div class="leaderboard-banner main-banner">
+        <div class="beatmap-main">
+            <div class="beatmap-infos-block">
+                <div class="beatmap-rank-diff">
+                    <div class="diffs-block">
+                        {% for diff in set_data %}
+                            {% set diff_class = '' %}
+                            {% if diff.diff <= 2.0 %}
+                                {% set diff_class = 'one-star' %}
+                            {% elif diff.diff >= 2.0 and diff.diff <= 3.0 %}
+                                {% set diff_class = 'two-star' %}
+                            {% elif diff.diff >= 3.0 and diff.diff <= 4.0 %}
+                                {% set diff_class = 'three-star' %}
+                            {% elif diff.diff >= 4.0 and diff.diff <= 5.0 %}
+                                {% set diff_class = 'four-star' %}
+                            {% elif diff.diff >= 5.0 and diff.diff <= 6.0 %}
+                                {% set diff_class = 'five-star' %}
+                            {% elif diff.diff >= 6.0 and diff.diff <= 7.0 %}
+                                {% set diff_class = 'six-star' %}
+                            {% elif diff.diff >= 7.0 and diff.diff <= 8.0 %}
+                                {% set diff_class = 'seven-star' %}
+                            {% elif diff.diff >= 8.0 and diff.diff <= 9.0 %}
+                                {% set diff_class = 'eight-star' %}
+                            {% elif diff.diff >= 9.0 %}
+                                {% set diff_class = 'nine-star' %}
+                            {% endif %}
+                            {% set active_class = '' %}
+                            {% if diff.id == beatmap_data["id"] %}
+                                {% set active_class = 'active' %}
+                            {% endif %}
+
+                            <a href="/b/{{ diff.id }}" class="diff-select {{ active_class }}" title="{{ diff.version }}">
+                                <i class="mode-icon mode-osu {{ diff_class }}" style="font-size: 19px; margin-right: 0.5px;"></i>
+                            </a>
+                        {% endfor %}                               
+                    </div>
+                    <div class="diffs-name dspl-col">
+                        <h1>{{ beatmap_data["version"] }} by {{ beatmap_data["creator"] }}</h1>
+                        <h1>{{ '%.2f' | format(beatmap_data.diff) }} stars</h1>
+                    </div>
+                    <div class="beatmap-status">
+                        <div class="map-rank">
+                            {% if beatmap_data['status'] == 0 %}
+                            <i class="fas fa-question" style="color: #ffffff; font-size: 0.7em; margin-right: 5px;"></i>
+                            <span class="status-text">Graveyard</span>
+                            {% elif beatmap_data['status'] == 2 %}
+                            <i class="fa-solid fa-angles-up" style="color: #0080ff; font-size: 0.7em; margin-right: 5px;"></i>
+                            <span class="status-text">Ranked</span>
+                            {% elif beatmap_data['status'] == 3 %}
+                            <i class="fas fa-check" style="color: #00cc00; font-size: 0.7em; margin-right: 5px;"></i>
+                            <span class="status-text">Approved</span>
+                            {% elif beatmap_data['status'] == 5 %}
+                            <i class="fas fa-heart" style="color: #ff69b4; font-size: 0.7em; margin-right: 5px;"></i>
+                            <span class="status-text">Loved</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="beatmap-titlename">
+                    <div class="beatmap-song-name">
+                        <h1 class="map-title">{{ beatmap_data["title"] }}</h1>
+                    </div>
+                    <div class="beatmap-song-author">
+                        <h1 class="map-author">{{ beatmap_data["artist"] }}</h1>
+                    </div>
+                </div>
+                <div class="mapper-links">
+                    <div class="links">
+                        <a onclick="togglePlay()" class="beatmap-btn pagination-prev-page"><i class="fa-solid fa-play icon" style="width: 18px !important; height: 6px !important; align-items: center !important; display: inline-flex !important; justify-content: center !important;" id="preview-icon"></i>&nbsp;Preview</a>    
+                        <a :href="'https://chimu.moe/d/' + {{ beatmap_data['set_id'] }}" class="beatmap-btn pagination-prev-page"><i class="fa-solid fa-download"></i>&nbsp;Download</a>
+                        <a :href="'osu://dl/' + {{ beatmap_data['set_id'] }}" class="beatmap-btn pagination-prev-page"><i class="fas fa-star"></i>&nbsp;Direct</a>
+                        <a :href="'https://osu.ppy.sh/beatmaps/' + {{ beatmap_data['id'] }}" class="beatmap-btn pagination-prev-page"><i class="fa-solid fa-arrow-up-right-from-square"></i>&nbsp;Bancho</a>     
+                    </div>
+                </div>
+            </div>
+            <div class="main-stats">
+                <div class="map-info">
+                    <div class="title-stats">
+                        <div class="stat-other"><b class="other-name">Time</b>
+                            {% set total_length_seconds = beatmap_data["total_length"] %}
+                            {% set minutes = total_length_seconds // 60 %}
+                            {% set seconds = total_length_seconds % 60 %}
+                            {{ "%02d:%02d" | format(minutes, seconds) }}
+                        </div>
+                        <div class="stat-other"><b class="other-name">BPM</b>
+                            {{ "%0.0f" | format(beatmap_data["bpm"]) }}
+                        </div>                        
+                        <div class="stat-other"><b class="other-name">Max Combo</b>
+                            {{ beatmap_data["max_combo"] }}
+                        </div>
+                    </div>
+                    <div class="map-stats">
+                        <div class="stat-single">
+                            <div class="map-stat">Circle Size</div>
+                            <progress value="{{ beatmap_data['cs'] }}" max="10" class="progress"></progress>
+                            <h1 class="stat">{{ beatmap_data['cs'] }}</h1>
+                        </div>
+                        <div class="stat-single">
+                            <div class="map-stat">HP Drain</div>
+                            <progress value="{{ beatmap_data['hp'] }}" max="10" class="progress"></progress>
+                            <h1 class="stat">{{ beatmap_data['hp'] }}</h1>
+                        </div>
+                        <div class="stat-single">
+                            <div class="map-stat">Accuracy</div>
+                            <progress value="{{ beatmap_data['od'] }}" max="10" class="progress"></progress>
+                            <h1 class="stat">{{ beatmap_data['od'] }}</h1>
+                        </div>
+                        <div class="stat-single">
+                            <div class="map-stat">AR rate</div>
+                            <progress value="{{ beatmap_data['ar'] }}" max="10" class="progress"></progress>
+                            <h1 class="stat">{{ beatmap_data['ar'] }}</h1>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-        <div class="map-info">
-            <div style="margin: 5px 0 10px 0;"></div>
-            <div class="map-name">
-                <span style="font-size: 24px; font-weight: 700;">{{ beatmap_data["title"] }}
-                    <i v-if="{{ beatmap_data['status'] }} === 0" class="fas fa-question" style="color: #ffffff; font-size: 0.9em; margin-right: 20px;"></i>
-                    <i v-if="{{ beatmap_data['status'] }} === 2" class="fa-solid fa-angles-up" style="color: #0080ff; font-size: 0.9em; margin-right: 20px;"></i>
-                    <i v-if="{{ beatmap_data['status'] }} === 3" class="fas fa-check" style="color: #00cc00; font-size: 0.9em; margin-right: 20px;"></i>
-                    <i v-if="{{ beatmap_data['status'] }} === 5" class="fas fa-heart" style="color: #ff69b4; font-size: 0.9em; margin-right: 20px;"></i></span>
-                <span style="font-size: 16px;">{{ beatmap_data["artist"] }}</span>
-                <span style="font-size: 12px;">[{{ beatmap_data["version"] }}], mapped by {{ beatmap_data["creator"] }}</span>
-                <div style="margin: 5px 0 10px 0;"></div>
-                <!--{% for map in set_data %}
-                <a class="mode-select" v-bind:class=""
-                @click="LoadLeaderboard(sort, 'std', mods, {{ map.id }})">
-                    <i class="mode-icon mode-osu"></i><span class="diff-name">{{ map.version}}</span>
-                </a>
-                {% endfor %}-->
-            </div>
-        </div>
-        <div class="main-selector selectmode">
+        <div class="main-selector selectmode" style="display: none;">
             <div class="top-right">
                 <div class="select-right">
                 <a class="simple-banner-switch" v-bind:class=" { 'active': mods === 'vn' }"
@@ -122,12 +225,6 @@
             </div>
         </div>
     </div>
-        <div class="map-info download-buttons">
-            <a :href="'https://chimu.moe/d/' + {{ beatmap_data['set_id'] }}" class="pagination-prev-page"><i class="fa-solid fa-download"></i></a>
-            <a :href="'osu://dl/' + {{ beatmap_data['set_id'] }}" class="pagination-prev-page"><i class="fas fa-star"></i></a>
-            <a :href="'https://osu.ppy.sh/beatmaps/' + {{ beatmap_data['id'] }}" class="pagination-prev-page"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-            <a onclick="togglePlay()" class="pagination-prev-page"><i class="fa-solid fa-play icon" style="width: 18px !important; height: 6px !important; align-items: center !important; display: inline-flex !important; justify-content: center !important;" id="preview-icon"></i></a>
-        </div>
     </div>
     <div class="main-block">
         <div class="leaderboard-main-bg table-responsive">
@@ -241,7 +338,7 @@
                             <td class="column-player-rank">#<% index + 2 %>
                             </td>
                             <td class="column-player-name text-left">
-                                <a class="player-avatar" :style="'background-image: url(https://a.komako.pw/'+user.userid"></a>
+                                <a class="player-avatar" :style="'background-image: url(https://a.{{ domain() }}/'+user.userid"></a>
                                 <a :title="flags[user.country.toUpperCase()]"
                                 :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'"
                                 class="player-flag">
