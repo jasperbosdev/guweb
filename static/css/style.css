@@ -319,7 +319,7 @@ a.foot-link {
 
 .mode-icon {
   font-family: osu-mode;
-  color: #fff !important;
+  color: #fff;
   font-size: 14px;
   width: 19px;
   height: 19px;
