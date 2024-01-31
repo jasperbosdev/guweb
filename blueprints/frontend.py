@@ -834,8 +834,19 @@ async def beatmappage_id(bid):
     if not beatmap_data:
         return (await render_template('404.html'), 404)
 
-    set_data = await glob.db.fetchall("SELECT * FROM maps WHERE set_id = %s",
+    set_data = await glob.db.fetchall("SELECT * FROM maps WHERE set_id = %s ORDER BY diff ASC",
         [beatmap_data["set_id"]]
     )
 
-    return await render_template('beatmap.html',bid=bid,beatmap_data=beatmap_data, set_data=set_data, timeago=timeago)
+    all_diffs = await glob.db.fetchall(
+        'SELECT id, set_id, version diff '
+        'FROM maps '
+        'WHERE set_id = %s '
+        'ORDER BY diff ASC',
+        [beatmap_data["set_id"]]
+    )
+
+    print(set_data)
+    print(all_diffs)
+
+    return await render_template('beatmap.html',bid=bid,beatmap_data=beatmap_data, set_data=set_data, timeago=timeago, all_diffs=all_diffs)
