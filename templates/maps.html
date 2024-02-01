@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %} Beatmaps {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/maps.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="app" :class="(load ? 'load' : '')" style="width: 1210px;">
+    <div class="beatmap-banner main-banner">     
+        <div class="banner-text">Beatmaps Listing</div>
+    </div>
+    <div class="main-block">
+        <div class="beatmap-main-bg table-responsive">
+            <div class="search-bar beatmap-search">
+                {% if session.authenticated %}
+                <input id="beatmap-search-txt" type="text" placeholder="search for beatmaps...">
+                {% else %}
+                <input id="beatmap-search-txt" type="text" placeholder="search for beatmaps..." disabled>
+                {% endif %}
+                <button onclick="searchBeatmaps()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <script src="/static/js/pages/maps.js"></script>
+            </div>
+            <div id="beatmap-search-results" class="beatmap-search-results">
+                <script>
+                    $('#beatmap-search-results').hide();
+                </script>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="home-bg-tops main-block"> 
+    <div class="" style="text-align: flex-start;"> 
+        <!-- <div style="color: #36FFAB;" class="category-title">
+            <i class="fa-solid fa-lg fa-music" style="margin-right: 8px; font-size: 25px !important"></i><span style="color: #fff; font-size: 21px !important;">Maps ranked by us</span>
+        </div>  -->
+    </div> 
+    <div class="beatmaps-categories">
+        <div class="main-selector1 selectmode1">
+            <div class="top-right1"></div>
+        </div>
+    </div>
+    <div class="block-header newmaps-color" style="text-align: center;"> </div>
+    <div class="beatmaps-row" style="min-width: 1140px;">
+        {% if custom_ranked %}
+            {% for maps in custom_ranked %}
+        <a href="/b/{{ maps.id }}" class="beatmap-block" style="background: url('https://assets.ppy.sh/beatmaps/{{ maps.set_id }}/covers/card.jpg');">
+            <div class="map-header">
+                <div class="beatmap-status">
+                    {% if maps.status in [0, 2, 3, 5] %}
+                        {% if maps.status == 0 %}
+                        <i class="fas fa-xl fa-question" style="color: #ffffff; margin-right: 0.5em; line-height: unset !important;"></i>
+                        {% elif maps.status == 2 %}
+                        <i class="fa-solid fa-xl fa-angles-up" style="color: #0080ff; margin-right: 0.5em; line-height: unset !important;"></i>
+                        {% elif maps.status == 3 %}
+                        <i class="fas fa-xl fa-check" style="color: #00cc00; margin-right: 0.5em; line-height: unset !important;"></i>
+                        {% elif maps.status == 5 %}
+                        <i class="fas fa-xl fa-heart" style="color: #ff69b4; margin-right: 0.5em; line-height: unset !important;"></i>
+                        {% endif %}
+                    {% else %}
+                    some ting wong
+                    {% endif %}
+                </div>
+                <div class="map-stats">
+                    {{ maps.plays }} <i class="fa-solid fa-xl fa-play-circle" style="line-height: unset !important; margin-left: 5px;" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="map-content">
+                <div class="title-artist">
+                    <span class="map-name">
+                        {{ maps.title }}
+                    </span>
+                    <span class="artist-name">
+                        {{ maps.artist }}
+                    </span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    {% endif %}
+    </div>
+
+<script src="/static/js/asserts/vue-flags.js"></script>
+{% endblock %}

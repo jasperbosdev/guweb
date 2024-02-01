@@ -850,3 +850,17 @@ async def beatmappage_id(bid):
     print(all_diffs)
 
     return await render_template('beatmap.html',bid=bid,beatmap_data=beatmap_data, set_data=set_data, timeago=timeago, all_diffs=all_diffs)
+
+@frontend.route('/maps')
+async def maps():
+
+    custom_ranked = await glob.db.fetchall(
+        'SELECT id, set_id, status, artist, title, creator, frozen, plays '
+        'FROM maps '
+        'WHERE frozen = 1 and status = 2 '
+        'GROUP BY id, set_id, status, artist, title, creator, frozen, plays '
+        'ORDER BY RAND() '
+        'LIMIT 48'
+    )
+
+    return await render_template('maps.html', custom_ranked=custom_ranked)
