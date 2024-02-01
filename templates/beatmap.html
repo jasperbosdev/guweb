@@ -131,7 +131,7 @@
                             <a href="/b/{{ diff.id }}" class="diff-select {{ active_class }}" title="{{ diff.version }}">
                                 <i class="mode-icon mode-osu {{ diff_class }}" style="font-size: 19px; margin-right: 0.5px;"></i>
                             </a>
-                        {% endfor %}                               
+                        {% endfor %}
                     </div>
                     <div class="diffs-name dspl-col">
                         <h1>{{ beatmap_data["version"] }} by {{ beatmap_data["creator"] }}</h1>
@@ -233,22 +233,22 @@
                     <thead>
                         <tr>
                             <th class="t-heading"> Rank </th>
-                            <th class="t-heading t-heading--main">  </th>
+                            <th class="t-heading"> Grade </th>
+                            <th class="t-heading"> Score </th>
+                            <th class="t-heading"> Accuracy </th>
+                            <th class="t-heading t-heading--main"></th>
                             <th v-if="sort == 'pp' || sort == 'rscore'" class="t-heading table--selected">
                                 <% (sort=='pp' ? "PP" : "" ) %>
                                     <% (sort=='rscore' ? "Score" : "" ) %>
                             </th>
-                            <th class="t-heading"> Score </th>
-                            <th class="t-heading"> Accuracy </th>
                             <th class="t-heading"> Combo </th>
                             <th class="t-heading"> 100 </th>
                             <th class="t-heading"> 50 </th>
                             <th class="t-heading"> Miss </th>
-                            <th class="t-heading"> Mods </th>
                             <th class="t-heading"> PP   </th>
-                            <th class="t-heading"> Grade </th>
                             <th class="t-heading"> Date </th>
-                            <th class="t-heading"> Details   </th>
+                            <th class="t-heading"> Mods </th>
+                            <th class="t-heading"> Details </th>
                         </tr>
                     </thead>
                     <!-- #1 spot seperate -->
@@ -292,8 +292,7 @@
                                         <span class="first-pp">Accuracy</span>
                                     </div>
                                     <div class="first-acc-count score-mods">
-                                        <% boards[0].max_combo %>x
-                                        <span class="first-pp">Max Combo</span>
+                                        <span><% boards[0].max_combo %>x
                                     </div>
                                 </div>
                                 <div class="first-bottom-row"> 
@@ -333,9 +332,18 @@
                         </div>
                     </div>
                     <!-- rest of the leaderboard -->
-                    <tbody>
+                    <tbody v-if="boards.length > 1">
                         <tr v-for="(user, index) in boards.slice(1)" class="leaderboard-column">
                             <td class="column-player-rank">#<% index + 2 %>
+                            </td>
+                            <td class="t-column t-column--dimmed">
+                                <a class="player-grade" :style="'background-image: url(/static/images/ranks/' + user.grade + '_rank.png)'"></a>
+                            </td>
+                            <td class="t-column t-column--dimmed">
+                                <% addCommas(user.score) %>
+                            </td>
+                            <td class="t-column t-column--dimmed">
+                                <% Number(user.acc).toFixed(2) %>%
                             </td>
                             <td class="column-player-name text-left">
                                 <a class="player-avatar" :style="'background-image: url(https://a.{{ domain() }}/'+user.userid"></a>
@@ -356,12 +364,6 @@
                             <td v-if="sort == 'pp' || sort == 'rscore'" class="t-column t-column--dimmed">
                                 <% (sort=='pp' ? user.pp+'pp' : "" ) %>
                                     <% (sort=='rscore' ? scoreFormat(user.score) : "" ) %>
-                            </td>
-                            <td class="t-column t-column--dimmed">
-                                <% addCommas(user.score) %>
-                            </td>
-                            <td class="t-column t-column--dimmed">
-                                <% Number(user.acc).toFixed(2) %>%
                             </td>
                             <!--
                             {% if beatmap_data['max_combo'] %}
@@ -388,24 +390,26 @@
                                 <% user.nmiss %>
                             </td>
                             <td class="t-column t-column--dimmed">
-                                <% (Mods2str(user.mods).mod_text).replace(" ", "") + " " %>
-                            </td>
-                            <td class="t-column t-column--dimmed">
                                 <% Math.round(user.pp) %>
                             </td>
                             <td class="t-column t-column--dimmed">
-                                <a class="player-grade" :style="'background-image: url(/static/images/ranks/' + user.grade + '_rank.png)'"></a>
-                              </td>
-                              <td class="t-column t-column--dimmed">
                                 <% timeReplace(user.play_time) %>
                             </td>
-                              <td class="t-column t-column--dimmed">
+                            <td class="t-column t-column--dimmed">
+                                <% (Mods2str(user.mods).mod_text).replace(" ", "") + " " %>
+                            </td>
+                            <td class="t-column t-column--dimmed">
                                 <a v-bind:href="'https://{{ domain() }}/score/' + user.id"><i class="fa fa-eye"></i></a>
                                 {% if session.authenticated %}
                                 <a v-bind:href="'https://api.{{ domain() }}/v1/get_replay?id=' + user.id"><i class="fa fa-download" style="margin-left: 7px;"></i></a>
                                 {% else %}
                                 {% endif %}
-                              </td>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr>
+                            <td colspan="12" class="text-center">No other scores to display</td>
                         </tr>
                     </tbody>
                 </table>

@@ -972,6 +972,7 @@ table th {
   justify-content: center;
   align-items: center;
   text-align: center;
+  z-index: 3;
 }
 
 .middle-content {
@@ -1243,7 +1244,7 @@ img.mapper-avatar {
 
 .diffs-name {
   width: auto;
-  height: 50px;
+  height: auto;
   background: hsla(0, 14%, 25%, 0.75);
   border-radius: 8px;
   margin-left: 10px;
@@ -1407,4 +1408,27 @@ img.mapper-avatar {
 
 .nine-star {
   color: rgb(0, 0, 0) !important;
+}
+
+@media (max-width: 767px) {
+  body {
+    width: 162%;
+  }
+  #app {
+  width: unset;
+  transition: 0.2s ease; /* for responsive animation */
+  }
+  .first-player-name {
+    font-size: 22px;
+  }
+  .fplayer-name {
+    font-size: 22px;
+  }
+  .first-pp-count, .first-acc-count {
+    font-size: 22px;
+  }
+  .right-content {
+    flex-direction: column;
+    gap: 0px;
+  }
 }
