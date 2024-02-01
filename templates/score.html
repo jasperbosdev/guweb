@@ -67,7 +67,7 @@
             Played by <strong>{{ user['name'] }}</strong>
             Submitted on <strong>{{ score['play_time'] }}</strong>
             <!--Played With <a data-title="{{ score['mods'] }}"><img src="/static/images/mod-icons/{{ score['mods'] }}_mods.png" style="height: 22px;"></a>-->
-            {% if score['mods'] != '0' %}
+            {% if score['mods'] == 0 %}
             Played with <strong>NM</strong>
             {% else %}
             Played with <strong>{{ score['mods'] }}</strong>
