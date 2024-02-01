@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %} Documentation {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">Documentation</div>
+                    <h2 style="font-size: 23px;">Select your topic!</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block">
+                    <div class="col-lg-12">
+                        <a href="/documentation/appeal" class="docs-list">
+                            <div class="docs-number">
+                                <h1 class="title">1</h1>
+                            </div>
+                            <div class="docs-title">
+                                <h3 class="title">
+                                    Appeal
+                                </h3>
+                            </div>
+                            <div class="docs-icon">
+                                <i class="fa-solid fa-caret-down" style="font-size: 2.5rem; color: #fff;"></i>
+                            </div>
+                        </a>
+                        <a href="/documentation/rules" class="docs-list">
+                            <div class="docs-number">
+                                <h1 class="title">2</h1>
+                            </div>
+                            <div class="docs-title">
+                                <h3 class="title">
+                                    Rules
+                                </h3>
+                            </div>
+                            <div class="docs-icon">
+                                <i class="fa-solid fa-caret-down" style="font-size: 2.5rem; color: #fff;"></i>
+                            </div>
+                        </a>
+                        <a href="/documentation/privacy" class="docs-list">
+                            <div class="docs-number">
+                                <h1 class="title">3</h1>
+                            </div>
+                            <div class="docs-title">
+                                <h3 class="title">
+                                    Privacy Policy
+                                </h3>
+                            </div>
+                            <div class="docs-icon">
+                                <i class="fa-solid fa-caret-down" style="font-size: 2.5rem; color: #fff;"></i>
+                            </div>
+                        </a>
+                        <a href="/documentation/faq" class="docs-list">
+                            <div class="docs-number">
+                                <h1 class="title">4</h1>
+                            </div>
+                            <div class="docs-title">
+                                <h3 class="title">
+                                    FAQ
+                                </h3>
+                            </div>
+                            <div class="docs-icon">
+                                <i class="fa-solid fa-caret-down" style="font-size: 2.5rem; color: #fff;"></i>
+                            </div>
+                        </a>
+                        <a href="/documentation/connect" class="docs-list">
+                            <div class="docs-number">
+                                <h1 class="title">5</h1>
+                            </div>
+                            <div class="docs-title">
+                                <h3 class="title">
+                                    Connect
+                                </h3>
+                            </div>
+                            <div class="docs-icon">
+                                <i class="fa-solid fa-caret-down" style="font-size: 2.5rem; color: #fff;"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

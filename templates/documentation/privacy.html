@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %} Documentation {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">Documentation</div>
+                    <h2 style="font-size: 23px;">Privacy Policy</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block" style="justify-content: flex-start;">
+                    <div class="col-lg-12 text-block" style="color: #fff;">
+                        <h3>Komako Privacy Policy</h3>
+                        <div class="h-1 w-24 bg-hsl-60 rounded-full mt-1"></div>
+                        <br>
+                        Last updated: 01.04.2023
+                        <br><br>
+                        <h1 style="font-size: 20px;">1. Introduction</h1>
+                        <div class="h-1 w-24 bg-hsl-60 rounded-full mt-1"></div><br>
+                        <p>
+                            At <strong>komako.pw</strong>, we take the privacy of our users seriously.
+                            This Privacy Policy outlines the types of personal information we collect when you use our private osu! server,
+                            how we use that information, and your options for controlling your personal information.
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            <strong>komako.pw</strong> is a private osu! server. We're not affiliated with <strong>ppy Pty Ltd</strong> in any
+                            way. osu! is trademark of <strong>ppy Pty Ltd</strong>.
+                        </p>
+                        <h1 style="font-size: 20px;">2. Information we collect</h1>
+                        <div class="h-1 w-24 bg-hsl-60 rounded-full mt-1"></div><br>
+                        <p>
+                            When you use our private osu! server, we may collect the following types of personal information:
+                        </p>
+                        <ul>
+                            <li class="li-spacing">Your IP address</li>
+                            <li class="li-spacing">Your ISO Country code</li>
+                            <li class="li-spacing">Hash of your devices</li>
+                            <li class="li-spacing">Hash of your osu! path and uninstaller file</li>
+                            <li class="li-spacing">Your osu! client version</li>
+                            <li class="li-spacing">Your Discord ID</li>
+                        </ul>
+                        <p>
+                            We collect this information for the following purposes:
+                        </p>
+                        <ul style="margin-bottom: 15px;">
+                            <li class="li-spacing">To provide you with access to our private osu! server and Discord community</li>
+                            <li class="li-spacing">To check for compliance with our rules</li>
+                        </ul>
+                        <h1 style="font-size: 20px;">3. Data security</h1>
+                        <div class="h-1 w-24 bg-hsl-60 rounded-full mt-1" style="margin-bottom: 15px;"></div>
+                        <p>
+                            We take the security of your personal information seriously and have implemented measures to protect your
+                            information from unauthorized access, use, or disclosure.
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            Your passwords are encrypted with bcrypt for security purposes.
+                        </p>
+                        <h1 style="font-size: 20px;">4. Updates to this Privacy Policy</h1>
+                        <div class="h-1 w-24 bg-hsl-60 rounded-full mt-1"></div><br>
+                        <p style="margin-bottom: 15px;">
+                            We may update this Privacy Policy from time to time. Any changes will be posted on this page, and we encourage you
+                            to review this Privacy Policy periodically.<br>
+                        </p>
+                        <h1 style="font-size: 20px;">5. Contact us</h1>
+                        <div class="h-1 w-24 bg-hsl-60 rounded-full mt-1"></div><br>
+                        <p>
+                            If you have any questions about this Privacy Policy or our privacy practices, please contact our administrators.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

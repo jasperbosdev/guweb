@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %} Documentation {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">Documentation</div>
+                    <h2 style="font-size: 23px;">Appeal</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block" style="justify-content: flex-start;">
+                    <div class="col-lg-12 text-block">
+                        <h3>I got restricted, what do I do?</h3>
+                        <ul class="docs-text">
+                            <li>Well, thats pretty cringe..<br>
+                            If you wish to appeal or recieve more information on your restriction please join our <a href="/discord">discord</a> and create a support ticket.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

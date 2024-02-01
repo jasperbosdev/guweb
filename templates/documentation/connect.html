@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %} Documentation {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">Documentation</div>
+                    <h2 style="font-size: 23px;">Connect</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block" style="justify-content: flex-start;">
+                    <div class="col-lg-12 text-block" style="color: #fff;">
+                        <p>How do I connect to the server?<p>
+                        <p class="highlighted-txt">Shortcut instructions:</p>
+                        <ol type="1" class="docs-text">
+                            <li>Create a new Shortcut from the <code>osu!.exe</code> game file or create a copy of your existing osu! shortcut.
+                            </li>
+                            <li>Right-click the <strong>Shortcut</strong> and go on <strong>Properties</strong>.</li>
+                            <li>Add <code> -devserver komako.pw</code> to the <strong>Target</strong>, right after your directory.</li>
+                            <li>Your changes will look like - <code> C:\Users\User\AppData\Local\osu!\osu!.exe -devserver komako.pw</code>
+                            </li>
+                            <li>Click on <strong>Apply</strong>.</li>
+                            <li><strong>Enjoy!</strong></li>
+                        </ol>
+                        <p class="highlighted-txt padding-bot-12">Troubleshooting:</p>
+                        <p>If you have any issues, feel free to contact us through our <a href="/discord">discord</a>!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

@@ -864,3 +864,27 @@ async def maps():
     )
 
     return await render_template('maps.html', custom_ranked=custom_ranked)
+
+@frontend.route('/documentation')
+async def documentation():
+    return await render_template('documentation/documentation.html')
+
+@frontend.route('/documentation/appeal')
+async def documentation_appeal():
+    return await render_template('documentation/appeal.html')
+
+@frontend.route('/documentation/rules')
+async def documentation_rules():
+    return await render_template('documentation/rules.html')
+
+@frontend.route('/documentation/privacy')
+async def documentation_privacy():
+    return await render_template('documentation/privacy.html')
+
+@frontend.route('/documentation/faq')
+async def documentation_faq():
+    return await render_template('documentation/faq.html')
+
+@frontend.route('/documentation/connect')
+async def documentation_connect():
+    return await render_template('documentation/connect.html')

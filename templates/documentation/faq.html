@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %} Documentation {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">Documentation</div>
+                    <h2 style="font-size: 23px;">FAQ</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block" style="justify-content: flex-start;">
+                    <div class="col-lg-12 text-block">
+                        <span style="color: #fff;">
+                            Q: I didn’t receive the verification email, I cannot verify my account!<br>
+                            A: There is no verification process.<br>
+                            In order to activate the account, you simply have to log in
+                            through the game. You can read all the required steps on our <a href="/documentation/connect">connection guide.</a>
+                            <br>
+                            <br>
+                            Q: I get “Bancho authentication failed” (wrong password) when I try to log in, but my password is
+                            correct!<br>
+                            A: First, make sure you’re connected to komako.pw and that your password is
+                            correct.<br>
+                            If so, type your password slowly. (make also sure that
+                            caps lock is disabled).<br>
+                            <br>
+                            Q: I can’t download maps from osu!direct.<br>
+                            A: Direct doesn't work on the main menu but it should be fine if you download
+                            a map that was sent to you in-game.<br>
+                            <br>
+                            Q: I uploaded my avatar but it won't show.<br>
+                            A: Make sure it succesfully changed then hit CTRL+F5 to refresh the page and its cache.<br>
+                            <br>
+                            Q: How do I play on the normal osu! again?<br>
+                            A: Close osu!, and run default osu.exe or default shortcut.<br>
+                            <br>
+                            Q: Why are osu!direct and other <a href="/support">supporter</a> perks free?<br>
+                            A: We think that osu! direct is very cool and it’s a shame people have to pay for it<br>
+                            or to have profile banners and profile backgrounds, that’s why we’re offering it for free. If you like what we do,
+                            please consider a <a href="/purchase">donation.</a><br>
+                            <br>
+                            Q: My problem is not listed here.<br>
+                            A: Join our discord and ask your question in the channels of the server.<br>
+                            <br>
+                            Q: How to get a check mark for a legitimate player? (Verified Legit Player)<br>
+                            A: We issue this checkbox in cases when a good player enters the server<br>
+                            Staff can request a live play, in order to make sure of a player's legitamicy.<br>
+                            requirements to apply: 7.5k+ pp 450+ pp score on a non-farm map, or 500-550 on farm map.<br><br>
+                            Join the <a href="/discord">discord</a> for further information.<br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}
