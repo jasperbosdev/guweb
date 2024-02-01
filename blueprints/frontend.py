@@ -888,3 +888,7 @@ async def documentation_faq():
 @frontend.route('/documentation/connect')
 async def documentation_connect():
     return await render_template('documentation/connect.html')
+
+@frontend.route('/team')
+async def team():
+    return await render_template('team.html')

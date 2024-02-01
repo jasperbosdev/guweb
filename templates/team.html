@@ -1,0 +1,388 @@
+{% extends 'base.html' %}
+{% block title %} Team {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+<link rel="stylesheet" href="/static/css/pages/team.css">
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">Team</div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block">
+                    <div class="team-contain">
+                        <h3 style="text-align: center;">This is a list with amazing people that keep Komako up and
+                            running</h3>
+                        <div class="ui center aligned segment">
+                            <h1 class="text-l center-text">Owners</h1>
+                            <p class="center-text">
+                                The backbones of the server. The owners function as both the main community managers, as
+                                well as primary Developers. They work on everything from managing the team to making
+                                this page look nicer.
+                            </p>
+                            <div class="Team--container">
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/3" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="/u/3">Lionz</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">Owner</p>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                        <a href="https://{{ domain() }}" title="Website">
+                                            <i class="fa-solid fa-at"></i>
+                                        </a>&nbsp;
+                                        <a href="https://github.com/lionzv2" title="Github">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>&nbsp;
+                                        <a href="https://twitter.com/poisenlion" title="Twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui center aligned segment">
+                            <h1 class="ui heading">Community Managers</h1>
+                            <p>
+                                Communitymanagers keep busy with bans, mutes, name changes and about anything that has
+                                to do with the community.<br>
+                                They take care of our Discord-server and have a red name in the in-game chat.
+                            </p><br><a class="ui center aligned segment">none</a>
+                            <div class="Team--container">
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <div class="Team--left-info">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui center aligned segment">
+                            <h1 class="ui heading">Developers</h1>
+                            <p>
+                                Developers add new features to the server, fix bugs and keep the server up and
+                                running.<br>
+                            </p>
+                            <div class="Team--container">
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/3" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="/u/3">Lionz</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">Owner</p>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                        <a href="https://{{ domain() }}" title="Website">
+                                            <i class="fa-solid fa-at"></i>
+                                        </a>&nbsp;
+                                        <a href="https://github.com/lionzv2" title="Github">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>&nbsp;
+                                        <a href="https://twitter.com/poisenlion" title="Twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui center aligned segment">
+                            <h1 class="ui heading">Replay Moderators</h1>
+                            <p>
+                                Hunters who catch and ban cheaters. We are proud of them.<br>
+                            </p>
+                            <div class="Team--container">
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/3" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="/u/3">Lionz</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">Owner</p>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                        <a href="https://{{ domain() }}" title="Website">
+                                            <i class="fa-solid fa-at"></i>
+                                        </a>&nbsp;
+                                        <a href="https://github.com/lionzv2" title="Github">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>&nbsp;
+                                        <a href="https://twitter.com/poisenlion" title="Twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui center aligned segment">
+                            <h1 class="ui heading">Chat Moderators</h1>
+                            <p>
+                                Chatmoderators manage the chat to make sure the rules are being followed.
+                            </p>
+                            <div class="Team--container">
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/3" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="/u/3">Lionz</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">Owner</p>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                        <a href="https://{{ domain() }}" title="Website">
+                                            <i class="fa-solid fa-at"></i>
+                                        </a>&nbsp;
+                                        <a href="https://github.com/lionzv2" title="Github">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>&nbsp;
+                                        <a href="https://twitter.com/poisenlion" title="Twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui center aligned segment">
+                            <h1 class="ui heading">BATs</h1>
+                            <p>
+                                BAT&#39;s play beatmaps and decide if they are good enough to be ranked or not.
+                            </p>
+                            <div class="Team--container">
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/3" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="/u/3">Lionz</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">Owner</p>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                        <a href="https://{{ domain() }}" title="Website">
+                                            <i class="fa-solid fa-at"></i>
+                                        </a>&nbsp;
+                                        <a href="https://github.com/lionzv2" title="Github">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>&nbsp;
+                                        <a href="https://twitter.com/poisenlion" title="Twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/5" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/US.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="color: #28A40C" href="/u/5">Shizu</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">epic gamer</p>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                        <a href="https://twitch.tv/shizuwu_-" title="Twitch">
+                                            <i class="fa-brands fa-twitch"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ui segment Team--element">
+                                    <div class="Team--left">
+                                        <img src="https://a.{{ domain() }}/34" alt="Avatar">
+                                        <div class="Team--left-info">
+                                            <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                    class="ui kr-flag" alt="img flag"></img>
+                                                <p>&nbsp;&nbsp;<a style="color: #40afb5" href="/u/34">Stogdy2</a></p>
+                                            </div>
+                                            <p class="subtitle text-m">Vloeiende beweger</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui segments">
+                            <div class="ui center aligned segment">
+                                <h1 class="ui heading">Special thanks</h1>
+                                <p>Here&#39;s a list of cool people who helped with the server</p>
+                                <div class="Team--container">
+                                    <div class="ui segment Team--element">
+                                        <div class="Team--left">
+                                            <img src="https://a.{{ domain() }}/3" alt="Avatar">
+                                            <div class="Team--left-info">
+                                                <div><img src="https://{{ domain() }}/static/images/flags/NL.png"
+                                                        class="ui kr-flag" alt="img flag"></img>
+                                                    <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="/u/3">Lionz</a></p>
+                                                </div>
+                                                <p class="subtitle text-m">Owner</p>
+                                            </div>
+                                        </div>
+                                        <div class="Team--right">
+                                            <a href="https://{{ domain() }}" title="Website">
+                                                <i class="fa-solid fa-at"></i>
+                                            </a>&nbsp;
+                                            <a href="https://github.com/lionzv2" title="Github">
+                                                <i class="fa-brands fa-github"></i>
+                                            </a>&nbsp;
+                                            <a href="https://twitter.com/poisenlion" title="Twitter">
+                                                <i class="fa-brands fa-twitter"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ui segment Team--element">
+                                        <div class="Team--left">
+                                            <img src="https://a.{{ domain() }}/28" alt="Avatar">
+                                            <div class="Team--left-info">
+                                                <div><img src="https://{{ domain() }}/static/images/flags/AR.png"
+                                                        class="ui kr-flag" alt="img flag"></img>
+                                                    <p>&nbsp;&nbsp;<a style="color: " href="/u/28">Mix</a></p>
+                                                </div>
+                                                <p class="subtitle text-m">Contributor</p>
+                                            </div>
+                                        </div>
+                                        <div class="Team--right">
+                                            <a href="https://github.com/MixDevCode" title="Github">
+                                                <i class="fa-brands fa-github"></i>
+                                            </a>&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="ui segment Team--element">
+                                        <div class="Team--left">
+                                            <img src="https://{{ domain() }}/static/images/jupi.png" alt="Avatar">
+                                            <div class="Team--left-info">
+                                                <div><img src="https://{{ domain() }}/static/images/flags/AU.png"
+                                                        class="ui kr-flag" alt="img flag"></img>
+                                                    <p>&nbsp;&nbsp;<a style="color: ;" href="#">Jupiter</a></p>
+                                                </div>
+                                                <p class="subtitle text-m">Contributor</p>
+                                            </div>
+                                        </div>
+                                        <div class="Team--right">
+                                            <a href="#" title="Website">
+                                                <i class="fa-solid fa-link"></i>
+                                            </a>&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="ui segment Team--element">
+                                        <div class="Team--left">
+                                            <img src="https://a.{{ domain() }}/59" alt="Avatar">
+                                            <div class="Team--left-info">
+                                                <div><img src="https://{{ domain() }}/static/images/flags/LT.png"
+                                                        class="ui kr-flag" alt="img flag"></img>
+                                                    <p>&nbsp;&nbsp;<a style="text-shadow: #d44f4f 0px 0px 8px; color: hsl(var(--main), 90%, 55%); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);" href="https://{{ domain() }}/u/59">Wait What</a></p>
+                                                </div>
+                                                <p class="subtitle text-m">Contributor</p>
+                                            </div>
+                                        </div>
+                                        <div class="Team--right">
+                                            <a href="https://waitwhat.sh" title="Website">
+                                                <i class="fa-solid fa-link"></i>
+                                            </a>&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="ui segment Team--element">
+                                        <div class="Team--left">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg"
+                                                alt="Avatar">
+                                            <div class="Team--left-info">
+                                                <div><img src="https://{{ domain() }}/static/images/flags/US.png"
+                                                        class="ui kr-flag" alt="img flag"></img>
+                                                    <p>&nbsp;&nbsp;<a style="color: " href="#">ChatGPT</a></p>
+                                                </div>
+                                                <p class="subtitle text-m">Contributor</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Team--right">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segments">
+                            <div class="ui center aligned segment">
+                                <h1 class="ui heading">Alumni</h1>
+                                <p>Here&#39;s a list of cool people who helped in the past</p>
+                                <div class="Team--container">
+                                    <div class="ui segment Team--element">
+                                        <div class="Team--left">
+                                            <img src="https://a.{{ domain() }}/39" alt="Avatar">
+                                            <div class="Team--left-info">
+                                                <div>
+                                                    <img src="https://{{ domain() }}/static/images/flags/CZ.png"
+                                                        class="ui kr-flag" alt="img flag"></img>
+                                                    <p>&nbsp;&nbsp;<a style="color: #d9ff00"
+                                                            href="/u/39">SkillDancer</a></p>
+                                                </div>
+                                                <p class="subtitle text-m">Tech enjoyer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</section>
+
+{% endblock %}
