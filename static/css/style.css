@@ -1172,6 +1172,12 @@ body::-webkit-scrollbar-thumb {
 
 /* navbar responsive */
 
+@media (max-width: 1339px) {
+  .navbar-dropdown-profile {
+    margin-left: -85px !important;
+  }
+}
+
 @media (max-width: 1023px) {
   .navbar-menu {
     background: transparent !important;
@@ -1184,6 +1190,9 @@ body::-webkit-scrollbar-thumb {
   .navtem {
     margin-top: 5px;
     margin-bottom: 5px;
+  }
+  .navbar-dropdown-profile {
+    margin-left: unset !important;
   }
 }
 
@@ -1201,5 +1210,8 @@ body::-webkit-scrollbar-thumb {
   .footer-info-rows {
     display: flex;
     justify-content: center;
+  }
+  .navbar-dropdown-profile {
+    margin-left: unset !important;
   }
 }
