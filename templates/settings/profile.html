@@ -45,24 +45,116 @@
             </div>
           </div>
         </div>
-        <!-- Disabled - Username AKA doesn't exist in gulag? (for now?)
         <div class="single-block-content">
           <div class="block-content--left">
             <div class="field-label is-normal">
-              <label class="label">name aka</label>
+              <label class="label">Platforms</label>
+            </div>
+          </div>
+          <div class="block-content--right">
+            2 buttons here
+          </div>
+        </div><div class="single-block-content">
+          <div class="block-content--left">
+            <div class="field-label is-normal">
+              <label class="label">Occupation</label>
             </div>
           </div>
           <div class="block-content--right">
             <div class="field-body">
               <div class="field">
                 <p class="control">
-                  <input class="input" type="aka" value="">
+                  <input class="input" type="text" placeholder="Eg. School" name="occupation_content" pattern="(?=.*[a-z]).{1,16}" value="{{ session.user_data['occupation_content'] }}">
                 </p>
               </div>
             </div>
           </div>
         </div>
-        -->
+        <div class="single-block-content">
+          <div class="block-content--left">
+            <div class="field-label is-normal">
+              <label class="label">Location</label>
+            </div>
+          </div>
+          <div class="block-content--right">
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" placeholder="Eg. Amsterdam" type="text" name="location_content" pattern="(?=.*[a-z]).{1,16}" value="{{ session.user_data['location_content'] }}">
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="single-block-content">
+          <div class="block-content--left">
+            <div class="field-label is-normal">
+              <label class="label">Default Mode (wip)</label>
+            </div>
+          </div>
+          <div class="block-content--right">
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <select class="input rounded-lg h-10 pl-5 focus:bg-hsl-20 focus:outline-none pr-10 bg-hsl-15 hover:bg-hsl-20 appearance-none transition duration-300" onchange="changePreferred_Mode(this.value)">
+                   <option value="0">Std</option>
+                   <option value="1">Taiko</option>
+                   <option value="2">Catch</option>
+                   <option value="3">Mania</option>
+                   <option value="4">Std +Relax</option>
+                   <option value="5">Taiko +Relax</option>
+                   <option value="6">Catch +Relax</option>
+                   <option value="8">Std +AutoPilot</option>
+                  </select>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if session.user_data['is_donator'] %}
+        <div class="single-block-content">
+          <div class="block-content--left">
+            <div class="field-label is-normal">
+              <label class="label">Private Profile (wip)</label>
+            </div>
+          </div>
+          <div class="block-content--right">
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="kankeraap" type="checkbox" name="priv_true">
+                  <label>Yes</label>
+                  <input class="kankeraap" type="checkbox" name="priv_false">
+                  <label>No</label>
+                </p>                
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <div class="single-block-content">
+          <div class="block-content--left">
+            <div class="field-label is-normal">
+              <label class="label">Playstyle</label>
+            </div>
+          </div>
+          <div class="block-content--right">
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="kankeraap" type="checkbox" name="ps_tablet">
+                  <label>Tablet</label>
+                  <input class="kankeraap" type="checkbox" name="ps_mouse">
+                  <label>Mouse</label><br>
+                  <input class="kankeraap" type="checkbox" name="ps_keyboard">
+                  <label>Keyboard</label>
+                  <input class="kankeraap" type="checkbox" name="ps_touch">
+                  <label>Touchscreen</label>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <button class='button is-primary' type='submit'><span>Save</span><span class='icon is-small'><i class='fas fa-check'></i></span></button>
       </form>
     </div>
