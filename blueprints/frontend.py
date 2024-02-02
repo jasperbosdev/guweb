@@ -8,6 +8,9 @@ import os
 import string
 import time
 import timeago
+import asyncio
+import json
+import requests
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
@@ -907,3 +910,67 @@ async def support_purchase():
         return await flash('error', 'You are now allowed back here...', 'login')
 
     return await render_template('purchase.html')
+
+@frontend.route('/friends')
+@login_required
+async def friends_page():
+    user_id = session['user_data']['id']
+
+    friends = await glob.db.fetchall(
+        'SELECT user2 FROM relationships '
+        'WHERE user1 = %s AND type = "friend"',
+        [user_id]
+    )
+
+    async def get_friend_info(friend_id):
+        if friend_id == 1:  # bot
+            bot_info = await glob.db.fetch(
+                'SELECT name, country FROM users '
+                'WHERE id = 1'
+            )
+            return {
+                'id': bot_info['id'],
+                'name': bot_info['name'],
+                'country': bot_info['country'],
+                'priv': bot_info['priv'],
+                'status': True,
+                'customisation': utils.has_profile_customizations(friend_id),
+                'mutual': False
+            }
+
+        friend_status = requests.get(f'http://bancho/v1/get_player_status?id={friend_id}', headers={'Host':'api.meow.nya'})
+        friend_status = json.loads(friend_status.content)
+        status = friend_status['player_status']['online']
+        if 'player_status' in friend_status and 'last_seen' in friend_status['player_status']:
+            last_seen = "just now!" if status is None else timeago.format(friend_status['player_status']['last_seen'], time.time())
+        else:
+            last_seen = "just now!"  # or assign a default value if needed
+
+        friend_data = requests.get(f'http://bancho/v1/get_player_info?id={friend_id}&scope=info', headers={'Host':'api.meow.nya'})
+        friend_data = json.loads(friend_data.content)
+        name = friend_data['player']['info']['name']
+        country = friend_data['player']['info']['country']
+        priv = friend_data['player']['info']['priv']
+        id = friend_data['player']['info']['id']
+
+        mutual_relationship = await glob.db.fetchall(
+            'SELECT user2 FROM relationships '
+            'WHERE user1 = %s AND user2 = %s AND type = "friend"',
+            [friend_id, user_id]
+        )
+        
+        return {
+            'id': id,
+            'name': name,
+            'country': country,
+            'priv': priv,
+            'status': status,
+            'last_seen': last_seen,
+            'customisation': utils.has_profile_customizations(friend_id),
+            'mutual': mutual_relationship
+        }
+
+    friends_info = await asyncio.gather(*[get_friend_info(friend['user2']) for friend in friends])
+    friends = [dict(friend, **info) for friend, info in zip(friends, friends_info)]
+
+    return await render_template('friends.html', friends=friends, timeago=timeago)

@@ -1,0 +1,287 @@
+/* build upon documentation.css (you need both to style this page properly) */
+
+.main-banner {
+    height: 132px !important;
+}
+
+.doc-banner {
+    min-height: unset !important;
+    width: 1200px !important;
+}
+
+.main-block {
+    margin: auto;
+    width: 1150px !important;
+    padding: 54px;
+}
+
+.friends-tab {
+    display: flex;
+    justify-content: space-between;
+    background-color: hsl(var(--main), 10.7%, 24.7%);
+    border-radius: 8px;
+    padding: 12px 24px;
+    margin-bottom: 24px;
+}
+
+.friends-status-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.friends-all-bar, .friends-onl-bar, .friends-off-bar {
+    border-radius: 400px;
+    display: block;
+    height: 5px;
+    margin-bottom: 6px;
+    width: 90px;
+    will-change: transform;
+}
+
+.friends-all-bar,
+.friends-onl-bar,
+.friends-off-bar {
+    opacity: 0.5; /* Fading effect */
+    transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.friends-lnk {
+    color: #fff;
+}
+
+.friends-all-text,
+.friends-onl-text,
+.friends-off-text {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.friends-all-nmbr,
+.friends-onl-nmbr,
+.friends-off-nmbr {
+    font-size: 15px;
+}
+
+.friends-sort-section {
+    display: flex;
+    align-items: center;
+    gap: 12.5px;
+}
+
+.friends-recent-btn,
+.friends-rank-btn,
+.friends-name-btn {
+    background-color: hsl(var(--main), 1.4%, 15.5%);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.friends-recent-btn:active span,
+.friends-rank-btn:active span,
+.friends-name-btn:active span {
+    font-weight: 500; /* Apply font weight for active button */
+}
+
+.posts-row,
+.beatmaps-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+}
+
+.beatmap-block {
+    display: flex;
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: 700;
+    line-height: 1.3;
+    align-items: center;
+    overflow: hidden;
+    height: 93px;
+    transition: all 0.2s ease-in-out;
+}
+
+.beatmap-block:hover {
+    transform: translateY(-5px);
+}
+
+
+.beatmap-preview {
+    width: 100px;
+    height: auto;
+    border-radius: 6px;
+    background-position: center;
+    background-size: cover;
+    margin-right: 10px;
+}
+
+.beatmap-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: #fff;
+}
+
+.beatmap-title, .beatmap-artist, .beatmap-mapper, .donor-info .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    align-items: center;
+    display: flex;
+    gap: 5px;
+}
+
+.profile-flag {
+    width: 25px;
+}
+
+#user-img {
+    vertical-align: middle;
+}
+
+.beatmap-artist {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.beatmap-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.avatar-container {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-picture {
+    width: auto;
+    border-radius: 8px;
+}
+
+.mutual {
+    border: 3px solid #fc035e;
+}
+
+#manage-friend-container {
+    display: flex;
+    align-items: flex-end;
+}
+
+#manage-friend {
+    display: flex;
+    align-items: flex-end;
+    background-color: hsl(var(--main), 10.7%, 10.7%);
+    padding: 8px;
+    border-radius: 100%;
+}
+
+@media (max-width: 1339px) {
+    .container {
+        width: unset !important;
+    }
+    .doc-banner {
+        width: 900px !important;
+    }
+    .main-block {
+        width: 850px !important;
+    }
+    .docs-list {
+        padding: 25px auto !important;
+        margin: 25px auto !important;
+        width: 250px !important;
+    }
+    .beatmaps-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 20px;
+        row-gap: 20px;
+    }
+    .beatmap-block {
+        display: flex;
+        flex-direction: row;
+        height: fit-content;
+    }
+    .beatmap-stats {
+        margin-top: unset;
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 1023px) {
+    .container {
+        width: unset !important;
+    }
+    .doc-banner {
+        width: 650px !important;
+    }
+    .main-block {
+        width: 600px !important;
+    }
+    .docs-list {
+        padding: 25px auto !important;
+        margin: 25px auto !important;
+        width: 250px !important;
+    }
+    .beatmaps-row {
+        display: flex;
+        flex-direction: column;
+    }
+    .beatmap-block {
+        display: flex;
+        flex-direction: row;
+        height: fit-content;
+    }
+    .beatmap-stats {
+        margin-top: unset;
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .container {
+        width: unset !important;
+    }
+    .doc-banner {
+        width: 350px !important;
+    }
+    .main-block {
+        width: 300px !important;
+    }
+    .docs-list {
+        padding: 25px auto !important;
+        margin: 25px auto !important;
+        width: 250px !important;
+    }
+    .beatmaps-row {
+        display: flex;
+        flex-direction: column;
+    }
+    .beatmap-block {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+    }
+    .beatmap-stats {
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }
+}
