@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %} Support {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+<link rel="stylesheet" href="/static/css/pages/support.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="container is-fullhd my-con">
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="main-selector"></div>
+            <div class="main-banner doc-banner">
+                <div class="banner-text">Supporter</div>
+                <h2 style="font-size: 23px;">Information</h2>
+            </div>
+        </div>
+    </div>
+    <div class="main-block">
+        <div class="support-con">
+            <div class="support-head support-us">
+                <div>
+                    <h1>Support us!</h1>
+                    <p>How about becoming Komako supporter today?<br>You will recieve any future perks automatically</p>
+                    <a href="/support/purchase" class="buy-button">Purchase</a>
+                </div>
+                <img src="https://i.imgur.com/yZuXzQp.png" alt="">
+            </div>
+            <div class="support-head clans">
+                <div>
+                    <h1>Delete scores</h1>
+                    <p>Delete that one score you wish you didn't submit.<br>You can get rid off that ugly choke or C
+                        rank upon request!<br>
+                        This feature is limited to 1 score per 24 hours.<br><br>More information per supporter perk is
+                        available here.</p>
+                    <a href="/discord" class="buy-button">Discord</a>
+                </div>
+                <img src="https://media.tenor.com/PRmlKU8AQcYAAAAC/delete-trash.gif" class="support-us"
+                    style="max-width: 700px;max-height: 250px;margin-right: 100px;border-radius: 20px;">
+            </div>
+            <h1 class="features-headline">Features you get:</h1>
+            <div class="features">
+                <div class="features-row">
+                    <div class="feature">
+                        <span>1.</span>
+                        <h3>Resetting statistics</h3>
+                        <p>You will have the opportunity to ask the administration to clear all the statistics for you,
+                            which
+                            will allow you to start the game over</p>
+                    </div>
+                    <div class="feature">
+                        <span>2.</span>
+                        <h3>Golden nickname in chat</h3>
+                        <p>Stand out in chat with a golden nickname and show that you are not like everyone else</p>
+                    </div>
+                    <div class="feature">
+                        <span>3.</span>
+                        <h3>Change of nickname and flag</h3>
+                        <p>You will be able to change your nickname and flag in your profile settings. A shift is
+                            available once
+                            a month and the number of shifts depends on the purchased months of the support</p>
+                    </div>
+                    <div class="feature">
+                        <span>4.</span>
+                        <h3>Profile Badge</h3>
+                        <p>Going into the profile, the players will see that you love and support us</p>
+                    </div>
+                </div>
+            </div>
+            <div class="supp-why">
+                <h3>Why?</h3>
+                <p>Even though we offer to play for free, we still have to pay for server upkeep. If we always paid out
+                    of pocket, firstly, we
+                    would go broke, and secondly, we would not have the opportunity to improve the server hardware to
+                    match the
+                    load. As the number of users increases, more advanced servers become necessary. That is why we ask
+                    you
+                    to help us in return for some awesome perks! :3.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

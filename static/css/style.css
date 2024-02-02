@@ -394,6 +394,28 @@ a.foot-link {
   margin-right: 0.5em;
 }
 
+.header-button {
+  margin-right: 4px;
+  display: flex;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-radius: 30px;
+  color: rgba(255, 255, 255, 0.9);
+  justify-content: center;
+  align-items: baseline;
+  font-size: 14px;
+  transition: 0.2s all;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin-top: 7px;
+  padding: 8px;
+  border-radius: 1000px;
+  height: fit-content;
+  color: white;
+  font-size: 18px;
+  transition: .2s ease;
+  background: hsl(var(--main), 1.4%, 15.5%) !important;
+}
+
 .navbar-logo {
   font-size: 22px;
   font-weight: 500;

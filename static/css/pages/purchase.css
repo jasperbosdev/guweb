@@ -1,0 +1,685 @@
+/* also build upon documentation.css (you need both for it to be styled properly) */
+
+.doc-banner {
+    width: unset !important;
+}
+
+.main-block {
+    width: unset !important;
+    background-color: transparent !important;
+}
+
+.title-block {
+    height: auto;
+    width: auto;
+    padding: 38px 22px 10px 22px;
+    background-color: hsl(var(--main), 30%, 50%);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.support-con {
+    height: auto;
+    width: 1344px;
+    padding: 0 25px;
+}
+
+.supp-input {
+    background: transparent !important;
+    color: white !important;
+    text-align: center;
+    outline: 0;
+    outline-offset: 0;
+}
+
+.range-wrap {
+    position: relative;
+    margin: 0 auto 3rem;
+    padding: 32px 0 0 0;
+}
+
+.range {
+    width: 100%;
+}
+
+/* Slider */
+
+input[type=range]::-webkit-slider-runnable-track {
+    background: hsl(var(--main), 50%, 50%);
+    border-radius: 100px;
+    transition: .2s ease;
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: hsl(var(--main), 40%, 40%);
+}
+
+input[type=range]::-moz-range-track {
+    background: hsl(var(--main), 50%, 50%);
+    border-radius: 100px;
+    transition: .2s ease;
+}
+
+input[type=range]::-ms-track {
+    background: hsl(var(--main), 50%, 50%);
+    border-radius: 100px;
+    transition: .2s ease;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: hsl(var(--main), 50%, 50%);
+    border-radius: 100px;
+    transition: .2s ease;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: hsl(var(--main), 50%, 50%);
+    border-radius: 100px;
+    transition: .2s ease;
+}
+
+/* Slider Button */
+
+input[type=range]::-webkit-slider-thumb {
+    background: hsl(var(--main), 60%, 60%) !important;
+}
+
+input[type=range]::-moz-range-thumb {}
+
+input[type=range]::-ms-thumb {}
+
+.bubble {
+    background: hsl(var(--main), 40%, 50%);
+    margin-top: -52px;
+    color: white;
+    padding: 4px 12px;
+    position: absolute;
+    border-radius: 4px;
+    left: 50%;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+}
+
+.bubble::after {
+    content: "";
+    position: absolute;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid hsl(var(--main), 40%, 50%);
+    width: 0px;
+    height: 0px;
+    bottom: -4px;
+    left: calc(50% - 4px);
+}
+
+@media (max-width: 768px) {
+    .support-con {
+        width: 100%;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .my-con {
+        width: 98% !important;
+    }
+
+    .selector {
+        width: auto !important;
+    }
+
+    .selector a {
+        margin: 10px 4px;
+    }
+
+    .mode-icon {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .support-con {
+        max-width: 720px !important;
+    }
+}
+
+@media (max-width: 1344px) {
+    .support-con {
+        max-width: 922px;
+    }
+}
+
+.support-head {
+    display: flex;
+    background-color: hsl(var(--main), 10%, 15%);
+    color: white;
+}
+
+.support-us {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    position: relative;
+    background-color: hsl(var(--main), 10%, 15%);
+}
+
+.support-us img {
+    position: absolute;
+    right: 128px;
+    bottom: 8px;
+}
+
+.support-us h1 {
+    font-size: 48px;
+}
+
+.supp-why {
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px;
+    background-color: hsl(var(--main), 30%, 30%);
+    border-radius: 4px;
+}
+
+.supp-why h3 {
+    font-size: 24px;
+}
+
+.supp-why p {
+    text-align: center;
+}
+
+.support-head>div {
+    padding: 48px 64px;
+    display: flex;
+    flex-direction: column;
+}
+
+.buy-button {
+    width: fit-content;
+    padding: 6px 42px;
+    display: flex;
+    background-color: hsl(var(--main), 45%, 45%);
+    border-radius: 4px;
+    margin-top: 32px;
+    font-size: 16px;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+    color: white !important;
+    text-decoration: none;
+}
+
+.buy-button:hover {
+    background-color: hsl(var(--main), 50%, 50%);
+}
+
+.support-head img {
+    height: 500px;
+}
+
+.clans {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.clans > img {
+    height: 350px;
+}
+
+.clans h1 {
+    font-size: 36px;
+}
+
+.features-headline {
+    font-size: 36px;
+    text-align: center;
+    margin-top: 24px;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 16px;
+    padding: 0 16px;
+}
+
+.features-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.features-row .feature:not(:first-child) {
+    margin-left: 16px;
+}
+
+.feature {
+    width: 24%;
+    height: 259px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px 24px 24px;
+    color: white;
+    background-color: hsl(var(--main), 45%, 45%);
+    border-radius: 4px;
+    transition: .2s ease;
+}
+
+.feature:hover {
+    filter: brightness(0.5);
+    color: transparent;
+}
+
+.feature:hover {
+    user-select: none;
+}
+
+.feature span {
+    font-size: 24px;
+    margin-bottom: 16px;
+    display: block;
+    padding: 8px 16px;
+    background: white;
+    color: black;
+    width: fit-content;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    user-select: none;
+}
+
+.feature h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.feature p {
+    font-size: 14px;
+}
+
+.features-row:nth-child(1) .feature:nth-child(1):hover {
+    background: url(https://i.imgur.com/ztDG2I5.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.features-row:nth-child(1) .feature:nth-child(2):hover {
+    background: url(https://i.imgur.com/wfnGWnf.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 10%;
+}
+
+.features-row:nth-child(1) .feature:nth-child(3):hover {
+    background: url(https://i.imgur.com/orUfsl6.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.features-row:nth-child(1) .feature:nth-child(4):hover {
+    background: url(https://i.imgur.com/l0dFe6k.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.features-row:nth-child(2) .feature:nth-child(1):hover {
+    background: url(https://sakuru.pw/static/features/background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.features-row:nth-child(2) .feature:nth-child(2):hover {
+    background: url(https://sakuru.pw/static/features/badge.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.features-row:nth-child(2) .feature:nth-child(3):hover {
+    background: url(https://sakuru.pw/static/features/friendtop.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 10%;
+}
+
+.features-row:nth-child(2) .feature:nth-child(4):hover {
+    background: url(https://sakuru.pw/static/features/featuregold.png);
+    background-size: cover;
+    background-color: hsl(var(--main), 45%, 45%);
+    background-repeat: no-repeat;
+    background-position: 15%;
+}
+
+#buy {
+    border-radius: 4px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px 24px;
+    font-size: 24px;
+    background-color: hsl(var(--main), 10%, 15%);
+    margin-top: 24px;
+}
+
+#buy form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    margin-top: 16px;
+}
+
+#buy form input[type="text"] {
+    width: 100%;
+    padding: 16px;
+    border-radius: 4px;
+    background: white;
+    color: black;
+    border: 0;
+    font-size: 16px;
+}
+
+#buy form input[type="submit"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 16px;
+    color: white;
+    background-color: hsl(var(--main), 45%, 45%);
+    border: 0;
+    font-size: 18px;
+    border-radius: 4px;
+    margin-top: 8px;
+    transition: .2s;
+    cursor: pointer;
+}
+
+#buy form input[type="submit"]:hover {
+    background-color: hsl(var(--main), 50%, 50%);
+}
+
+.my-con {
+    margin-top: 50px !important;
+}
+
+.buy-block {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    align-items: flex-start;
+    padding: 32px 15%;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.buy-head {
+    background: none !important;
+    color: #fff;
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4px;
+}
+
+.input-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.druzhban-input {
+    background-color: hsl(var(--main), 15%, 10%);
+    text-shadow: none;
+    border: 2px solid hsl(var(--main), 10%, 20%);
+    border-radius: 8px;
+    color: hsl(var(--main), 70%, 70%);
+    height: 40px;
+    padding: 10px;
+    width: 325px;
+}
+
+.druzhban-input+span {
+    position: absolute;
+    color: #fff;
+    background-color: #46b100;
+    width: 20px;
+    margin-top: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    text-shadow: none;
+    padding: 4px 0;
+    margin-left: 286px;
+}
+
+.input-text:not(:first-child) {
+    margin-top: 24px;
+}
+
+.input-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.buy-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.buy-select {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.buy-logo.--selected {
+    opacity: 1;
+    filter: brightness(1);
+    background-color: hsl(var(--main), 25%, 40%);
+    border-color: hsl(var(--main), 10%, 30%);
+}
+
+.noUi-target {
+    background: #eee;
+    width: 400px;
+    cursor: pointer;
+    border-radius: 100px;
+    margin: 14px 0px !important;
+}
+
+.noUi-horizontal {
+    height: 12px;
+}
+
+.level-line, .level-line.success, .noUi-target {
+    background-color: hsl(var(--main), 15%, 35%);
+}
+
+.noUi-base {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.noUi-connect {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: hsl(var(--base) 100% 70%);
+    border-radius: 6px;
+    transition: 120ms right;
+}
+
+.noUi-connect, a.submit_filter:hover, .btn-druzhban:hover:not(.disabled) {
+    background-color: hsl(var(--main), 100%, 55%);
+}
+
+.noUi-origin {
+    position: absolute;
+    height: 0;
+    width: 0;
+    transition: 120ms left;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 22px;
+    height: 22px;
+    left: -8px;
+    top: -5px;
+    z-index: 4;
+}
+
+.noUi-horizontal .noUi-tooltip {
+    min-width: 165px;
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    left: 50%;
+    bottom: 200%;
+    visibility: visible;
+    opacity: 1;
+    padding: 8px 12px;
+    text-shadow: none;
+    font-size: 14px;
+    max-width: 172px;
+    line-height: 1.2;
+}
+
+.buy-block .btn-druzhban {
+    margin-top: 24px;
+    margin-bottom: 32px;
+    padding: 16px 24px;
+    width: 250px;
+}
+
+.btn-druzhban {
+    font-size: 17px;
+    outline: none;
+    color: white !important;
+    border: none;
+    font-weight: 600;
+    background-color: hsl(var(--main) 100% 70%);
+    border-radius: 100px;
+    padding: 14px;
+    line-height: 1;
+    padding-left: 46px;
+    padding-right: 46px;
+    margin-top: 32px;
+    transition: 200ms background-color;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.buy-logo {
+    opacity: .5;
+    transition: 150ms opacity, 300ms filter, 150ms background-color;
+    cursor: pointer;
+    background-size: 70%;
+    background-position: center;
+    height: 51px;
+    width: 138px;
+    background-repeat: no-repeat;
+    filter: brightness(0);
+    border: 1px solid #d0d0d062;
+}
+
+#palych.buy-logo {
+    background-image: url(https://osu.gatari.pw/static/images/druzhban-pics/mastercard.png);
+}
+
+#freekassa.buy-logo {
+    background-image: url(https://osu.gatari.pw/static/images/druzhban-pics/freekassa.png);
+}
+
+#stripe.buy-logo {
+    background-image: url(https://osu.gatari.pw/static/images/druzhban-pics/stripe.png);
+}
+
+#enot.buy-logo {
+    background-image: url(https://osu.gatari.pw/static/images/druzhban-pics/enot_logo.png);
+}
+
+#devka {
+    position: absolute;
+    width: 438px;
+    height: 648px;
+    background-image: url(/static/images/miyu.png);
+    background-repeat: no-repeat;
+    bottom: 0;
+    background-size: cover;
+    right: 0%;
+    background-position: bottom;
+}
+
+@media screen and (max-width: 1345px) {
+    .feature {
+        width: 49%;
+        height: auto;
+    }
+
+    .feature:not(:first-child) {
+        margin-left: 0 !important;
+    }
+
+    .feature:nth-child(2),
+    .feature:nth-child(4) {
+        margin-left: 16px;
+    }
+
+    .feature:not(:first-child),
+    .feature:not(:nth-child(2)) {
+        margin-top: 16px;
+    }
+}
+
+@media screen and (max-width: 996px) {
+    .support-head img {
+        display: none;
+    }
+
+    .support-head div {
+        padding: 32px;
+    }
+
+    .features-headline {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 1407px) {
+    .container.is-fullhd {
+        padding: 0 10px;
+    }
+}

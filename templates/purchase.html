@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %} Support {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+<link rel="stylesheet" href="/static/css/pages/purchase.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="container is-fullhd my-con">
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="main-selector"></div>
+            <div class="main-banner doc-banner">
+                <div class="banner-text">Support</div>
+                <h2 style="font-size: 23px;">Purchase</h2>
+            </div>
+        </div>
+    </div>
+    <div class="main-block">
+        <div class="support-con">
+            <div class="support-head support-us">
+                <div class="buy-block">
+                    <div id="devka"></div>
+                    <div class="buy-head"> Purchase supporter </div>
+                    <div class="input-block">
+                        <span class="input-text"><b> komako </b> username or email</span>
+                        <input placeholder="Nickname" type="text" class="druzhban-input">
+                        <span class="fas "></span>
+                    </div>
+                    <span class="input-text" style="margin-bottom: 0px;">Payment method</span>
+                        <div class="buy-select">
+                            <div data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Only Russian cards and BTC"
+                                id="freekassa" class="buy-logo --selected" data-original-title="" title=""></div>
+                            <div data-trigger="hover" data-toggle="popover" data-placement="top"
+                                data-content="Can't accept: USA, Germany, Canada" id="palych" class="buy-logo" data-original-title=""
+                                title=""></div>
+                            <div data-trigger="hover" data-toggle="popover" data-placement="top" data-content="MasterCard/GPay" id="stripe"
+                                class="buy-logo stripe" data-original-title="" title=""></div>
+                            <div data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Bitcoin/Altcoins/QIWI"
+                                id="enot" class="buy-logo" data-original-title="" title=""></div>
+                        </div> 
+                        <span class="input-text" style="margin-bottom: 32px;">Quantity</span>
+                        <div id="months-slider" style="margin: 0px auto; width: 100%;" class="noUi-target noUi-ltr noUi-horizontal">
+                            <div class="noUi-base">
+                                <div class="noUi-connect" style="left: 0%; right: 100%;"></div>
+                                <div class="noUi-origin" style="left: 0%;">
+                                    <div class="noUi-handle" data-handle="0" style="z-index: 4;">
+                                        <div class="noUi-tooltip">2.1 € <span>for 1 month</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-druzhban">Checkout</button>
+                        <!-- <form method="POST" action="https://yoomoney.ru/quickpay/confirm.xml">
+                            <input type="hidden" name="receiver" value="410011735004776">
+                            <input type="hidden" name="formcomment" value="Komako Supporter">
+                            <input type="hidden" name="short-dest" value="Komako Supporter">
+                            <input type="hidden" name="quickpay-form" value="donate">
+                            <input type="hidden" id="formcomment" name="targets" value="1 months of Komako Supporter for miyu">
+                            <input type="hidden" id="labelya" name="label" value="miyu - 1">
+                            <input type="hidden" id="valuesum" name="sum" data-type="number" value="188.94">
+                            <input type="hidden" name="need-fio" value="false">
+                            <input type="hidden" name="need-email" value="false">
+                            <input type="hidden" name="need-phone" value="false">
+                            <input type="hidden" name="need-address" value="false">
+                            <input type="hidden" checked="checked" name="paymentType" value="PC">
+                        </form> -->
+                    </div>           
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

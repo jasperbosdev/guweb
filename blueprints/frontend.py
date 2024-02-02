@@ -892,3 +892,18 @@ async def documentation_connect():
 @frontend.route('/team')
 async def team():
     return await render_template('team.html')
+
+@frontend.route('/support')
+async def support():
+    return await render_template('support.html')
+
+@frontend.route('/support/purchase')
+async def support_purchase():
+
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session["user_data"]["is_staff"]:
+        return await flash('error', 'You are now allowed back here...', 'login')
+
+    return await render_template('purchase.html')
