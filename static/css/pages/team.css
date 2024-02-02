@@ -4,6 +4,10 @@
     height: 132px !important;
 }
 
+.doc-banner {
+    min-height: unset !important;
+}
+
 .team-contain {
     padding: 24px 24px;
     color: #fff;
