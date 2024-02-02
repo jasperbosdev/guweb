@@ -21,7 +21,7 @@ body {
 }
 
 .main-block {
-  background-color: hsl(var(--main), 10%, 15%, 60%);
+  background-color: hsl(var(--main), 1.4%, 15.5%);
   margin-top: 0;
   width: 1000px;
 }
