@@ -64,7 +64,7 @@ h6 {
   font-size: 0.9em;
 }
 
-ol,
+/* ol,
 ul {
   padding: 0px 0px 10px 20px;
 }
@@ -72,16 +72,16 @@ ul {
 ol li {
   counter-increment: section !important;
   list-style-type: none;
-}
+} */
 
 ol li:before {
   font-weight: 700;
   content: counters(section, ".") ". ";
 }
 
-ul {
+/* ul {
   list-style: disc !important;
-}
+} */
 
 .selection-block {
   height: 175px;
@@ -893,7 +893,7 @@ i.loadspin {
 .right-header {
   color: #fff;
   border-bottom: none;
-  background-color: hsl(var(--main), 35%, 35%);
+  background-color: hsl(var(--main), 10.7%, 24.7%);
 }
 
 .settings-btn {
@@ -1064,4 +1064,40 @@ input:checked+label.checkbox:hover {
 
 .file-icon {
   margin-left: 2em;
+}
+
+.input {
+  border: 3px solid hsl(var(--main), 10.7%, 24.7%);
+  background-color: hsl(var(--main), 12%, 18%);
+}
+
+.button.is-primary {
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+}
+
+.button.is-primary:hover {
+  background-color: hsl(var(--main), 10.7%, 34.7%);
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  border: 3px solid hsl(var(--main), 10.7%, 24.7%);
+  background-color: hsl(var(--main),15%,15%);
+  margin: 3px 0 5px 0;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #fff;
+}
+
+input[type="checkbox"]::before {
+  content: "\2713";
+  display: inline-block;
+  font-size: 12px;
+  line-height: 16px;
+  color: transparent;
+  text-align: center;
 }
