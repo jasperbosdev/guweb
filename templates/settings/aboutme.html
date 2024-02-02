@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %} about me {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/pages/settings/style.css">
+{% if flash %}
+<div class='noti-banner noti-banner-warning' style="margin-bottom: 30px;">
+  <div class="container">
+    <div class="noti-column">
+      <div class='noti-col noti-col-icon'></div>
+      <div class='noti-col noti-col-label'>
+        <div class='noti-bannertype'>
+          {% if status=='error' %}
+          warning
+          {% elif status=='success' %}
+          notice
+          {% endif %}
+        </div>
+        <div class='noti-bannertext'>
+          {% if status=='error' %}
+          huh?
+          {% elif status=='success' %}
+          hey!
+          {% endif %}
+        </div>
+      </div>
+      <div class='noti-banner-text'>
+        {{ flash }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="main-block">
+  {% include "settings/sidebar.html" %}
+  <div class="block-content right">
+    <div id="general" class="single-right-block">
+      <div class="right-block-header">
+        about me
+      </div>
+      <form action="/settings/profile" method="post" class="setting-block-content">
+        <div class="single-block-content">
+          <div class="block-content--left">
+            <div class="field-label is-normal">
+              <label class="label">Do not put NSFW content</label>
+              <label class="subtitle">You can put images and videos<br> if you know your bbcode<br><br></label>
+              <label class="subtitle">yeah woohoo</label>
+            </div>
+          </div>
+          <div class="block-content--right">
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                    <textarea class="textarea" placeholder="place some cool text here" name="about_me_content">{{ about_me_content }}</textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+          <button class='button is-primary' type='submit'><span>Save</span><span class='icon is-small'><i class='fas fa-check'></i></span></button>
+      </form>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
