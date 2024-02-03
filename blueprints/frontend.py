@@ -111,11 +111,43 @@ async def home():
 async def home_account_edit():
     return redirect('/settings/profile')
 
+@frontend.route('/settings/aboutme')
+@frontend.route('/settings/about_me')
+@login_required
+async def settings_user_profile():
+    about_me = await glob.db.fetch('SELECT userpage_content FROM users WHERE id=%s', session['user_data']['id'])
+    if not about_me:
+        about_me = {}
+        about_me['userpage_content'] = ""
+
+    return await render_template('settings/aboutme.html', about_me_content=about_me['userpage_content'])
+
+@frontend.route('/settings/aboutme', methods=['POST'])
+@login_required
+async def settings_aboutme_post():
+    form = await request.form
+
+    new_about_me = form.get('about_me_content', type=str)
+    old_about_me_row = await glob.db.fetch('SELECT userpage_content FROM users WHERE id=%s', session['user_data']['id'])
+    old_about_me = old_about_me_row['userpage_content'] if old_about_me_row else ""
+
+
+    if new_about_me == old_about_me or new_about_me is None or new_about_me == "":
+        return await flash('error', 'No changes were made to the about me section.', 'settings/aboutme')
+
+    if len(new_about_me) > 1500:
+        return await flash('error', 'The about me content cannot exceed 1500 characters.', 'settings/aboutme')
+
+    await glob.db.execute("UPDATE users SET userpage_content=%s WHERE id=%s", (new_about_me, session['user_data']['id']))
+
+    return await flash('success', 'About me section updated successfully!', 'settings/aboutme')
+
 @frontend.route('/settings')
 @frontend.route('/settings/profile')
 @login_required
 async def settings_profile():
     return await render_template('settings/profile.html')
+
 
 @frontend.route('/settings/profile', methods=['POST'])
 @login_required
@@ -130,13 +162,6 @@ async def settings_profile_post():
 
     old_name = session['user_data']['name']
     old_email = session['user_data']['email']
-
-    # no data has changed; deny post
-    if (
-        new_name == old_name and
-        new_email == old_email
-    ):
-        return await flash('error', 'No changes have been made.', 'settings/profile')
 
     if new_name != old_name:
         if not session['user_data']['is_donator']:
@@ -169,6 +194,11 @@ async def settings_profile_post():
             [new_name, safe_name, session['user_data']['id']]
         )
 
+        # logout
+        session.pop('authenticated', None)
+        session.pop('user_data', None)
+        return await flash('success', 'Your username/email have been changed! Please login again.', 'login')
+
     if new_email != old_email:
         # Emails must:
         # - match the regex `^[^@\s]{1,200}@[^@\s\.]{1,30}\.[^@\.\s]{1,24}$`
@@ -187,10 +217,66 @@ async def settings_profile_post():
             [new_email, session['user_data']['id']]
         )
 
-    # logout
-    session.pop('authenticated', None)
-    session.pop('user_data', None)
-    return await flash('success', 'Your username/email have been changed! Please login again.', 'login')
+        # logout
+        session.pop('authenticated', None)
+        session.pop('user_data', None)
+        return await flash('success', 'Your username/email have been changed! Please login again.', 'login')
+
+    # occupation
+    new_occupation = form.get('occupation_content', type=str)
+    old_occupation = await glob.db.fetch('SELECT occupation_content FROM users WHERE id=%s', session['user_data']['id'])
+
+    if new_occupation != old_occupation and new_occupation != None and new_occupation != "" and len(new_occupation) <= 50:
+        await glob.db.execute("UPDATE users SET occupation_content=%s WHERE id=%s", (new_occupation, session['user_data']['id']))
+
+    # location
+    new_location = form.get('location_content', type=str)
+    old_location = await glob.db.fetch('SELECT location_content FROM users WHERE id=%s', session['user_data']['id'])
+
+    if new_location != old_location and new_location != None and new_location != "" and len(new_location) <= 50:
+        await glob.db.execute("UPDATE users SET location_content=%s WHERE id=%s", (new_location, session['user_data']['id']))
+
+    # interest
+    new_interest = form.get('interest_content', type=str)
+    old_interest = await glob.db.fetch('SELECT interest_content FROM users WHERE id=%s', session['user_data']['id'])
+
+    if new_interest != old_interest and new_interest != None and new_interest != "" and len(new_interest) <= 50:
+        await glob.db.execute("UPDATE users SET interest_content=%s WHERE id=%s", (new_interest, session['user_data']['id']))
+
+    # playstyle
+    updated_playstyle = False
+    playstyle = 0
+
+    if form.get('ps_tablet', type=str) == 'on':
+        updated_playstyle = True
+        playstyle = playstyle | 1
+    if form.get('ps_mouse', type=str) == 'on':
+        updated_playstyle = True
+        playstyle = playstyle | 2
+    if form.get('ps_keyboard', type=str) == 'on':
+        updated_playstyle = True
+        playstyle = playstyle | 4
+    if form.get('ps_touch', type=str) == 'on':
+        updated_playstyle = True
+        playstyle = playstyle | 8
+
+    if updated_playstyle:
+        await glob.db.execute("UPDATE users SET play_style=%s WHERE id=%s", (playstyle, session['user_data']['id']))
+
+    playstyle_value = playstyle  # This is the updated play_style value from the database
+
+    # no data has changed; deny post
+    if (
+        new_name == old_name and
+        new_email == old_email and
+        new_occupation == old_occupation and
+        new_location == old_location and
+        new_interest == old_interest and
+        not updated_playstyle
+    ):
+        return await flash('error', 'No changes have been made.', 'settings/profile')
+    
+    return await flash('success', 'Your profile has been successfully updated!', 'settings/profile')
 
 @frontend.route('/settings/avatar')
 @login_required
@@ -429,7 +515,7 @@ async def login_post():
     # check if account exists
     user_info = await glob.db.fetch(
         'SELECT id, name, email, priv, '
-        'pw_bcrypt, silence_end '
+        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content '
         'FROM users '
         'WHERE safe_name = %s',
         [utils.get_safe_name(username)]
@@ -494,6 +580,11 @@ async def login_post():
         'name': user_info['name'],
         'email': user_info['email'],
         'priv': user_info['priv'],
+        'about_me': user_info['userpage_content'],
+        'playstyle': user_info['play_style'],
+        'occupation': user_info['occupation_content'],
+        'location': user_info['location_content'],
+        'interest': user_info['interest_content'],
         'silence_end': user_info['silence_end'],
         'stats': {
             'pp': user_info_stats['pp']
