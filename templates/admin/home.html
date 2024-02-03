@@ -33,10 +33,10 @@
         </div>
         <div class="column is-paddingless p-3">
             <div class="card">
-                <div class="title">lastest user</div>
-                <i class="fa fa-book"></i>
-                <div class="value">{{ dashdata['lastest_user'] }}</div>
-                <div class="stat">latest and greatest! welcome!</div>
+                <div class="title">total scores</div>
+                <i class="fas fa-star"></i>
+                <div class="value">{{ '{:,.0f}'.format(score_count['max_id']) }}</div>
+                <div class="stat">That's a ton of scores!</div>
             </div>
         </div>
         <div class="column is-paddingless p-3">
@@ -130,6 +130,11 @@
                                             {{ maps.grade.replace("X", "SS").replace("H", "") }}
                                         </div>
                                     </div>
+                                </div>
+                                <div class="score-details_button">
+                                    <a href="/score/{{ maps.id }}" class="target-button newmaps-color">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
