@@ -582,6 +582,16 @@ a.donor-block:before {
   margin: 0;
 }
 
+.row-button {
+  /* Other button styles */
+  transition: transform ease-in-out 0.2s !important;
+}
+
+.row-button:hover {
+  transform: translateY(-5px); /* Apply translateY transformation on hover */
+  transition: transform ease-in-out 0.2s;
+}
+
 /* non-auth responsive */
 
 @media (max-width: 1296px) {
