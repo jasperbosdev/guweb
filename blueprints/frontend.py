@@ -590,6 +590,7 @@ async def login_post():
             'pp': user_info_stats['pp']
         },
         'is_staff': user_info['priv'] & Privileges.Staff != 0,
+        'is_nominator': user_info['priv'] & Privileges.Nominator != 0,
         'is_donator': user_info['priv'] & Privileges.Donator != 0
     }
 
