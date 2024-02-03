@@ -58,8 +58,8 @@
           </div>
           <div class="column">
             <h4 class="mb-4">Preview</h4>
-            <div class="preview-block" id="avatar">
-              <div class="top-block" {% if customizations['banner'] == True %}style="background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 25%, 25%, 60%)), url(/profbanner/{{ session['user_data']['id'] }}); background-size: cover"{% endif %}></div>
+            <div class="preview-block" id="avatar" {% if customizations['background'] == True %}style="background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 25%, 25%, 60%)), url(/backgrounds/{{ session['user_data']['id'] }}); background-size: cover; background-position-y: center;"{% endif %}>
+              <div class="top-block" {% if customizations['banner'] == True %}style="background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 25%, 25%, 60%)), url(/banners/{{ session['user_data']['id'] }}); background-size: cover; background-position-y: center;"{% endif %}></div>
               <div class="bottom-block">
                 <div class="profile-avatar-area">
                   <img id="avatar-img" src="https://a.{{ domain() }}/{{ session.user_data['id']}}" alt="avatar"
@@ -138,6 +138,12 @@
         body {
             background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)), url("/backgrounds/{{ session['user_data']['id'] }}");
             background-size: cover !important;
+            background-position: center !important;
+        }
+        .preview-block {
+            background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)), url("/backgrounds/{{ session['user_data']['id'] }}");
+            background-size: cover !important;
+            background-position: center !important;
         }
     {% endif %}
 </style>
