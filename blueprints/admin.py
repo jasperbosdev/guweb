@@ -22,7 +22,7 @@ async def home():
     if not 'authenticated' in session:
         return await flash('error', 'Please login first.', 'login')
 
-    if not session['user_data']['is_staff']:
+    if not session['user_data']['is_staff'] and not session['user_data']['is_nominator']:
         return await flash('error', f'You have insufficient privileges.', 'home')
 
     # fetch data from database
@@ -41,8 +41,18 @@ async def home():
         'ORDER BY scores.id DESC LIMIT 5'
     )
 
+    admin_data = await glob.db.fetch(
+        'SELECT id, safe_name, name, priv '
+        'FROM users '
+        'WHERE %s ',
+        [session['user_data']['id']]
+    )
+
+    score_count = await glob.db.fetch('SELECT MAX(id) AS max_id FROM scores')
+
     return await render_template(
         'admin/home.html', dashdata=dash_data,
         recentusers=recent_users, recentscores=recent_scores,
-        datetime=datetime, timeago=timeago
+        datetime=datetime, timeago=timeago, admin_data=admin_data,
+        score_count=score_count
     )
