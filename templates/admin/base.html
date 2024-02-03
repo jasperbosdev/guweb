@@ -45,12 +45,27 @@
   <div class="content admin-con">
     <div class="columns is-marginless is-paddingless">
       <div class="colmun">
+        <div class="sidebar" style="background-color: transparent; margin-bottom: 24px;">
+          <div class="logo" style="background-color: hsl(var(--main), 1.4%, 15.5%)">
+            <a class="simple-text logo-normal">
+              {{ appName() }} Admin Panel
+              <span class="logged-as"><br>Logged in as {% if session['user_data']['is_staff'] %}<span style="color: hsl(var(--main), 90%, 55%); font-weight: 900;">Administrator</span> {% elif session['user_data']['is_nominator'] %}<span style="color: hsl(var(--main), 90%, 55%); font-weight: 900;">Nominator</span>{% else %}Error{% endif %}</span>
+            </a>
+          </div>
+        </div>
         <div class="sidebar">
           <div id="style-3" class="sidebar-wrapper">
-            <div class="logo"><a class="simple-text logo-normal">{{ appName() }} Admin Panel</a></div>
             <ul class="nav">
-              <li class="nav-item"><a class="nav-link"><span class="icon"><i class="fa fa-home"></i></span> <span
-                    class="name">Dashboard</span></a></li>
+              <li class="nav-item"><a class="nav-link"><span class="icon"><i class="fa fa-home"></i></span>
+              <span class="name">Dashboard</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><span class="icon"><i class="fas fa-key"></i></span>
+                <span class="name">Invite</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><span class="icon"><i class="fas fa-user"></i></span>
+                <span class="name">Users</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><span class="icon"><i class="fas fa-music"></i></span>
+                <span class="name">Beatmaps</span></a></li>
+              <li class="nav-item"><a href="#" class="nav-link"><span class="icon"><i class="fas fa-star"></i></span>
+                <span class="name">Scores</span></a></li>
             </ul>
           </div>
         </div>
@@ -60,11 +75,11 @@
           <div class="columns is-marginless">
             <div class="column is-paddingless is-avatar">
               <img src="https://a.{{ domain() }}/{{ session.user_data['id'] }}"
-                onError="this.src='/static/images/avatar_notwork.png';" class="header-avatar">
+                onError="this.src='/static/images/avatar_notwork.png';" style="width: unset; height: unset;" class="header-avatar">
             </div>
             <div class="column is-paddingless flex-vcenter">
               <h2 class="section-title">Dashboard</h2>
-              <p class="section-lead">Welcome to {{ appName() }} admin panel!</p>
+              <p class="section-lead">Welcome to {{ session['user_data']['name'] }} {{ appName() }} admin panel!</p>
             </div>
           </div>
           <section class="section">
