@@ -4,6 +4,8 @@ __all__ = ()
 
 import datetime
 
+import string
+import random
 import timeago
 from quart import Blueprint
 from quart import render_template
@@ -169,3 +171,33 @@ async def users():
     return await render_template('admin/users.html', users=users, user_data=user_data, dashdata=dash_data, 
                                  recentusers=recent_users, recentscores=recent_scores, admin_data=admin_data,
                                  score_count=score_count, supporter_count=supporter_count)
+
+@admin.route('/invite')
+async def invitegen():
+    if not glob.config.keys:
+        return await flash('error', 'The use of keys is currently disabled/unneeded!', 'home')
+
+    if not 'authenticated' in session:
+        return await flash('error', 'You must be logged in to access the key gen!', 'login')
+
+    if not session["user_data"]["is_oguser"] and not session["user_data"]["is_staff"]:
+        return await flash('error', 'You must be a donator/staff member to do this!', 'settings/profile')
+
+    return await render_template('admin/invite.html')
+
+@admin.route('/invite', methods=['POST'])
+async def gen_invite():
+    if glob.config.keys:
+        if session["user_data"]["is_staff"]:
+                e = await glob.db.fetch(f'SELECT keygen FROM users WHERE id = {session["user_data"]["id"]}')
+                if not e['keygen'] > 0 or session["user_data"]["is_staff"]:
+                    key = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(20))
+                    await glob.db.execute('INSERT INTO beta_keys(beta_key, generated_by) VALUES (%s, %s)', [key, session["user_data"]["name"]])
+                    await glob.db.execute('UPDATE users SET keygen = keygen + 1 WHERE id = %s', [session["user_data"]["id"]])
+                    return await render_template('admin/invite.html', keygen=key)
+                else:
+                    return await flash('error', 'You have already generated a key!', 'key')
+        else:
+            return await flash('error', 'You do not have permissions to do this!', 'key')
+    else:
+        return await flash('error', 'The use of keys is currently disabled/unneeded!', 'home')
