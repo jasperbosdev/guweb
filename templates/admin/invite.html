@@ -1,0 +1,41 @@
+{% extends 'admin/base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% block header %}
+<script src="/static/js/asserts/vue.js"></script>
+<script src="/static/js/asserts/vue-axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<script>
+    var domain = "{{ domain() }}";
+</script>
+<link rel="stylesheet" href="/static/css/pages/admin/key.css">
+{% endblock%}
+
+{% block content %}
+
+<div id="settingsboard">
+    <div class="invite-title">
+        <div style="font-weight: 500; font-size: large; margin: 10px 0 10px 0;">Generate Invite</div>
+    </div>
+    <div class="main-block" style="background-color: transparent;">
+        <div class="leaderboard-main-bg table-responsive ug-settings rechts-teilung leaderboard-main-bg card invite-card">
+            <div style="margin: 10px 0 10px 0;"></div>
+            <form method="post">
+                {% if keygen is not none %}
+                <input name="key" placeholder="Don't lose the key!"
+                    class="input" type="text" readonly value="{{ keygen }}"> <br>
+                {% else %}
+                <input name="key" class="descriptor-textfield --readonly" type="text" readonly value="Key"> <br>
+                {% endif %}
+                <div style="margin: 10px 0 10px 0;"></div>
+                <div class="invite-btn">
+                    <input type="submit" name="submit" class="descriptor-submit button is-primary" value="Generate">
+                </div>
+            </form>
+            <br>
+            <div style="margin: 10px 0 10px 0;"></div>
+        </div>
+    </div>
+    </a>
+</div>
+
+{% endblock %}
