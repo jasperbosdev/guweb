@@ -1,0 +1,217 @@
+{% extends 'admin/base.html' %}
+{% block title %} Users {% endblock %}
+{% block header %}
+{% endblock %}
+
+{% macro card(title='base', haschart=true, chartname='base', data=0) %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="subheader">{{ title }}</div>
+        </div>
+        <div class="d-flex align-items-baseline">
+            <div class="h1 mb-0 me-2">{{ data }}</div>
+        </div>
+    </div>
+    {% if haschart %}
+    <div id="chart-{{ chartname }}" class="chart-sm"></div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro modal(title='base', id='base', name='base') %}
+<div class="modal modal-blur fade" id="{{ id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body text-start pt-4">
+                <form id="{{ name }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">{{ title }}</label>
+                        <input type="text" class="form-control" name="{{ name }}">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-white w-100" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" id="del-submit" form="{{ name }}"
+                                class="btn btn-primary w-100">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% block content %}
+{% if error %}
+<div class="alert alert-danger col-lg-3" role="alert" style="display: block; position: relative; margin-top: -3.5rem;">
+    <h4 class="alert-title">{{ error }}</h4>
+</div>
+{% endif %}
+
+<script>
+    var element = document.getElementById("navbar_users");
+    element.classList.add("active");
+  </script>
+  
+
+<div class="columns is-marginless is-paddingless">
+    <div class="column is-paddingless p-3">
+        <div class="card">
+            <div class="title">total users</div>
+            <i class="fa fa-users"></i>
+            <div class="value">{{ dashdata['count'] }}</div>
+            <div class="stat">that's a lot of people!</div>
+        </div>
+    </div>
+    <div class="column is-paddingless p-3">
+        <div class="card">
+            <div class="title">total online</div>
+            <i class="fa fa-circle"></i>
+            <div class="value">
+                {{ user_data['online'] }}
+            </div>
+            <div class="stat">rising in popularity are we?</div>
+        </div>
+    </div>
+    <div class="column is-paddingless p-3">
+        <div class="card">
+            <div class="title">total suporters</div>
+            <i class="fas fa-heart"></i>
+            <div class="value">{{ supporter_count['donor_count'] }}</div>
+            <div class="stat">That's a lot of awesome people</div>
+        </div>
+    </div>
+    <div class="column is-paddingless p-3">
+        <div class="card">
+            <div class="title">total banned</div>
+            <i class="fas fa-gavel"></i>
+            <div class="value">{{ dashdata['banned'] }}</div>
+            <div class="stat">Naughty naughty :(</div>
+        </div>
+    </div>
+</div>
+<div class="page-wrapper">
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="table-responsive desktop-table">
+                            <table class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Player</th>
+                                        <th>Privileges</th>
+                                        <th>Client</th>
+                                        <th>Email</th>
+                                        <th>IP</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in users %}
+                                    <tr>
+                                        <td>{{ i['id'] }}</td>
+                                        <td class="td-truncate">
+                                            <img src="/static/images/flags/{{ i['country']|upper }}.png" class="profile-flag" style="width: 25px; height: 17px; -webkit-box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.63); box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);">⠀
+                                            <a href="/u/{{ i['id'] }}">{{ i['name'] }}</a>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex;">
+                                              {% for el in i['group_list'] %}
+                                                <div style="color:{{ el[1] }}; margin-right: 10px;" data-title="{{ el[0] }}">
+                                                  <i class="fa-solid {{ el[2] }}"></i>
+                                                </div>
+                                              {% endfor %}
+                                            </div>
+                                          </td>
+                                        <td>{{ i['osu_stream'] }}</td>
+                                        <td>{{ i['email'] }}</td>
+                                        <td>{{ i['ip'] }} <a href="https://whatismyipaddress.com/ip/{{ i['ip'] }}"><i class="fa-solid fa-magnifying-glass"></i></a></td>
+                                        <td>
+                                            <a class="btn" href="/admin/users/edit/{{ i.id }}">
+                                                <i class="far fa-edit" aria-hidden="true"></i>⠀Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer d-flex align-items-center">
+                            <a class="pager-btn prev-btn"><i aria-hidden="true" class="fa-solid fa-chevron-left"></i></a>
+                            <span class="pager-text"></span>
+                            <a class="pager-btn next-btn"><i aria-hidden="true" class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var currentPage = 1; // Current page
+        var totalUsers = {{ users|length }}; // Total number of users
+        var totalPages = Math.ceil(totalUsers / 10); // Calculate total pages
+
+        updatePager(); // Initial update
+        updateUserTable(); // Show users for the first page
+
+        // Function to update pager text
+        function updatePager() {
+            $(".pager-text").text(currentPage + " / " + totalPages);
+        }
+
+        // Function to update user table based on page
+        function updateUserTable() {
+            var startIndex = (currentPage - 1) * 10;
+            var endIndex = Math.min(startIndex + 10, totalUsers); // Ensure endIndex doesn't exceed user count
+
+            // Hide all rows first
+            $("tbody tr").hide();
+
+            // Show rows for current page
+            for (var i = startIndex; i < endIndex; i++) {
+                $("tbody tr").eq(i).show();
+            }
+        }
+
+        // Click event for previous button
+        $(".prev-btn").click(function() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePager();
+                updateUserTable();
+            }
+        });
+
+        // Click event for next button
+        $(".next-btn").click(function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePager();
+                updateUserTable();
+            }
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+{{ modal(title='Username', id="edi-usr-usr", name='username') }}
+{{ modal(title='Email', id="edi-usr-ema", name='email') }}
+{{ modal(title='IP', id="sch-ip", name='ip') }}
+
+{% endblock %}
