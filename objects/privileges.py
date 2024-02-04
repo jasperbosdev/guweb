@@ -23,6 +23,9 @@ class Privileges(IntFlag):
     # notable users, receives some extra benefits.
     Alumni      = 1 << 7
 
+    #group of users invited by server owner.
+    Oguser      = 1 << 25
+
     # staff permissions, able to manage server state.
     Tournament  = 1 << 10 # able to manage match state without host.
     Nominator   = 1 << 11 # able to manage maps ranked status.
