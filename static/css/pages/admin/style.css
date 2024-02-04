@@ -31,7 +31,7 @@
 .sidebar .sidebar-wrapper {
     width: 100%;
     min-height: unset;
-    max-height: calc(100vh - 705px);
+    /* max-height: calc(100vh - 705px); */
     z-index: 4;
     position: relative;
     overflow: auto;
