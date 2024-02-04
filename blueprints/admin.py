@@ -4,9 +4,11 @@ __all__ = ()
 
 import datetime
 
+import json
 import string
 import random
 import timeago
+import requests
 from quart import Blueprint
 from quart import render_template
 from quart import session
@@ -171,6 +173,84 @@ async def users():
     return await render_template('admin/users.html', users=users, user_data=user_data, dashdata=dash_data, 
                                  recentusers=recent_users, recentscores=recent_scores, admin_data=admin_data,
                                  score_count=score_count, supporter_count=supporter_count)
+
+@admin.route('/users/edit/<id>')
+async def user_edit(id):
+    """Edit User Page."""
+
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+    author = await glob.db.fetch("SELECT priv FROM users WHERE id=%s", session['user_data']['id'])
+    session['user_data']['priv'] = author['priv']
+    author = Privileges(int(author['priv']))
+    if Privileges.Admin not in author:
+        return await flash('error', f'You have insufficient privileges. If you have privileges, try entering your profile to reload them.', 'home')
+
+    user_data = await glob.db.fetch(
+        'SELECT id, name, email, priv, country, silence_end, donor_end, '
+        'creation_time, latest_activity, clan_id, clan_priv '
+        'FROM users '
+        'WHERE safe_name IN (%s) OR id IN (%s) LIMIT 1',
+        [id, get_safe_name(id)]
+    )
+
+    logs_data = await glob.db.fetchall(
+        'SELECT l.id, u1.name AS from_name, l.`from`, u2.name AS to_name, l.`to`, l.action, l.msg, l.`time` '
+        'FROM logs AS l '
+        'JOIN users AS u1 ON l.`from` = u1.id '
+        'JOIN users AS u2 ON l.`to` = u2.id '
+        'WHERE l.`to` IN (%s) '
+        'ORDER BY l.`time` DESC',
+        [id]
+    )
+
+    #get offline/online status
+    # Inside your route function
+    user_id = user_data['id']
+
+    # Get offline/online status
+    check_status = requests.get(f'http://bancho/v1/get_player_status?id={user_id}', headers={'Host': 'api.meow.nya'})
+    if check_status.status_code == 200:
+        status_data = check_status.json()
+        player_status = status_data.get("player_status", {})
+        online_status = player_status.get("online", False)
+    else:
+        # Handle API error or invalid response
+        online_status = False  # Assume user is offline in case of error
+
+    #Permission checks
+    usrprv = Privileges(int(user_data['priv']))
+    admpriv = Privileges(int(session['user_data']['priv']))
+    #Editing admin (Dev, owners only)
+    #Editing owner (Owners only)
+    if int(user_data['id']) in [3,4] and int(session['user_data']['id']) not in [3,4]:
+        access_denied = {'higher_group': True, 'err_msg': "You dont have permissions to edit Owners"}
+        return await render_template('admin/edit_user.html', user_data=user_data, access_denied=access_denied)
+    else:
+        access_denied = {'higher_group': False}
+    #Editing dev (Owners only)
+    if Privileges.Dangerous in usrprv and int(session['user_data']['id']) not in [3,4]:
+        access_denied = {'higher_group': True, 'err_msg': "You dont have permissions to edit Developers"}
+        return await render_template('admin/edit_user.html', user_data=user_data, access_denied=access_denied)
+    else:
+        access_denied = {'higher_group': False}
+    if Privileges.Admin in usrprv and Privileges.Dangerous not in admpriv:
+        access_denied = {'higher_group': True, 'err_msg': "You dont have permissions to edit Admins"}
+        return await render_template('admin/edit_user.html', user_data=user_data, access_denied=access_denied)
+    else:
+        access_denied = {'higher_group': False}
+
+
+    #Format join date
+    user_data['creation_time'] = datetime.datetime.fromtimestamp(int(user_data['creation_time'])).strftime("%d %B %Y, %H:%M")
+
+    admin = session['user_data']
+    if int(admin['id']) in [3,4]:
+        admin['is_owner'] = True
+
+
+    return await render_template('admin/edit_user.html', user_data=user_data, logs_data=logs_data, admin=admin, access_denied=access_denied
+                                 , online_status=online_status)
 
 @admin.route('/invite')
 async def invitegen():

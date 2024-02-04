@@ -1,0 +1,225 @@
+{% extends 'admin/base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% block header %}
+<script src="/static/js/asserts/vue.js"></script>
+<script src="/static/js/asserts/vue-axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<link rel="stylesheet" href="/static/css/pages/admin/edit_user.css">
+{% endblock%}
+
+<script>
+    var domain = "{{ domain() }}";
+</script>
+
+{% macro card(title='base', haschart=true, chartname='base', data="0") %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="subheader">{{ title }}</div>
+        </div>
+        <div class="d-flex align-items-baseline">
+            <div class="h1 mb-0 me-2">{{ data }}</div>
+        </div>
+    </div>
+    {% if haschart %}
+    <div id="chart-{{ chartname }}" class="chart-sm"></div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% block content %}
+<script>
+    var element = document.getElementById("navbar_users");
+    element.classList.add("active");
+</script>
+
+<div class="page-wrapper">
+    <!-- Page title -->
+    <div class="container-xl">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2 class="page-title" style="margin-top: 0; margin-bottom: 20px;">
+                        Manage user
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            {% if access_denied['higher_group'] == True %}
+            <div class="card bg-red" style="color: white;">
+                <div class="card-body text-left">{{ access_denied['err_msg']}}</div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="user-info-card">
+                    <div class="avatar-part-info">
+                        <div class="user-info-avatar">
+                            <a href="/u/{{ user_data['id'] }}"><img src="https://a.{{ domain() }}/{{ user_data['id'] }}" class="user-avatar"></a>
+                        </div>
+                    </div>
+                    <div class="data-part-info">
+                        <div class="user-info-group"> <!-- avatar, name, perm_group, status other info -->
+                            <div class="group-item" style="margin-left: 12px;">{{ user_data['name'] }}</div>
+                            <div class="group-divider"></div>
+                            <div class="group-item">perm_group</div>
+                            <div class="group-divider"></div>
+                            <div class="group-item">
+                                {% if online_status == False %}
+                                    offline
+                                {% elif online_status == True %}
+                                    online
+                                {% else %}
+                                    error
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="user-extra-info">
+                            <div class="extra-item">country</div>
+                            <div class="extra-item">{{ user_data['email'] }}</div>
+                            <div class="extra-item">join date</div>
+                        </div>
+                    </div>
+                    <!-- <div class="user-divider"></div> -->
+                </div>
+
+                <div class="user-edit-card">
+                    edit fields etc
+                </div>
+            </div>
+
+            <!-- <div class="card">
+                <div class="card-body">
+                    <div class="row row-cards">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-cover text-center"
+                                    style="background-image: url(https://{{ domain() }}/banners/{{ user_data['id'] }})">
+                                    <span class="avatar avatar-xl avatar-thumb avatar-rounded"
+                                        style="background-image: url(https://a.{{ domain() }}/{{ user_data['id'] }})"></span>
+                                </div>
+                                <div class="card-body text-left">
+                                    <div class="mb-1">
+                                        <h2>{{ user_data['name'] }}</h2>
+                                    </div>
+                                    <div class="mb-1">{{ user_data['email'] }}</div>
+                                    <div class="text-muted">Joined {{ user_data['creation_time'] }}</div>
+                                    <div class="card-header mb-1"></div>
+                                    <label class="form-label mt-3 text-center">Actions</label>
+                                    <div class="card-body">
+                                        <div>
+                                            <a href="#" class="btn btn-danger w-100">
+                                                Restrict
+                                            </a>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-warning w-100">
+                                                Silence
+                                            </a>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-success w-100">
+                                                Unrestrict
+                                            </a>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-success w-100">
+                                                Unsilence
+                                            </a>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-info w-100">
+                                                Add Note
+                                            </a>
+                                        </div>
+                                        {% if admin['is_owner'] == True %}
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-light w-100">
+                                                Give Supporter
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-light w-100 disabled">
+                                                Give Supporter
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>User Logs</h4>
+                                </div>
+                                <div class="card-body text-left">
+                                    <div class="table-responsive">
+                                        {% if logs_data %}
+                                        <table class="table card-table table-vcenter text-nowrap datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Log ID</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Action</th>
+                                                    <th>MSG</th>
+                                                    <th>Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for log_data in logs_data %}
+                                                <tr>
+                                                    <td>{{ log_data['id'] }}</td>
+                                                    <td><a href="/u/{{ log_data['from'] }}">{{ log_data['from_name']
+                                                            }}</a></td>
+                                                    <td><a href="/u/{{ log_data['to'] }}">{{ log_data['to_name'] }}</a>
+                                                    </td>
+                                                    <td>
+
+                                                        {% if log_data['action'] in ["0", "2", "5"] %}
+                                                        {% if log_data['action'] == "0" %}
+                                                        graveyarded
+                                                        {% elif log_data['action'] == "2" %}
+                                                        ranked
+                                                        {% elif log_data['action'] == "5" %}
+                                                        loved
+                                                        {% endif %}
+                                                        {% else %}
+                                                        {{ log_data['action'] }}
+                                                        {% endif %}
+
+                                                    </td>
+                                                    <td>
+                                                        {% if log_data['action'] in ["0", "2", "5"] or
+                                                        log_data['action'] == "request" %}
+                                                        <a href="/b/{{ log_data['msg'] }}">{{ log_data['msg'] }}</a>
+                                                        {% else %}
+                                                        {{ log_data['msg'] }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ log_data['time'] }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {% else %}
+                                        <span>No logs found</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

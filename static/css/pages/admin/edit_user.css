@@ -1,0 +1,85 @@
+.container-xl {
+    display: flex;
+    justify-content: unset;
+}
+
+.card {
+    display: flex;
+    background-color: hsl(var(--main), 1.4%, 15.5%);
+    flex-direction: column;
+    gap: 25px;
+}
+
+.left-part-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.avatar-part-info {
+    display: flex;
+}
+
+.data-part-info {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.user-info-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(var(--main), 10.7%, 24.7%);
+    border-radius: 18px;
+    padding: 12px;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 18px;
+    align-items: center;
+}
+
+.user-info-group {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+}
+
+.user-extra-info {
+    display: flex;
+    flex-direction: column;
+    background-color: hsl(var(--main), 10.7%, 24.7%);
+    border-radius: 18px;
+    padding: 0 12px;
+}
+
+.group-divider {
+    background-color: hsl(var(--main), 90%, 55%);
+    width: 3px;
+    margin: 0 12px;
+    align-self: center;
+    height: 25px;
+}
+
+.user-divider {
+    background-color: hsl(var(--main), 90%, 55%);
+    width: auto;
+    margin: 12px 0;
+    align-self: center;
+    height: 5px;
+}
+
+.group-item {
+    display: flex;
+    font-size: 16px;
+    color: #fff;
+    height: fit-content;
+}
+
+.user-edit-card {
+    background-color: hsl(var(--main), 10.7%, 24.7%);
+    border-radius: 18px;
+    padding: 24px 24px;
+}
