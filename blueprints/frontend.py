@@ -38,6 +38,53 @@ VALID_MODS = frozenset({'vn', 'rx', 'ap'})
 
 frontend = Blueprint('frontend', __name__)
 
+# bbcode
+import re
+from markupsafe import escape
+def bbcode(value):
+    bbdata = [
+        (r'\[url\](.+?)\[/url\]', r'<a href="\1">\1</a>'),
+        (r'\[url=(.+?)\](.+?)\[/url\]', r'<a href="\1">\2</a>'),
+        (r'\[email\](.+?)\[/email\]', r'<a href="mailto:\1">\1</a>'),
+        (r'\[email=(.+?)\](.+?)\[/email\]', r'<a href="mailto:\1">\2</a>'),
+        (r'\[img\](.+?)\[/img\]', r'<img src="\1">'),
+        (r'\[img=(.+?)\](.+?)\[/img\]', r'<img src="\1" alt="\2">'),
+        (r'\[b\](.+?)\[/b\]', r'<b>\1</b>'),
+        (r'\[i\](.+?)\[/i\]', r'<i>\1</i>'),
+        (r'\[u\](.+?)\[/u\]', r'<u>\1</u>'),
+        (r'\[quote\](.+?)\[/quote\]', r'<div style="margin-left: 1cm">\1</div>'),
+        (r'\[center\](.+?)\[/center\]', r'<div align="center">\1</div>'),
+        (r'\[code\](.+?)\[/code\]', r'<tt>\1</tt>'),
+        (r'\[big\](.+?)\[/big\]', r'<big>\1</big>'),
+        (r'\[small\](.+?)\[/small\]', r'<small>\1</small>'),
+        (r'\[box\](.+?)\[/box\]', r'<div class="box"><div class="box-header"><div class="box-title">Box</div><div class="box-options"><a class="box-collapse btn btn-mini btn-link" href="#"><i class="icon-chevron-up"></i></a></div></div><div class="box-content">\1</div></div>'),
+        ]
+
+    for bbset in bbdata:
+        p = re.compile(bbset[0], re.DOTALL)
+        value = p.sub(bbset[1], value)
+
+    #The following two code parts handle the more complex list statements
+    temp = ''
+    p = re.compile(r'\[list\](.+?)\[/list\]', re.DOTALL)
+    m = p.search(value)
+    if m:
+        items = re.split(re.escape('[*]'), m.group(1))
+        for i in items[1:]:
+            temp = temp + '<li>' + i + '</li>'
+        value = p.sub(r'<ul>'+temp+'</ul>', value)
+
+    temp = ''
+    p = re.compile(r'\[list=(.)\](.+?)\[/list\]', re.DOTALL)
+    m = p.search(value)
+    if m:
+        items = re.split(re.escape('[*]'), m.group(2))
+        for i in items[1:]:
+            temp = temp + '<li>' + i + '</li>'
+        value = p.sub(r'<ol type=\1>'+temp+'</ol>', value)
+
+    return value
+
 def login_required(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):
@@ -1067,3 +1114,36 @@ async def friends_page():
     friends = [dict(friend, **info) for friend, info in zip(friends, friends_info)]
 
     return await render_template('friends.html', friends=friends, timeago=timeago)
+
+@frontend.route('/wip/u/<id>')
+async def wip_profile_select(id):
+
+    mode = request.args.get('mode', 'std', type=str) # 1. key 2. default value
+    mods = request.args.get('mods', 'vn', type=str)
+    user_data = await glob.db.fetch(
+        'SELECT name, safe_name, id, priv, country, userpage_content '
+        'FROM users '
+        'WHERE safe_name = %s OR id = %s LIMIT 1',
+        [utils.get_safe_name(id), id]
+    )
+
+    #about_me/userpage_content
+    rendered_bbcode = bbcode(escape(user_data['userpage_content']))
+
+    # no user
+    if not user_data:
+        return (await render_template('404.html'), 404)
+
+    # make sure mode & mods are valid args
+    if mode is not None and mode not in VALID_MODES:
+        return (await render_template('404.html'), 404)
+
+    if mods is not None and mods not in VALID_MODS:
+        return (await render_template('404.html'), 404)
+
+    is_staff = 'authenticated' in session and session['user_data']['is_staff']
+    if not user_data or not (user_data['priv'] & Privileges.Normal or is_staff):
+        return (await render_template('404.html'), 404)
+
+    user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
+    return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode)
