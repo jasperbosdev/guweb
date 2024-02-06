@@ -1,3 +1,25 @@
+@font-face { 
+  font-family: 'Gatari icons'; 
+  src: url(/static/images/icons/Gatari_icons.ttf); 
+}
+
+@font-face {
+  font-family: 'FontAwesomeExtra';
+  src: url('/static/fonts/extra/extra.eot');
+  src: url('/static/fonts/extra/extra.eot') format('embedded-opentype'),
+          url('/static/fonts/extra/extra.woff2') format('woff2'),
+          url('/static/fonts/extra/extra.woff') format('woff'),
+          url('/static/fonts/extra/extra.ttf') format('truetype'),
+          url('/static/fonts/extra/extra.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class*=" fa-extra-"], [class^=fa-extra-] {
+	font-family: FontAwesomeExtra;
+	font-weight: 400;
+}
+
 .main-block {
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
@@ -28,8 +50,6 @@
   background-position: center;
   display: flex;
   align-items: flex-end;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
   background: hsl(var(--main), 30%, 50%);
   position: relative;
   overflow: hidden;
@@ -60,10 +80,61 @@
 .bar-selection {
   width: 100%;
   height: 60px;
-  padding: 10px 10px 10px 250px;
+  padding: 10px 32px;
   display: flex;
   align-items: center;
   transition: 0.2s ease;
+}
+
+.userprofile-heading {
+  padding: 8px 32px;
+  font-size: 20px;
+  min-height: 48px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: hsl(var(--main), 12%, 15%);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.heading-selector {
+  display: flex;
+}
+
+.mode-select:first-child {
+  margin-left: 0;
+}
+
+.mode-select {
+  padding: 8px 12px;
+}
+
+.mode-select {
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: baseline;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: 6px;
+  opacity: 0.7;
+  line-height: 1.1;
+  transition: 200ms opacity, 150ms background-color, 200ms color;
+  width: 45px;
+  justify-content: center;
+}
+
+.mode-select:hover {
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+}
+
+.selected {
+  background-color: hsl(var(--main), 10.7%, 24.7%);
 }
 
 .profile-avatar-area {
@@ -252,7 +323,7 @@ html {
 
 .header {
   padding: 10px 10px;
-  background: hsl(var(--main), 30%, 50%);
+  background: hsl(var(--main), 10.7%, 24.7%);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
@@ -264,7 +335,7 @@ html {
 .scores {
   background: content-box;
   transition: 0.2s transform ease;
-  background: hsl(var(--main), 20%, 20%);
+  background: hsl(var(--main), 1.4%, 17.5%);
   padding: 6px;
 }
 
@@ -729,4 +800,72 @@ span.beatmap-mapper {
 .log-block {
   transition: 0.2s ease;
   margin-bottom: 12px;
+}
+
+span.heading-title {
+  font-size: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+}
+
+.heading-title i {
+  margin-right: 10px;
+}
+
+@font-face {
+  font-family: osu-mode;
+  src: url(/static/fonts/extra.ttf) format("truetype")
+}
+
+.mode-icon {
+  font-family: osu-mode;
+  font-weight: 400;
+  font-style: initial;
+  margin-right: 0 !important;
+}
+
+.osu::before {
+  content: "\E800";
+  position: relative;
+  z-index: 500;
+}
+
+.std::before {
+  content: "\E800";
+  position: relative;
+  z-index: 500;
+}
+
+.catch::before {
+  content: "\E801";
+  position: relative;
+  z-index: 500;
+}
+
+.mania::before {
+  content: "\E802";
+  position: relative;
+  z-index: 500;
+}
+
+.taiko::before {
+  content: "\E803";
+  position: relative;
+  z-index: 500;
+}
+
+.fa-extra-mode-osu:before {
+	content: "\e800";
+}
+.fa-extra-mode-taiko:before {
+	content: "\e803";
+}
+.fa-extra-mode-ctb:before {
+	content: "\e801";
+}
+.fa-extra-mode-mania:before {
+	content: "\e802";
 }
