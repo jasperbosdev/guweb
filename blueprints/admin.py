@@ -9,6 +9,10 @@ import string
 import random
 import timeago
 import requests
+import flask
+from flask import flash
+from flask import jsonify
+from flask import request
 from quart import Blueprint
 from quart import render_template
 from quart import session
@@ -248,9 +252,8 @@ async def user_edit(id):
     if int(admin['id']) in [3,4]:
         admin['is_owner'] = True
 
-
-    return await render_template('admin/edit_user.html', user_data=user_data, logs_data=logs_data, admin=admin, access_denied=access_denied
-                                 , online_status=online_status)
+    return await render_template('admin/edit_user.html', user_data=user_data, logs_data=logs_data, admin=admin, access_denied=access_denied,
+                                 online_status=online_status)
 
 @admin.route('/invite')
 async def invitegen():
@@ -264,6 +267,13 @@ async def invitegen():
         return await flash('error', 'You must be a donator/staff member to do this!', 'settings/profile')
 
     return await render_template('admin/invite.html')
+
+@admin.route('/edit_map')
+async def edit_map():
+    if not 'authenticated' in session and not session["user_data"]["is_staff"]:
+        return await flash('error', 'You cannot be here!', 'login')
+    
+    return await render_template('admin/edit_map.html')
 
 @admin.route('/invite', methods=['POST'])
 async def gen_invite():

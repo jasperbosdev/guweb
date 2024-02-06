@@ -27,7 +27,7 @@
 
 .user-info-card {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     background-color: hsl(var(--main), 10.7%, 24.7%);
     border-radius: 18px;
@@ -63,12 +63,12 @@
     height: 25px;
 }
 
-.user-divider {
+.info-divider {
     background-color: hsl(var(--main), 90%, 55%);
-    width: auto;
-    margin: 12px 0;
+    width: 250px;
     align-self: center;
-    height: 5px;
+    height: 3px;
+    margin-left: 10px;
 }
 
 .group-item {
@@ -82,4 +82,92 @@
     background-color: hsl(var(--main), 10.7%, 24.7%);
     border-radius: 18px;
     padding: 24px 24px;
+}
+
+.actions-field {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-actions {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    gap: 20px;
+    min-width: 390px;
+}
+
+.input-fields-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 390px;
+}
+
+.control {
+    box-sizing: border-box;
+    clear: both;
+    font-size: 15px;
+    position: relative;
+    text-align: left;
+}
+
+.input {
+    border: 3px solid hsl(var(--main), 1.4%, 40%);
+    background-color: hsl(var(--main), 10.7%, 15.7%);
+}
+
+.input:hover, .is-hovered.input, .is-hovered.textarea, .select select.is-hovered, .select select:hover, .textarea:hover {
+    border-color: hsl(var(--main),15%,15%);
+}
+
+.quick-action-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.quick-action-item {
+    transition: all 0.2s ease-in-out;
+}
+
+.quick-action-item:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+}
+
+.action-btn-safe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 123px;
+    min-height: 40px;
+    background-color: rgb(126, 185, 38);
+    padding: 4px 8px;
+    color: #fff;
+    border-radius: 8px;
+    text-wrap: nowrap;
+}
+
+.action-btn-dngr {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 123px;
+    min-height: 40px;
+    background-color: rgb(169, 29, 29);
+    padding: 12px 6px;
+    color: #fff;
+    border-radius: 8px;
+    text-wrap: nowrap;
+}
+
+.edit-divider {
+    display: flex;
+    align-items: center;
+    height: 480px;
+    width: 7px;
+    background-color: hsl(var(--main), 90%, 55%);
+    margin: auto 25px;
+    border-radius: 100px;
 }

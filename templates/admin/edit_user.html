@@ -64,9 +64,9 @@
                     </div>
                     <div class="data-part-info">
                         <div class="user-info-group"> <!-- avatar, name, perm_group, status other info -->
-                            <div class="group-item" style="margin-left: 12px;">{{ user_data['name'] }}</div>
+                            <div class="group-item" style="margin-left: 12px;"><a href="/u/{{ user_data['id'] }}">{{ user_data['name'] }}</a></div>
                             <div class="group-divider"></div>
-                            <div class="group-item">perm_group</div>
+                            <div class="group-item"><span class="">perm_group</span></div>
                             <div class="group-divider"></div>
                             <div class="group-item">
                                 {% if online_status == False %}
@@ -78,148 +78,128 @@
                                 {% endif %}
                             </div>
                         </div>
+                        <div class="info-divider"></div>
                         <div class="user-extra-info">
-                            <div class="extra-item">country</div>
+                            <div class="extra-item"><img src="/static/images/flags/{{ user_data['country']|upper }}.png" class="profile-flag"> {{ user_data['country'] }}</div>
                             <div class="extra-item">{{ user_data['email'] }}</div>
-                            <div class="extra-item">join date</div>
+                            <div class="extra-item">Joined {{ user_data['creation_time'] }}</div>
                         </div>
                     </div>
                     <!-- <div class="user-divider"></div> -->
                 </div>
 
-                <div class="user-edit-card">
-                    edit fields etc
-                </div>
-            </div>
-
-            <!-- <div class="card">
-                <div class="card-body">
-                    <div class="row row-cards">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-cover text-center"
-                                    style="background-image: url(https://{{ domain() }}/banners/{{ user_data['id'] }})">
-                                    <span class="avatar avatar-xl avatar-thumb avatar-rounded"
-                                        style="background-image: url(https://a.{{ domain() }}/{{ user_data['id'] }})"></span>
-                                </div>
-                                <div class="card-body text-left">
-                                    <div class="mb-1">
-                                        <h2>{{ user_data['name'] }}</h2>
-                                    </div>
-                                    <div class="mb-1">{{ user_data['email'] }}</div>
-                                    <div class="text-muted">Joined {{ user_data['creation_time'] }}</div>
-                                    <div class="card-header mb-1"></div>
-                                    <label class="form-label mt-3 text-center">Actions</label>
-                                    <div class="card-body">
-                                        <div>
-                                            <a href="#" class="btn btn-danger w-100">
-                                                Restrict
-                                            </a>
+                <div class="user-edit-card"> <!-- edit fields etc -->
+                    <div class="actions-field">
+                        <div class="main-actions">
+                            <div class="input-fields-group">
+                                <div class="input-container">
+                                    <div class="input-title">Username</div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                          <p class="control">
+                                            <input placeholder="username" class="input" type="text" name="username" value="{{ user_data['name'] }}">
+                                          </p>
                                         </div>
-                                        <div class="mt-2">
-                                            <a href="#" class="btn btn-warning w-100">
-                                                Silence
-                                            </a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="#" class="btn btn-success w-100">
-                                                Unrestrict
-                                            </a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="#" class="btn btn-success w-100">
-                                                Unsilence
-                                            </a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="#" class="btn btn-info w-100">
-                                                Add Note
-                                            </a>
-                                        </div>
-                                        {% if admin['is_owner'] == True %}
-                                        <div class="mt-2">
-                                            <a href="#" class="btn btn-light w-100">
-                                                Give Supporter
-                                            </a>
-                                        </div>
-                                        {% else %}
-                                        <div class="mt-2">
-                                            <a href="#" class="btn btn-light w-100 disabled">
-                                                Give Supporter
-                                            </a>
-                                        </div>
-                                        {% endif %}
                                     </div>
                                 </div>
+                                <div class="input-container">
+                                    <div class="input-title">AKA</div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                          <p class="control">
+                                            <input placeholder="username" class="input" type="text" name="username_aka" value="{{ user_data['username_aka'] }}">
+                                          </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-container">
+                                    <div class="input-title">Email</div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                          <p class="control">
+                                            <input placeholder="username" class="input" type="email" name="email" value="{{ user_data['email'] }}">
+                                          </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-container">
+                                    <div class="input-title">Country</div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                          <p class="control">
+                                            <input placeholder="username" class="input" type="text" name="country" value="{{ user_data['country'] }}">
+                                          </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-title">Quick actions</div>
+                            <div class="quick-action-group">
+                                <span onclick="example()" class="quick-action-item action-btn-safe">Clear Socials</span>
+                                <span onclick="example()" class="quick-action-item action-btn-safe">Remove Banner</span>
+                                <span onclick="example()" class="quick-action-item action-btn-safe">Remove pfp</span>
+                                <span onclick="example()" class="quick-action-item action-btn-safe">Clear About</span>
+                                <span onclick="example()" class="quick-action-item action-btn-safe">Private Profile</span>
+                                <span onclick="example()" class="quick-action-item action-btn-safe">Clear Graphs</span>
+                                <span onclick="example()" class="quick-action-item action-btn-dngr">Restrict User</span>
+                                <span onclick="example()" class="quick-action-item action-btn-dngr">Wipe Account</span>
+                                <!-- <span onclick="example()" class="quick-action-item action-btn-dngr">Example Button</span> -->
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>User Logs</h4>
-                                </div>
-                                <div class="card-body text-left">
-                                    <div class="table-responsive">
-                                        {% if logs_data %}
-                                        <table class="table card-table table-vcenter text-nowrap datatable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Log ID</th>
-                                                    <th>From</th>
-                                                    <th>To</th>
-                                                    <th>Action</th>
-                                                    <th>MSG</th>
-                                                    <th>Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for log_data in logs_data %}
-                                                <tr>
-                                                    <td>{{ log_data['id'] }}</td>
-                                                    <td><a href="/u/{{ log_data['from'] }}">{{ log_data['from_name']
-                                                            }}</a></td>
-                                                    <td><a href="/u/{{ log_data['to'] }}">{{ log_data['to_name'] }}</a>
-                                                    </td>
-                                                    <td>
-
-                                                        {% if log_data['action'] in ["0", "2", "5"] %}
-                                                        {% if log_data['action'] == "0" %}
-                                                        graveyarded
-                                                        {% elif log_data['action'] == "2" %}
-                                                        ranked
-                                                        {% elif log_data['action'] == "5" %}
-                                                        loved
-                                                        {% endif %}
-                                                        {% else %}
-                                                        {{ log_data['action'] }}
-                                                        {% endif %}
-
-                                                    </td>
-                                                    <td>
-                                                        {% if log_data['action'] in ["0", "2", "5"] or
-                                                        log_data['action'] == "request" %}
-                                                        <a href="/b/{{ log_data['msg'] }}">{{ log_data['msg'] }}</a>
-                                                        {% else %}
-                                                        {{ log_data['msg'] }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>{{ log_data['time'] }}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                        {% else %}
-                                        <span>No logs found</span>
-                                        {% endif %}
+                        <div class="edit-divider"></div>
+                        <div class="input-fields-group">
+                            <div class="input-container">
+                                <div class="input-title">User's privilege groups</div>
+                                <div class="field-body">
+                                    <div class="field">
+                                      <p class="control">
+                                        <input placeholder="privileges list" class="input" type="text" name="username" value="">
+                                      </p>
                                     </div>
                                 </div>
                             </div>
+                            <div class="input-container">
+                                <div class="input-title">Add privileges</div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control">
+                                            <select name="privileges" class="input">
+                                                <option value="">Select privilege</option>
+                                                <option value="Normal">Normal</option>
+                                                <option value="Verified">Verified</option>
+                                                <option value="Whitelisted">Whitelisted</option>
+                                                <option value="Supporter">Supporter</option>
+                                                <option value="Premium">Premium</option>
+                                                <option value="Alumni">Alumni</option>
+                                                <option value="Oguser">Oguser</option>
+                                                <option value="Tournament">Tournament</option>
+                                                <option value="Nominator">Nominator</option>
+                                                <option value="Mod">Moderator</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Donator">Donator</option>
+                                                <option value="Staff">Staff</option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-button buttons mt-6">
+                                <button class='button is-primary' type='submit'><span class='icon is-small'><i class='fas fa-check'></i></span><span>Save</span></button>
+                              </div>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
             {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+    function example() {
+        confirm("Are you sure? This cannot be undone!");
+    }
+</script>
+<script src="/static/js/asserts/vue-flags.js"></script>
+
 {% endblock %}
