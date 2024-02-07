@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 
 __all__ = ()
 
@@ -11,6 +11,7 @@ import timeago
 import asyncio
 import json
 import requests
+import datetime
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
@@ -25,6 +26,7 @@ from quart import request
 from quart import session
 from quart import send_file
 from quart import redirect, url_for
+from datetime import datetime
 
 from constants import regexes
 from objects import glob
@@ -562,7 +564,7 @@ async def login_post():
     # check if account exists
     user_info = await glob.db.fetch(
         'SELECT id, name, email, priv, '
-        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content '
+        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content, username_aka '
         'FROM users '
         'WHERE safe_name = %s',
         [utils.get_safe_name(username)]
@@ -632,6 +634,7 @@ async def login_post():
         'occupation': user_info['occupation_content'],
         'location': user_info['location_content'],
         'interest': user_info['interest_content'],
+        'username_aka': user_info['username_aka'],
         'silence_end': user_info['silence_end'],
         'stats': {
             'pp': user_info_stats['pp']
@@ -1121,7 +1124,7 @@ async def wip_profile_select(id):
     mode = request.args.get('mode', 'std', type=str) # 1. key 2. default value
     mods = request.args.get('mods', 'vn', type=str)
     user_data = await glob.db.fetch(
-        'SELECT name, safe_name, id, priv, country, userpage_content '
+        'SELECT name, safe_name, id, priv, country, userpage_content, username_aka, latest_activity, creation_time, play_style, occupation_content, location_content, interest_content '
         'FROM users '
         'WHERE safe_name = %s OR id = %s LIMIT 1',
         [utils.get_safe_name(id), id]
@@ -1146,4 +1149,129 @@ async def wip_profile_select(id):
         return (await render_template('404.html'), 404)
 
     user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
-    return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode)
+
+    follow_count = await glob.db.fetch(
+        'SELECT COUNT(*) AS follow_count '
+        'FROM relationships '
+        'WHERE user2 = (%s)',
+        [id]
+    )
+
+    #Make badges
+    user_priv = Privileges(user_data['priv'])
+    group_list = []
+    if Privileges.Normal not in user_priv:
+        group_list.append(["RESTRICTED", "#ff0000", "fa-ban"])
+    else:
+        if int(user_data['id']) in [3]:
+            group_list.append(["Owner", "#e27030", "fa-cat"])
+        if Privileges.Dangerous in user_priv:
+            group_list.append(["Developer", "#515981", "fa-code"])
+        #elif Privileges.Admin in user_priv:
+            #group_list.append(["ADM", "#fbc531", ""])
+        #elif Privileges.Mod in user_priv:
+            #group_list.append(["GMT", "#28a40c", ""])
+        if Privileges.Nominator in user_priv:
+            group_list.append(["BAT", "#30E2BF", "fa-music"])
+        if Privileges.Alumni in user_priv:
+            group_list.append(["Alumni", "#ea8685", "fa-door-open"])
+        if int(user_data["id"]) in [3]:
+            group_list.append(["Neko", "#FA6F5D", "fa-paw"])
+        if Privileges.Oguser in user_priv:
+            group_list.append(["OG", "#e88d15", "fa-frog"])
+        if Privileges.Supporter in user_priv:
+            if Privileges.Premium in user_priv:
+                group_list.append(["Premium", "#f78fb3", "fa-fire"])
+            else:
+                group_list.append(["Supporter", "#f78fb3", "fa-heart"])
+
+            
+
+    badges = []
+
+    if user_data["priv"] & Privileges.Dangerous:
+        badges.append(("Developer", "fa-code", 7))
+    #if user_data["priv"] & Privileges.Admin:
+        #badges.append(("Administrator", "fa-user", 9.6))
+    #if user_data["priv"] & Privileges.Mod:
+        #badges.append(("Moderator", "fa-user-check", 8))
+    if user_data["priv"] & Privileges.Nominator:
+        badges.append(("Nominator", "fa-music", 8))
+    if user_data["priv"] & Privileges.Supporter:
+        badges.append(("Donator", "fa-dollar-sign", 11.4))
+    if user_data["priv"] & Privileges.Whitelisted:
+        badges.append(("Verified", "fa-check", 9.6))
+
+    ## Custom badges
+    if user_data["id"] == 0:
+        badges.append(("Developer", "fa-code", 7))
+    if user_data["id"] == 0:
+        badges.append(("Skylar <3", "fa-music", 6,6))
+    elif user_data["id"] == 0:
+        badges.append(("Racist", "fa-church", 7))
+    if user_data["id"] == 4:
+        badges.append(("Verified", "fa-check", 9.6))
+    if user_data["id"] == 5:
+        badges.append(("Verified", "fa-check", 9.6))
+    if user_data["id"] == 10:
+        badges.append(("Verified", "fa-check", 9.6))
+    if user_data["id"] == 6:
+        badges.append(("Verified", "fa-check", 9.6))
+    if user_data["id"] == 33:
+        badges.append(("Verified", "fa-check", 9.6))
+    if user_data["id"] == 47:
+        badges.append(("Verified", "fa-check", 9.6))
+    if user_data["id"] == 3:
+        badges.append(("Cutie", "fa-heart", 8.6))
+    if user_data["id"] == 7:
+        badges.append(("Cutie", "fa-heart", 9.6))
+    if user_data["id"] == 6:
+        badges.append(("Cutie", "fa-heart", 9.6))
+    if user_data["id"] == 26:
+        badges.append(("Cutie", "fa-heart", 9.6))
+    if user_data["id"] == 28:
+        badges.append(("Cutie", "fa-heart", 9.6))
+    if user_data["id"] == 32:
+        badges.append(("Cutie", "fa-heart", 8))
+    if user_data["id"] == 33:
+        badges.append(("Beweger", "fa-jet-fighter", 7))
+    if user_data["id"] == 34:
+        badges.append(("Beweger", "fa-jet-fighter", 7))
+    if user_data["id"] == 3: 
+        badges.append(("Hacker", "fa-ban", 8.6))
+    if user_data["id"] == 25:
+        badges.append(("Hacker", "fa-ban", 8.6))
+    user_data['creation_time'] = datetime.fromtimestamp(float(user_data['creation_time']))
+    user_data['latest_activity'] = datetime.fromtimestamp(float(user_data['latest_activity']))
+    user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
+
+    # Get play_style value from column
+    playstyle_data = await glob.db.fetch(
+        'SELECT id, play_style FROM users '
+        'WHERE id = %s',
+        [id]
+    )
+
+    # Extract the play_style value from the dictionary
+    playstyle_value = playstyle_data['play_style']
+
+    # Calculate playstyle_names_str based on playstyle_value
+    playstyle_names = []
+
+    # Calculate playstyle_names_str based on playstyle_value
+    playstyle_names = []
+
+    if playstyle_value & 1:
+        playstyle_names.append('tablet')
+    if playstyle_value & 2:
+        playstyle_names.append('mouse')
+    if playstyle_value & 4:
+        playstyle_names.append('keyboard')
+    if playstyle_value & 8:
+        playstyle_names.append('touch')
+
+    playstyle_names_str = ', '.join(playstyle_names)
+
+    return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
+                                 timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
+                                 badges=badges)
