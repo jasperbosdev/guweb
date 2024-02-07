@@ -43,8 +43,18 @@
   align-items: flex-start;
 }
 
+.profile-bg::before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  left: 0;
+  /* backdrop-filter: blur(2px); */
+  background-image: linear-gradient(4deg, hsl(var(--main), 10.7%, 24.7%, 1) 12%, hsl(var(--main), 10.7%, 24.7%, 0.1) 90%);
+}
+
 .profile-bg {
-  min-height: 262px;
+  min-height: 300px;
   width: 100%;
   background-size: cover;
   background-position: center;
@@ -173,7 +183,7 @@
 }
 
 .badge-selects {
-  background: hsl(var(--main), 16%, 20%);
+  /* background: hsl(var(--main), 16%, 20%); */
 }
 
 .select-left {
@@ -868,4 +878,234 @@ span.heading-title {
 }
 .fa-extra-mode-mania:before {
 	content: "\e802";
+}
+
+.userprofile_body {
+  position: relative;
+  display: flex;
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+  color: #222;
+  padding: 0 32px;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  padding-left: 208px;
+  padding-top: 16px;
+}
+
+.userprofile_body .left-avatar {
+  position: absolute;
+  bottom: 16px;
+  z-index: 2;
+  left: 44px;
+}
+
+.support-pfp {
+  min-width: 100px;
+  min-height: 100px;
+  width: 140px;
+  background-size: 120%;
+  box-shadow: 0 2px 0 0 hsl(var(--main), 90%, 55%), 0 0 0 3px hsl(var(--main), 90%, 55%), 0 3px 3px rgb(0 0 0 / 25%) !important;
+  position: relative;
+}
+
+.left-avatar-support, .left-avatar-support>img {
+  border-radius: 0.5em !important;
+}
+
+.left-avatar-support, .left-avatar-support>img {
+  border-radius: 0.5em !important;
+}
+
+.d-flex.align-items-baseline {
+  display: flex;
+}
+
+.username_aka {
+  color: hsl(var(--main), 30%, 90%);
+  font-size: 12px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.user-name {
+  font-weight: 600;
+  transition: 100ms opacity;
+}
+
+.verify-block {
+  margin-left: 4px;
+}
+
+.left-name {
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.left-avatar {
+  min-width: 100px;
+  min-height: 100px;
+  width: 140px;
+  background-color: #fff;
+  background-size: 120%;
+  box-shadow: 0 2px 0 0 #edeef0, 0 0 0 2px #edeef0, 0 3px 3px rgb(0 0 0 / 25%);
+  position: relative;
+}
+
+.left-flag {
+  display: flex;
+  color: #fff;
+  font-weight: 400;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+[data-title] {
+  position: relative;
+  cursor: help;
+}
+
+.ranks-block {
+  background-color: hsl(var(--main), 1.4%, 17.5%);
+}
+
+.ranks-block {
+  padding: 0 44px; /* padding for rank block */
+  padding-top: 0;
+  display: flex;
+  flex-flow: column;
+}
+
+.left-join {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.left-join .join-text:not(:last-child) {
+  margin-right: 14px;
+}
+
+.left-join .join-text {
+  color: hsl(var(--base) 100% 70%);
+  font-weight: 700;
+  white-space: nowrap;
+  display: flex;
+}
+
+.other-profile1:not(:last-child) {
+  margin-right: 14px;
+}
+
+.map-mod, .play-stats>.map-fc, .pp-content, .left-join .join-text, .box-header:before {
+  color: hsl(var(--main), 90%, 55%);
+}
+
+.join-date {
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  margin-left: 3.5px;
+}
+
+.bar-selection-badges {
+  display: flex;
+}
+
+.other-profile1 {
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  font-weight: 600;
+  align-items: baseline;
+  /* color: hsl(var(--main), 90%, 55%); */
+  color: #fff;
+}
+
+.other-profile1 i {
+  color: hsl(var(--main), 90%, 55%);
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.badges-list {
+  flex-wrap: wrap;
+  display: flex;
+  color: #575757;
+  font-size: 14px;
+  margin-bottom: 18px;
+  margin-top: 8px;
+}
+
+.ranks-block>div.d-flex, .badges-list {
+  border-top-color: hsla(var(--base-dark), 10%, 25%);
+}
+
+.badges-list {
+  border-bottom-width: 0;
+  box-shadow: none;
+}
+
+.block-title, .play-stats, .profile-block, .badges-list, span.heading-title, .box-content, .userpage-content, .category-title, .userpage, .clan-stats, .clan-users, .recent-activity {
+  color: #fff;
+}
+
+.profile-tag {
+  display: flex;
+  border: 1px solid hsl(var(--main) 5% 90%);
+  color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  padding-top: 8px;
+  font-weight: 500;
+  background-size: cover;
+  font-size: 12.5px;
+  margin: 6px 2px;
+  border-radius: 8px;
+  line-height: 1.3;
+}
+
+.user-badge, .profile-tag {
+  border-color: hsl(var(--main) 25% 30%);
+  margin: 4px;
+}
+
+.ranks-block>div.d-flex {
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+.profile-tag span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: 6px;
+}
+
+.profile-badges1 {
+  padding: 5px 0px 5px 5px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+.profile-badges1 img {
+  flex: none;
+  height: 40px;
+  background-size: contain;
+  margin-right: 10px;
+  background-position: 50%;
+  display: inline-block;
 }
