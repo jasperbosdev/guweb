@@ -196,23 +196,7 @@
                 </a>
             </div>
         </div>
-        <div class="profile-bg" style="min-height: 262px; background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('/banners/{{ user['id'] }}'); background-size: cover; background-position-y: center;" onError="this.onerror=null; this.src='/banners/c6.jpg';">
-            <div class="info-block">
-                <h1 class="title">
-                    <p class="ranks">
-                        <img src="/static/images/flags/{{ user['country']|upper }}.png" class="profile-flag">
-                        <span class="bgf">{{ user['name'] }}</span>
-                    </p>
-                </h1>
-                <transition name="fade">
-                    <div class="subtitle" v-if='data.status.online == false'>
-                        <a class='circle'>●</a> Offline
-                    </div>
-                    <div class="subtitle" v-else-if='data.status.online == true'>
-                        <a class='circle green'>●</a> Online
-                    </div>
-                </transition>
-            </div>
+        <div class="profile-bg" style="min-height: 262px; background: url('/banners/{{ user['id'] }}'); background-size: cover; background-position-y: center;" onError="this.onerror=null; this.src='/banners/c6.jpg';">
             <div class="anime-girl">
                 <!-- (if you want to add it)
                     <img src="{your transparent img src}" alt="">
@@ -225,18 +209,226 @@
                 </div>
             </transition>
         </div>
-        <div class="profile-flex">
-            <div class="profile-avatar-area">
-                <img src="https://a.{{ domain() }}/{{ user['id'] }}" alt="avatar" class="rounded-avatar profile-avatar"
-                    onError="this.src='/static/images/avatar_notwork.png';">
-            </div>
-            <div class="bar-selection badge-selects">
-                <span>
-                    Badges not yet implemented!
-                </span>
+        <div class="userprofile_body">
+            <div class="d-flex">
+                {% if user['priv'] in [31767, 33556499, 33554451, 19, 33586199, 33554455] %}
+                <div class="left-avatar user-avatar support-pfp left-avatar-support">
+                    <img src="https://a.{{ domain() }}/{{ user['id'] }}">
+                </div>
+                {% else %}
+                <div class="left-avatar user-avatar">
+                    <img src="https://a.{{ domain() }}/{{ user['id'] }}">
+                </div>
+                {% endif %}
+
+                <div class="d-flex flex-column align-items-baseline">
+
+                    {% macro username(user) %}
+                        {% if user['username_aka'] is not none and user['username_aka'] != '' %}
+                            <p class="username_aka">
+                                (A.K.A {{ user['username_aka'] }})
+                            </p>
+                        {% endif %}
+                    {% endmacro %}
+
+                    {{ username(user) }}
+
+                    <div class="left-name" style="display: flex; align-items: center;">
+                        <span v-if="{{ user['id'] }} == 3" class="bgf user-name"
+                            style="text-shadow: rgb(190, 196, 255) 0px 0px 8px; color: rgb(255, 255, 255); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);">Lionz</span>
+                        <div v-else="" class="user-name bgf">{{ user['name'] }}</div>
+
+                        {% if user['priv'] in [31767, 33556499, 33554451, 19, 33586199, 33554455] %}
+                        <div class="verify-block" style="display: flex; align-items: center;">
+                            <img src="/static/images/supporter.svg" style="width: 20px;">
+                        </div>
+                        {% else %}
+                        {% endif %}
+
+                        <div class="verify-block" style="display: flex; align-items: center;"
+                            v-if="{{ user['id'] }} == 3">
+                            <img src="/static/images/verified.svg" style="width: 20px;">
+                        </div>
+
+                        {% if session.authenticated and session.user_data['is_staff'] %}
+                        <div class="verify-block">
+                            <a :href="'/admin/users/edit/' + {{ user['id'] }}">&nbsp;
+                                <i class="fa-solid fa-pen-to-square"
+                                    style="font-size: 18px; color: #469BFF;"></i>
+                            </a>
+                        </div>
+
+                        {% if user.priv == 1 %}
+                        &nbsp;&nbsp;<div class="verify-block">
+                            <a>
+                                <i class="fa-solid fa-triangle-exclamation" style="color: red;"></i>
+                                <span>&nbsp;restricted</span>
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        {% if user.priv == 2 %}
+                        &nbsp;&nbsp;<div class="verify-block">
+                            <a>
+                                <i class="fa-solid fa-triangle-exclamation" style="color: red;"></i>
+                                <span>&nbsp;restricted</span>
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        {% if user.priv == 33554434 %}
+                        &nbsp;&nbsp;<div class="verify-block">
+                            <a>
+                                <i class="fa-solid fa-triangle-exclamation" style="color: red;"></i>
+                                <span>&nbsp;restricted</span>
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        {% endif %}
+                    </div>
+
+                    <div class="left-flag">
+                        <a data-title="Groningen"><img v-if="{{ user['id'] }} == 3"
+                            src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Groningen.svg"
+                            class="profile-flag">
+                        </a>
+                        <img src="/static/images/flags/{{ user['country']|upper }}.png" class="profile-flag">
+                        <span>
+                            <% flags{{ [user['country']|upper] }} %>
+                        </span>
+
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="ranks-block">
+            <div class="d-flex flex-wrap">
+                <div class="left-join">
+                    <div class="join-text">Joined
+                        <div title="{{ user['creation_time'] }}" class="join-date">
+                            <span>{{ timeago.format(user['creation_time']) }}</span>
+                        </div>
+                    </div>
+                    {% if session.authenticated and session.user_data['id'] == 0 %}
+                    {% else %}
+                    <div class="join-text">Last seen
+                        <div title="{{ user['latest_activity'] }}" class="join-date">
+                            <span>{{ timeago.format(user['latest_activity']) }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if session.authenticated and session.user_data['id'] == 0 %}
+                    {% else %}
+                    <div class="join-text">Followers
+                        <div class="join-date">
+                            <span>{{ follow_count['follow_count'] }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if session.authenticated and session.user_data['id'] == 0 %}
+                    {% else %}
+                    {% if playstyle_names_str %}
+                    <div class="join-text">Playing with
+                        <div class="join-date">
+                            {{ playstyle_names_str }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
+
+                    {% if session.authenticated and session.user_data['id'] == 0 %}
+                    {% else %}
+                    <transition name="click">
+                        <div class="join-text" v-if='data.status.online == true'>Status
+                            <div class="join-date" v-if='data.status.online == true'
+                                :key="actionIntToStr(data.status.status)">
+                                <% actionIntToStr(data.status.status) %>
+                            </div>
+                    </transition>
+                </div>
+                </template>
+                {% endif %}
+
+
+            </div>
+        </div>
+        <div class="bar-selection-badges badge-selects">
+
+            {% macro location(user) %}
+            {% if user['location_content'] != "" and user['location_content'] != None %}
+
+
+            <span href="#" class="other-profile1">
+                <i class="fa-solid fa-location-dot"></i>{{ user['location_content'] }}
+            </span>
+
+
+            {% endif %}
+            {% endmacro %}
+            {{ location(user) }}
+
+            {% macro occupation(user) %}
+            {% if user['occupation_content'] != "" and user['occupation_content'] != None %}
+
+
+            <span href="#" class="other-profile1">
+                <i class="fa-solid fa-suitcase"></i></i>{{ user['occupation_content'] }}
+            </span>
+
+
+            {% endif %}
+            {% endmacro %}
+            {{ occupation(user) }}
+
+            {% macro interest(user) %}
+            {% if user['interest_content'] != "" and user['interest_content'] != None %}
+
+
+            <span href="#" class="other-profile1">
+                <i class="fa-solid fa-heart"></i></i>{{ user['interest_content'] }}
+            </span>
+
+
+            {% endif %}
+            {% endmacro %}
+            {{ interest(user) }}
+        </div>
+
+        <!-- badge titles badges -->
+
+        <div class="badges-list">
+            {% for el in group_list %}
+            <div class="profile-tag" style="background-color:{{ el[1] }} !important; vertical-align: middle;">
+                <span>
+                    {{ el[0] }}
+                </span>
+                <i class="fa-solid {{ el[2] }}"></i>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- profile badges -->
+
+        <!-- <div v-if="{{ user['id'] }} == 3">
+
+            <div class="profile-badges1">
+
+                <div class="profile-badge1">
+                    <img title="longstanding contribution to the server"
+                        src="https://komako.pw/static/images/badges/contributor.png">
+                    <img title="longstanding quality beatmap nominations"
+                        src="https://komako.pw/static/images/badges/elite-nominator.png">
+                </div>
+
+            </div>
+
+        </div> -->
     </div>
+        
     <div class="second-block">
         <div class="columns is-marginless two-sides">
             <div class="column">
@@ -252,6 +444,7 @@
 
 {% block bottom %}
 <script src="/static/js/pages/profile.js"></script>
+<script src="/static/js/asserts/vue-flags.js"></script>
 {% if user['customisation']['banner'] == True or user['customisation']['background'] == True %}
 <style>
     {% if user['customisation']['banner'] == True %}
