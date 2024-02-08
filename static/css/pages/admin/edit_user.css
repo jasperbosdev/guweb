@@ -149,6 +149,19 @@
     text-wrap: nowrap;
 }
 
+.action-btn-good {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 123px;
+    min-height: 40px;
+    background-color: rgb(107, 91, 248);
+    padding: 4px 8px;
+    color: #fff;
+    border-radius: 8px;
+    text-wrap: nowrap;
+}
+
 .action-btn-dngr {
     display: flex;
     align-items: center;
