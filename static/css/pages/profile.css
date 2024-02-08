@@ -1115,3 +1115,36 @@ span.heading-title {
   background-position: 50%;
   display: inline-block;
 }
+
+.main-block {
+  background-color: hsl(var(--main), 12%, 15%) !important;
+}
+
+.quick-nav {
+  padding: 0 0.75rem;
+}
+
+.quick-nav-block {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  margin: 12px 0 0px 0px;
+  justify-content: space-around;
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+  border-radius: 8px;
+}
+
+.quick-nav-item {
+  border-radius: 8px;
+  background-color: hsl(var(--main), 1.4%, 17.5%);
+  min-width: 175px;
+  color: #fff;
+  padding: 3px 0;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.quick-nav-item:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
