@@ -664,15 +664,6 @@ span.beatmap-mapper {
   transform: scale(0.95);
 }
 
-.anime-girl {
-  position: absolute;
-  transition: 0.2s ease;
-  right: 50px;
-  width: 500px;
-  top: -150px;
-  right: -30px;
-}
-
 .mods-fulltext {
   display: block;
 }
@@ -1179,8 +1170,117 @@ span.heading-title {
   text-align: center;
 }
 
+.stats-grade-text span {
+  text-align: center;
+}
+
+.stats-grade {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 8px;
+  gap: 10px;
+  width: 50px;
+  height: 25px;
+  background: hsl(var(--main), 10.7%, 24.7%);
+  border-radius: 38px;
+  margin-bottom: 2px;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.grade-txt {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+
 .graph-container {
-  background-color: hsl(var(--main), 12%, 15%);
+  background-color: hsl(var(--main), 10.7%, 24.7%);
   border-radius: 18px;
   padding: 10px;
+}
+
+.rank-grade-text {
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.stats-single {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #fff;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.level-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.level-bar {
+  display: flex;
+  border-radius: 18px;
+  background-color: hsl(var(--main), 1.4%, 17.5%);
+  height: 30px;
+  width: 300px;
+}
+
+.level-text {
+  margin-left: 80px;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.progress-text {
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.rank-banner-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff0f;
+  border-radius: 12px;
+  gap: 10px;
+  width: 75px;
+  height: 75px;
+}
+
+.anime-girl {
+  position: absolute;
+  transition: 0.2s ease;
+  right: 10;
+  bottom: 10;
+}
+
+.global-rank {
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+}
+
+.country-rank {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+}
+
+.rank-profile-flag {
+  height: 15px;
+  margin-right: 3px;
 }
