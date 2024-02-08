@@ -16,6 +16,19 @@
 {% endif %}
 {% endmacro %}
 
+{% macro statsblock() %}
+<div class="log-block"> <!-- stats block-->
+    <div class="header">
+        <div class="title">
+            <i class="fas fa-chart-pie"></i> Statistics
+        </div>
+    </div>
+    <div class="scores">
+        Lorem Ipsum
+    </div>
+</div>
+{% endmacro %}
+
 {% macro scores(title, id) %}
 <div class="log-block" v-bind:class="{ 'load' : data.scores.{{ id }}.load }">
     <div class="header">
@@ -428,11 +441,33 @@
 
         </div> -->
     </div>
-        
+    <div class="quick-nav">
+        <div class="quick-nav-block">
+            <a class="quick-nav-item" href="#">
+                Statistics
+            </a>
+            <a class="quick-nav-item" href="#">
+                Recent Activity
+            </a>
+            <a class="quick-nav-item" href="#">
+                Performance
+            </a>
+            <a class="quick-nav-item" href="#">
+                Historical
+            </a>
+            <a class="quick-nav-item" href="#">
+                Beatmaps
+            </a>
+            <a class="quick-nav-item" href="#">
+                Achievements
+            </a>
+        </div>
+    </div>
     <div class="second-block">
         <div class="columns is-marginless two-sides">
             <div class="column">
                 {{ userpage(user) }}
+                {{ statsblock() }}
                 {{ scores('Best Scores', 'best')}}
                 {{ scores('Recent Scores', 'recent')}}
                 {{ maps('Most Beatmaps Played', 'most')}}
@@ -440,6 +475,7 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block bottom %}
