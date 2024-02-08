@@ -3,16 +3,16 @@
 
 {% macro userpage(user) %}
 {% if user['userpage_content'] != "" and user['userpage_content'] != None %}
-    <div class="log-block">
-        <div class="header">
-            <div class="title">
-                <i class="fas fa-card"></i> About me
-            </div>
-        </div>
-        <div class="scores">
-            {{ rendered_bbcode | safe }}
+<div class="log-block">
+    <div class="header">
+        <div class="title">
+            <i class="fa-solid fa-address-card"></i> About me
         </div>
     </div>
+    <div class="scores">
+        {{ rendered_bbcode | safe }}
+    </div>
+</div>
 {% endif %}
 {% endmacro %}
 
@@ -29,66 +29,134 @@
                 <div class="rank-stats">
                     <div class="rank-stats-text">
                         Global Ranking<br>
-                        <span><% '#' + data.stats.out[modegulag].rank %></span>
+                        <span>
+                            <% '#' + data.stats.out[modegulag].rank %>
+                        </span>
                     </div>
                     <div class="rank-stats-text">
                         Performance<br>
-                        <span><% '#' + data.stats.out[modegulag].pp %>pp</span>
+                        <span>
+                            <% data.stats.out[modegulag].pp %>pp
+                        </span>
                     </div>
                     <div class="rank-stats-text">
                         Playtime<br>
-                        <span><% secondsToDhm(data.stats.out[modegulag].playtime) %></span>
+                        <span>
+                            <% secondsToDhm(data.stats.out[modegulag].playtime) %>
+                        </span>
                     </div>
                 </div>
                 <div class="graph-container">
-                    Lorem Ipsum
+                    <div style="height: 237.5px" id="stats-graph">
+                        <canvas id="myChart"></canvas>
+                    </div>
                 </div>
             </div>
             <div class="main-stats">
                 <div class="rank-stats">
-                    <div class="rank-stats-text">
-                        <div class="stats-grade"><span class="grade-ss">SS</span></div>
-                        <span><% data.stats.out[modegulag].x_count %></span>
+                    <div class="rank-grade-text">
+                        <div class="stats-grade"><span class="grade-txt grade-ss">SS</span></div>
+                        <span>
+                            <% data.stats.out[modegulag].x_count %>
+                        </span>
                     </div>
-                    <div class="rank-stats-text">
-                        <div class="stats-grade"><span class="grade-ssh">SSH</span></div>
-                        <span><% data.stats.out[modegulag].xh_count %></span>
+                    <div class="rank-grade-text">
+                        <div class="stats-grade"><span class="grade-txt grade-ssh">SSH</span></div>
+                        <span>
+                            <% data.stats.out[modegulag].xh_count %>
+                        </span>
                     </div>
-                    <div class="rank-stats-text">
-                        <div class="stats-grade"><span class="grade-sh">SH</span></div>
-                        <span><% data.stats.out[modegulag].sh_count %></span>
+                    <div class="rank-grade-text">
+                        <div class="stats-grade"><span class="grade-txt grade-sh">SH</span></div>
+                        <span>
+                            <% data.stats.out[modegulag].sh_count %>
+                        </span>
                     </div>
-                    <div class="rank-stats-text">
-                        <div class="stats-grade"><span class="grade-s">S</span></div>
-                        <span><% data.stats.out[modegulag].s_count %></span>
+                    <div class="rank-grade-text">
+                        <div class="stats-grade"><span class="grade-txt grade-s">S</span></div>
+                        <span>
+                            <% data.stats.out[modegulag].s_count %>
+                        </span>
                     </div>
-                    <div class="rank-stats-text">
-                        <div class="stats-grade"><span class="grade-a">A</span></div>
-                        <span><% data.stats.out[modegulag].a_count %></span>
-                    </div>
+                    <div class="rank-grade-text">
+                        <div class="stats-grade"><span class="grade-txt grade-a">A</span></div>
+                        <span>
+                            <% data.stats.out[modegulag].a_count %>
+                        </span>
+                    </div>                   
                 </div>
                 <div class="graph-container">
-                    <div class="stats-item">
-                        <% addCommas(data.stats.out[modegulag].rscore) %>
+                    <div class="stats-single">
+                        <div class="stats-title">
+                            Ranked Score
+                        </div>
+                        <div class="stats-item">
+                            <% addCommas(data.stats.out[modegulag].rscore) %>
+                        </div>
                     </div>
-                    <div class="stats-item">
-                        <% addCommas(data.stats.out[modegulag].tscore) %>
+                    <div class="stats-single">
+                        <div class="stats-title">
+                            Total Score
+                        </div>
+                        <div class="stats-item">
+                            <% addCommas(data.stats.out[modegulag].tscore) %>
+                        </div>
                     </div>
-                    <div class="stats-item">
-                        <% addCommas(data.stats.out[modegulag].max_combo) %>
+                    <div class="stats-single">
+                        <div class="stats-title">
+                            Max Combo
+                        </div>
+                        <div class="stats-item">
+                            <% addCommas(data.stats.out[modegulag].max_combo) %>
+                        </div>
                     </div>
-                    <div class="stats-item">
-                        <% addCommas(data.stats.out[modegulag].plays) %>
+                    <div class="stats-single">
+                        <div class="stats-title">
+                            Playcount
+                        </div>
+                        <div class="stats-item">
+                            <% addCommas(data.stats.out[modegulag].plays) %>
+                        </div>
                     </div>
-                    <div class="stats-item">
-                        <% data.stats.out[modegulag].acc.toFixed(2) %>%
+                    <div class="stats-single">
+                        <div class="stats-title">
+                            Accuracy
+                        </div>
+                        <div class="stats-item">
+                            <% formatAcc(data.stats.out[modegulag].acc) %>%
+                        </div>
                     </div>
-                    <div class="stats-item">
-                        <% addCommas(data.stats.out[modegulag].replay_views) %>
+                    <div class="stats-single">
+                        <div class="stats-title">
+                            Replay Views
+                        </div>
+                        <div class="stats-item">
+                            <% addCommas(data.stats.out[modegulag].replay_views) %>
+                        </div>
                     </div>
+                    <div class="level-section">
+                        <div class="level-bar">
+                            <div class="level-bar-fill" :style="{ width: level_progress + '%', backgroundColor: 'hsl(var(--main), 90%, 55%)' }"></div>
+                        </div>
+                        <span class="progress-text"><% Math.round(level_progress) %>%</span>
+                    </div> 
+                    <span class="level-text">Level <% playerLevel %></span>                 
                 </div>
             </div>
         </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro activblock() %}
+<div class="log-block">
+    <div class="header">
+        <div class="title">
+            <i class="fa-solid fa-clock-rotate-left"></i> Recent Activity
+        </div>
+    </div>
+    <div class="scores">
+        recent activity part blablabla
     </div>
 </div>
 {% endmacro %}
@@ -112,7 +180,8 @@
                     <div class="map-title-block">
                         <div class="map-title">
                             <a class="beatmap-link" v-bind:href="'https://{{ domain() }}/b/' + map.beatmap.id">
-                                <% map.beatmap.artist %> - <% map.beatmap.title %> [<% map.beatmap.version %>] <!--<span v-if="map.mods != 0">+ <% modsStr(map.mods) %></span>-->
+                                <% map.beatmap.artist %> - <% map.beatmap.title %> [<% map.beatmap.version %>]
+                                            <!--<span v-if="map.mods != 0">+ <% modsStr(map.mods) %></span>-->
                             </a>
                         </div>
                         <div class="play-stats">
@@ -130,7 +199,7 @@
                         <div class="score-details_right-block">
                             <div class="score-details_pp-block">
                                 <div class="map-pp">
-                                    <% map.pp.toFixed() %><span class="map-pp-unit">pp</span>
+                                    <% map.pp.toFixed(0) %><span class="map-pp-unit">pp</span>
                                 </div>
                                 <div class="map-acc">accuracy:&nbsp;<b>
                                         <% map.acc.toFixed(2) %>%
@@ -183,8 +252,7 @@
                 </span> <span class="beatmap-artist">
                     <% map.artist %>
                 </span>
-                <div class="beatmap-footer"><span class="beatmap-mapper"> by <span
-                            class="newmaps-color">
+                <div class="beatmap-footer"><span class="beatmap-mapper"> by <span class="newmaps-color">
                             <% map.creator %>
                         </span></span>
                     <div class="d-flex align-items-baseline"><span>
@@ -218,6 +286,9 @@
 <script src="/static/js/asserts/vue.js"></script>
 <script src="/static/js/asserts/vue-axios.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <link rel="stylesheet" href="/static/css/pages/profile.css">
 
 <script>
@@ -232,12 +303,11 @@
 <div id="app">
     <div class="main-block">
         <div class="userprofile-heading">
-            <span class="heading-title"><i class="fa-regular fa-address-card"
-                    style="font-size: 21px;"></i><span>player info</span></span>
+            <span class="heading-title"><i class="fa-regular fa-address-card" style="font-size: 21px;"></i><span>player
+                    info</span></span>
 
             <div class="heading-selector">
-                <a v-bind:class=" { 'selected': mods === 'vn' }" @click="ChangeModeMods(mode,'vn')"
-                    class="mode-select">
+                <a v-bind:class=" { 'selected': mods === 'vn' }" @click="ChangeModeMods(mode,'vn')" class="mode-select">
                     <span><i class="mode-icon osu"></i></span>
                 </a>
 
@@ -256,7 +326,7 @@
                     class="mode-select">
                     <span><i class="mode-icon osu"></i></span>
                 </a>
-                
+
                 <a v-bind:class="{ 'selected': mode === 'taiko', 'disabled': mods === 'ap' }"
                     @click="ChangeModeMods('taiko',mods)" class="mode-select">
                     <span class="fal fa-extra-mode-taiko"></span>
@@ -265,7 +335,7 @@
                 <a v-bind:class="{ 'selected': mode === 'catch', 'disabled': mods === 'ap' }"
                     @click="ChangeModeMods('catch',mods)" class="mode-select"><span
                         class="fal fa-extra-mode-ctb"></span>
-                    </a>
+                </a>
 
                 <a v-bind:class="{ 'selected': mode === 'mania', 'disabled': mods === 'ap' || mods === 'rx' }"
                     @click="ChangeModeMods('mania',mods)" class="mode-select"><span
@@ -273,11 +343,16 @@
                 </a>
             </div>
         </div>
-        <div class="profile-bg" style="min-height: 262px; background: url('/banners/{{ user['id'] }}'); background-size: cover; background-position-y: center;" onError="this.onerror=null; this.src='/banners/c6.jpg';">
-            <div class="anime-girl">
-                <!-- (if you want to add it)
-                    <img src="{your transparent img src}" alt="">
-                -->
+        <div class="profile-bg"
+            style="min-height: 262px; background: url('/banners/{{ user['id'] }}'); background-size: cover; background-position-y: center;"
+            onError="this.onerror=null; this.src='/banners/c6.jpg';">
+            <div class="rank-banner-block anime-girl">
+                <div class="global-rank">
+                    <span class="global-txt">🌎 <% '#' + data.stats.out[modegulag].rank %></span>
+                </div>
+                <div class="country-rank">
+                    <span class="country-txt"><img src="/static/images/flags/{{ user['country']|upper }}.png" class="rank-profile-flag"> <% '#' + data.stats.out[modegulag].country_rank %></span>
+                </div>
             </div>
             <transition name="click">
                 <div class="online-infomation" v-if='data.status.online == true'
@@ -301,11 +376,11 @@
                 <div class="d-flex flex-column align-items-baseline">
 
                     {% macro username(user) %}
-                        {% if user['username_aka'] is not none and user['username_aka'] != '' %}
-                            <p class="username_aka">
-                                (A.K.A {{ user['username_aka'] }})
-                            </p>
-                        {% endif %}
+                    {% if user['username_aka'] is not none and user['username_aka'] != '' %}
+                    <p class="username_aka">
+                        (A.K.A {{ user['username_aka'] }})
+                    </p>
+                    {% endif %}
                     {% endmacro %}
 
                     {{ username(user) }}
@@ -330,8 +405,7 @@
                         {% if session.authenticated and session.user_data['is_staff'] %}
                         <div class="verify-block">
                             <a :href="'/admin/users/edit/' + {{ user['id'] }}">&nbsp;
-                                <i class="fa-solid fa-pen-to-square"
-                                    style="font-size: 18px; color: #469BFF;"></i>
+                                <i class="fa-solid fa-pen-to-square" style="font-size: 18px; color: #469BFF;"></i>
                             </a>
                         </div>
 
@@ -367,8 +441,8 @@
 
                     <div class="left-flag">
                         <a data-title="Groningen"><img v-if="{{ user['id'] }} == 3"
-                            src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Groningen.svg"
-                            class="profile-flag">
+                                src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Groningen.svg"
+                                class="profile-flag">
                         </a>
                         <img src="/static/images/flags/{{ user['country']|upper }}.png" class="profile-flag">
                         <span>
@@ -427,7 +501,6 @@
                             </div>
                     </transition>
                 </div>
-                </template>
                 {% endif %}
 
 
@@ -532,6 +605,7 @@
             <div class="column">
                 {{ userpage(user) }}
                 {{ statsblock() }}
+                {{ activblock() }}
                 {{ scores('Best Scores', 'best')}}
                 {{ scores('Recent Scores', 'recent')}}
                 {{ maps('Most Beatmaps Played', 'most')}}
@@ -543,25 +617,42 @@
 {% endblock %}
 
 {% block bottom %}
-<script src="/static/js/pages/profile.js"></script>
 <script src="/static/js/asserts/vue-flags.js"></script>
+<script src="/static/js/pages/profile.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 {% if user['customisation']['banner'] == True or user['customisation']['background'] == True %}
 <style>
-    {% if user['customisation']['banner'] == True %}
-        .profile-bg {
-            min-height: 262px;
-            background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% / cover, linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/banners/3");
-            background-size: cover;
-            background-position-y: center;
-        }
-    {% endif %}
-    {% if user['customisation']['background'] == True %}
-        body {
-            background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)), url("/backgrounds/{{ user['id'] }}");
-            background-size: cover;
-            background-clip: content-box;
-        }
-    {% endif %}
+    {
+        % if user['customisation']['banner']==True %
+    }
+
+    .profile-bg {
+        min-height: 262px;
+        background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% / cover, linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url("/banners/3");
+        background-size: cover;
+        background-position-y: center;
+    }
+
+        {
+        % endif %
+    }
+
+        {
+        % if user['customisation']['background']==True %
+    }
+
+    body {
+        background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)),
+        url("/backgrounds/{{ user['id'] }}");
+        background-size: cover;
+        background-clip: content-box;
+    }
+
+        {
+        % endif %
+    }
 </style>
 {% endif %}
 {% endblock bottom %}
