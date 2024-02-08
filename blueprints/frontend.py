@@ -1157,6 +1157,13 @@ async def wip_profile_select(id):
         [id]
     )
 
+    meta_stats = await glob.db.fetch(
+        'SELECT id, mode, tscore, rscore, pp, plays, playtime, acc, max_combo, total_hits, replay_views, xh_count, x_count, sh_count, s_count, a_count '
+        'FROM stats '
+        'WHERE id IN (%s, %s) AND mode = 0 LIMIT 1',
+        (id, utils.get_safe_name(id))
+    )
+
     #Make badges
     user_priv = Privileges(user_data['priv'])
     group_list = []
@@ -1274,4 +1281,4 @@ async def wip_profile_select(id):
 
     return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
-                                 badges=badges)
+                                 badges=badges, meta_stats=meta_stats)

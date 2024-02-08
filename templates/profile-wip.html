@@ -24,7 +24,71 @@
         </div>
     </div>
     <div class="scores">
-        Lorem Ipsum
+        <div class="stats-container">
+            <div class="main-stats">
+                <div class="rank-stats">
+                    <div class="rank-stats-text">
+                        Global Ranking<br>
+                        <span><% '#' + data.stats.out[modegulag].rank %></span>
+                    </div>
+                    <div class="rank-stats-text">
+                        Performance<br>
+                        <span><% '#' + data.stats.out[modegulag].pp %>pp</span>
+                    </div>
+                    <div class="rank-stats-text">
+                        Playtime<br>
+                        <span><% secondsToDhm(data.stats.out[modegulag].playtime) %></span>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    Lorem Ipsum
+                </div>
+            </div>
+            <div class="main-stats">
+                <div class="rank-stats">
+                    <div class="rank-stats-text">
+                        <div class="stats-grade"><span class="grade-ss">SS</span></div>
+                        <span><% data.stats.out[modegulag].x_count %></span>
+                    </div>
+                    <div class="rank-stats-text">
+                        <div class="stats-grade"><span class="grade-ssh">SSH</span></div>
+                        <span><% data.stats.out[modegulag].xh_count %></span>
+                    </div>
+                    <div class="rank-stats-text">
+                        <div class="stats-grade"><span class="grade-sh">SH</span></div>
+                        <span><% data.stats.out[modegulag].sh_count %></span>
+                    </div>
+                    <div class="rank-stats-text">
+                        <div class="stats-grade"><span class="grade-s">S</span></div>
+                        <span><% data.stats.out[modegulag].s_count %></span>
+                    </div>
+                    <div class="rank-stats-text">
+                        <div class="stats-grade"><span class="grade-a">A</span></div>
+                        <span><% data.stats.out[modegulag].a_count %></span>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div class="stats-item">
+                        <% addCommas(data.stats.out[modegulag].rscore) %>
+                    </div>
+                    <div class="stats-item">
+                        <% addCommas(data.stats.out[modegulag].tscore) %>
+                    </div>
+                    <div class="stats-item">
+                        <% addCommas(data.stats.out[modegulag].max_combo) %>
+                    </div>
+                    <div class="stats-item">
+                        <% addCommas(data.stats.out[modegulag].plays) %>
+                    </div>
+                    <div class="stats-item">
+                        <% data.stats.out[modegulag].acc.toFixed(2) %>%
+                    </div>
+                    <div class="stats-item">
+                        <% addCommas(data.stats.out[modegulag].replay_views) %>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endmacro %}

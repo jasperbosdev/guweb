@@ -1148,3 +1148,39 @@ span.heading-title {
   transform: translateY(-5px);
   cursor: pointer;
 }
+
+.stats-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.main-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 510px;
+}
+
+.rank-stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.rank-stats-text {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.rank-stats-text span {
+  text-align: center;
+}
+
+.graph-container {
+  background-color: hsl(var(--main), 12%, 15%);
+  border-radius: 18px;
+  padding: 10px;
+}
