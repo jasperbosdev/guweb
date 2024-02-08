@@ -40,6 +40,34 @@ VALID_MODS = frozenset({'vn', 'rx', 'ap'})
 
 frontend = Blueprint('frontend', __name__)
 
+#code to calculate levels
+def get_required_score_for_level(level: int) -> float:
+    if level <= 100:
+        if level >= 2:
+            return 5000 / 3 * (4 * (level ** 3) - 3 * (level ** 2) - level) + 1.25 * (1.8 ** (level - 60))
+        else:
+            return 1.0  # Should be 0, but we get division by 0 below so set to 1
+    else:
+        return 26931190829 + 1e11 * (level - 100)
+
+def get_level(total_score: int) -> int:
+    level = 1
+    while True:
+        # Avoid endless loops
+        if level > 120:
+            return level
+
+        # Calculate required score
+        reqScore = get_required_score_for_level(level)
+
+        # Check if this is our level
+        if total_score <= reqScore:
+            # Our level, return it and break
+            return level - 1
+        else:
+            # Not our level, calculate score for next level
+            level += 1
+
 # bbcode
 import re
 from markupsafe import escape
@@ -1278,6 +1306,13 @@ async def wip_profile_select(id):
         playstyle_names.append('touch')
 
     playstyle_names_str = ', '.join(playstyle_names)
+
+    # Calculate the player's level and level progress
+    # total_score = meta_stats['tscore']  # Assuming 'tscore' holds the total score
+    # player_level = get_level(total_score)
+    # current_level_score = get_required_score_for_level(player_level)
+    # next_level_score = get_required_score_for_level(player_level + 1)
+    # level_progress = ((total_score - current_level_score) / (next_level_score - current_level_score)) * 100 | , player_level=player_level, level_progress=level_progress
 
     return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
