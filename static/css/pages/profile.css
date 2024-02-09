@@ -253,6 +253,13 @@ td {
   border-radius: 20px;
 }
 
+/* .grade-a {
+  padding: 2px 0;
+  border-radius: 12px;
+  background-color: #88DA20;
+  color: #275227;
+} */
+
 .grade-line {
   display: flex;
   justify-content: center;
@@ -401,8 +408,29 @@ html {
   flex: 1;
 }
 
+.map-title-time {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.diff-title {
+  color: #fff;
+  font-size: 16px;
+}
+
 .map-title {
-  font-size: 14px;
+  font-size: 16px;
+  display: flow-root;
+  font-weight: 500;
+  width: 75px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.map-title {
+  font-size: 17px;
   display: flow-root;
   font-weight: 500;
   width: 75px;
@@ -421,15 +449,12 @@ html {
 }
 
 .map-date {
-  font-size: 10px;
+  font-size: 12px;
+  color: #9d9d9d;
   font-weight: 500;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-}
-
-.map-date > time {
-  margin-top: 2px;
 }
 
 .map-mod {
@@ -509,6 +534,30 @@ html {
   align-items: center;
 }
 
+.score-details_mods-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+  border-radius: 0 10px 10px 0;
+  z-index: 0;
+  margin-left: 6px;
+  padding: 0 25px;
+}
+
+.map-mods {
+  font-weight: 700;
+  color: #fff;
+  /* color: hsl(var(--main), 30%, 55%); */
+  font-size: 28px;
+}
+
+.map-mods img {
+  max-height: 32px;
+}
+
 .score-details_pp-block {
   display: flex;
   flex-direction: column;
@@ -527,7 +576,7 @@ html {
 }
 
 .score-details_grade-block .rank-single {
-  margin: 0;
+  margin: 0 10;
 }
 
 .score-details_grade-block .map-rank {
@@ -650,14 +699,14 @@ span.beatmap-mapper {
   width: 100%;
   display: flex;
   justify-content: center;
-  background: hsl(var(--main), 20%, 20%);
 }
 
 .show-button {
   padding: 3px 42px;
-  background: hsl(var(--main), 25%, 25%);
-  margin: 0px 8px 8px 8px;
+  background: hsl(var(--main), 1.4%, 17.5%);
   text-align: center;
+  display: flex;
+  border-radius: 8px;
 }
 
 .show-button:hover {
@@ -1311,4 +1360,126 @@ span.heading-title {
   box-sizing: border-box;
   text-align: center;
   display: inline-block;
+}
+
+.date-text {
+  color: #9d9d9d9c;
+}
+
+.act-title, .act-player {
+  color: hsl(var(--main), 90%, 55%);
+  font-weight: 500;
+}
+
+.performance-block {
+  padding: 10px;
+}
+
+.scores-container {
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+  border-radius: 18px;
+  padding: 10px;
+}
+
+.score-type-title:first-child {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+.score-type1-title:first-child {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+  padding: 0 10px;
+}
+
+.score-type-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.score-type-left {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-weight: 500;
+}
+
+.failedcheckbox {
+  display: flex;
+  align-items: center;
+  background-color: hsl(var(--main), 10.7%, 24.7%);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.score-type-right {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-weight: 500;
+}
+
+.score-menu-btn {
+  width: 12px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.score-menu {
+  border-radius: 8px;
+  position: absolute;
+  right: 4vh;
+  background: hsl(var(--main), 10.7%, 24.7%);
+  padding: 8px;
+}
+
+.score-menu .menu-contents {
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+}
+
+.score-menu .menu-contents i {
+  margin: 6px 12px 6px 1px;
+}
+
+.score-menu .menu-contents span {
+  white-space: nowrap;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none; /* For Safari */
+  width: 30px;
+  height: 28px;
+  border-radius: 8px;
+  border: 3px solid hsl(var(--main), 10.7%, 44.7%);
+  background-color: hsl(var(--main), 1.4%, 17.5%);
+}
+
+/* Style the checked state of the checkbox */
+input[type="checkbox"]:checked {
+  background-color: hsl(var(--main), 50%, 50%); /* Change this color to whatever you want when the checkbox is checked */
+}
+
+/* Style the label */
+label {
+  margin-left: 5px; /* Add some space between the checkbox and the label */
+  color: white; /* Change the color of the label text */
+  font-size: 16px; /* Change the font size of the label text */
 }
