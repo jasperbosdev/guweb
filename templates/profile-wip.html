@@ -53,17 +53,17 @@
                 </div>
             </div>
             <div class="main-stats">
-                <div class="rank-stats">
+                <div class="grade-stats">
+                    <div class="rank-grade-text">
+                        <div class="stats-grade"><span class="grade-txt grade-ss">SSH</span></div>
+                        <span>
+                            <% data.stats.out[modegulag].xh_count %>
+                        </span>
+                    </div>
                     <div class="rank-grade-text">
                         <div class="stats-grade"><span class="grade-txt grade-ss">SS</span></div>
                         <span>
                             <% data.stats.out[modegulag].x_count %>
-                        </span>
-                    </div>
-                    <div class="rank-grade-text">
-                        <div class="stats-grade"><span class="grade-txt grade-ssh">SSH</span></div>
-                        <span>
-                            <% data.stats.out[modegulag].xh_count %>
                         </span>
                     </div>
                     <div class="rank-grade-text">
@@ -83,7 +83,7 @@
                         <span>
                             <% data.stats.out[modegulag].a_count %>
                         </span>
-                    </div>                   
+                    </div>
                 </div>
                 <div class="graph-container">
                     <div class="stats-single">
@@ -136,11 +136,15 @@
                     </div>
                     <div class="level-section">
                         <div class="level-bar">
-                            <div class="level-bar-fill" :style="{ width: level_progress + '%', backgroundColor: 'hsl(var(--main), 90%, 55%)' }"></div>
+                            <div class="level-bar-fill"
+                                :style="{ width: level_progress + '%', backgroundColor: 'hsl(var(--main), 90%, 55%)' }">
+                            </div>
                         </div>
-                        <span class="progress-text"><% Math.round(level_progress) %>%</span>
-                    </div> 
-                    <span class="level-text">Level <% playerLevel %></span>                 
+                        <span class="progress-text">
+                            <% Math.round(level_progress) %>%
+                        </span>
+                    </div>
+                    <span class="level-text">Level <% playerLevel %></span>
                 </div>
             </div>
         </div>
@@ -156,7 +160,37 @@
         </div>
     </div>
     <div class="scores">
-        recent activity part blablabla
+        <div class="activity-content">
+            {% for score_logs in recent_activity %}
+            <span class="activity-text">
+                {% if score_logs.event == 'new_rank_1' %}
+                {% if not (recent_activity|selectattr('event', 'equalto', 'sniped')
+                |selectattr('timestamp', 'equalto', score_logs.timestamp)
+                |selectattr('sniper_id', 'equalto', score_logs.user_id)
+                |list) and score_logs.map_md5 not in user_rank_1_maps %}
+                {% set _ = user_rank_1_maps.add(score_logs.map_md5) %}
+                <i class="fa-solid fa-trophy"></i>
+                <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
+                has achieved #1 on
+                <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version
+                    }}]</a>
+                {{ mode_strings[score_logs.mode] }} {{ timeago.format(score_logs.timestamp) }}
+                {% endif %}
+                {% elif score_logs.event == 'sniped' %}
+                <i class="fa-solid fa-bomb"></i>
+                <a href="/u/{{ score_logs.sniper_id }}" class="act-player">{{ score_logs.got_sniped_by }}</a>
+                has sniped
+                <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
+                on
+                <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version
+                    }}]</a>
+                {{ mode_strings[score_logs.mode] }} {{ timeago.format(score_logs.timestamp) }}
+                {% else %}
+                Error: Unknown event
+                {% endif %}
+            </span>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endmacro %}
@@ -288,7 +322,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <link rel="stylesheet" href="/static/css/pages/profile.css">
 
 <script>
@@ -351,7 +386,10 @@
                     <span class="global-txt">🌎 <% '#' + data.stats.out[modegulag].rank %></span>
                 </div>
                 <div class="country-rank">
-                    <span class="country-txt"><img src="/static/images/flags/{{ user['country']|upper }}.png" class="rank-profile-flag"> <% '#' + data.stats.out[modegulag].country_rank %></span>
+                    <span class="country-txt"><img src="/static/images/flags/{{ user['country']|upper }}.png"
+                            class="rank-profile-flag">
+                        <% '#' + data.stats.out[modegulag].country_rank %>
+                    </span>
                 </div>
             </div>
             <transition name="click">
@@ -621,7 +659,8 @@
 <script src="/static/js/pages/profile.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 {% if user['customisation']['banner'] == True or user['customisation']['background'] == True %}
 <style>
     {
