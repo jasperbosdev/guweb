@@ -1160,6 +1160,12 @@ span.heading-title {
   justify-content: space-between;
 }
 
+.grade-stats {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
 .rank-stats-text {
   color: #fff;
   font-size: 18px;
@@ -1281,6 +1287,28 @@ span.heading-title {
 }
 
 .rank-profile-flag {
-  height: 15px;
+  height: 12px;
   margin-right: 3px;
+}
+
+.activity-container {
+  display: flex;
+}
+
+.activity-content {
+  text-align: center;
+  width: 100%;
+  padding: 12px;
+}
+
+.activity-text {
+  color: #fff;
+  font-size: 17px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  display: inline-block;
 }
