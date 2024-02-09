@@ -299,21 +299,33 @@ new Vue({
                 });
         },        
         LoadScores(sort) {
-            this.$set(this.data.scores[`${sort}`], 'load', true);
+            this.$set(this.data.scores[sort], 'load', true); // Removed unnecessary template literals
+            const params = { // Create params object to pass parameters to the API
+                id: this.userid,
+                mode: this.StrtoGulagInt(),
+                scope: sort,
+                limit: this.data.scores[sort].more.limit
+            };
+        
+            if (sort === 'recent') {
+                const checkbox = document.getElementById('hidefailed');
+                const includeFailed = checkbox ? !checkbox.checked : true;
+                params.include_failed = includeFailed; // Assign include_failed to params object
+            }
+        
             this.$axios.get(`${window.location.protocol}//api.${domain}/v1/get_player_scores`, {
-                    params: {
-                        id: this.userid,
-                        mode: this.StrtoGulagInt(),
-                        scope: sort,
-                        limit: this.data.scores[`${sort}`].more.limit
-                    }
-                })
-                .then(res => {
-                    this.data.scores[`${sort}`].out = res.data.scores;
-                    this.data.scores[`${sort}`].load = false
-                    this.data.scores[`${sort}`].more.full = this.data.scores[`${sort}`].out.length != this.data.scores[`${sort}`].more.limit;
-                });
-        },
+                params: params // Pass params object as the params to the axios request
+            })
+            .then(res => {
+                this.data.scores[sort].out = res.data.scores;
+                this.data.scores[sort].load = false; // Added a semicolon here
+                this.data.scores[sort].more.full = this.data.scores[sort].out.length !== this.data.scores[sort].more.limit; // Corrected the comparison operator
+            })
+            .catch(error => {
+                console.error("Error fetching scores:", error); // Handle any errors that occur during the axios request
+                this.data.scores[sort].load = false; // Ensure that the loading state is set to false even if an error occurs
+            });
+        },        
         LoadMostBeatmaps() {
             this.$set(this.data.maps.most, 'load', true);
             this.$axios.get(`${window.location.protocol}//api.${domain}/v1/get_player_most_played`, {
@@ -467,3 +479,40 @@ new Vue({
     },
     computed: {}
 });
+
+$('html').click(function() {
+    console.log('click');
+    $('.score-menu').remove();
+});
+
+function scoreMenu($this) {
+    const score_id = $($this).attr("data--score-id");
+    let menu;
+
+    $.ajax({
+        url: `https://api.${domain}/get_replay?id=${ score_id }`,
+        type: 'GET',
+        success: function(response) {
+            $($this).append(
+                $(`<div class="score-menu" data--score-id="${score_id}" onclick="downloadScore(this);">
+                <div class="menu-contents">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>View details</span>
+                </div>
+            </div>`)
+            );
+        },
+        error: function(xhr) {
+            $($this).append(
+                 $(`<div class="score-menu score-unavailable" data--score-id="${score_id}" onclick="downloadScore(this);"><div class="menu-contents"><i class="fa-solid fa-eye"></i><span>View details</span></div></div>`)
+            );
+        }
+    });
+}
+
+function downloadScore($this) {
+    const score_id = $($this).attr("data--score-id");
+
+    // Open link to download replay using API.
+    window.location.href = `${window.location.protocol}//${window.location.hostname}/score/${ score_id }`;
+}
