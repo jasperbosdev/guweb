@@ -1314,6 +1314,25 @@ async def wip_profile_select(id):
     # next_level_score = get_required_score_for_level(player_level + 1)
     # level_progress = ((total_score - current_level_score) / (next_level_score - current_level_score)) * 100 | , player_level=player_level, level_progress=level_progress
 
+    recent_activity = await glob.db.fetchall(
+        'SELECT sl.*, u.name, m.id AS map_id, m.title AS map_title, m.version, sniped_user.id AS sniper_id, m.mode '
+        'FROM score_logs sl '
+        'JOIN users u ON sl.user_id = u.id '
+        'JOIN maps m ON sl.map_md5 = m.md5 '
+        'LEFT JOIN users sniped_user ON sl.got_sniped_by = sniped_user.name '
+        'WHERE sl.user_id = %s '
+        'ORDER BY sl.timestamp DESC LIMIT 10', [id]
+    )
+
+    mode_strings = {
+        0: "(osu!std)",
+        4: "(osu!rx)",
+        8: "(osu!ap)"
+    }
+
+    user_rank_1_maps = set()
+
     return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
-                                 badges=badges, meta_stats=meta_stats)
+                                 badges=badges, meta_stats=meta_stats, recent_activity=recent_activity,
+                                 mode_strings=mode_strings, user_rank_1_maps=user_rank_1_maps)
