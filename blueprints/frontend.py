@@ -1315,19 +1315,28 @@ async def wip_profile_select(id):
     # level_progress = ((total_score - current_level_score) / (next_level_score - current_level_score)) * 100 | , player_level=player_level, level_progress=level_progress
 
     recent_activity = await glob.db.fetchall(
-        'SELECT sl.*, u.name, m.id AS map_id, m.title AS map_title, m.version, sniped_user.id AS sniper_id, m.mode '
-        'FROM score_logs sl '
+        'SELECT sl.*, u.name, m.id AS map_id, m.title AS map_title, m.version, '
+        'sniped_user.name AS sniped_name, sniped_user.id AS sniper_id, m.mode '
+        'FROM ( '
+        '    SELECT * '
+        '    FROM ( '
+        '        SELECT *, '
+        '               ROW_NUMBER() OVER(PARTITION BY map_md5 ORDER BY timestamp DESC) AS rn '
+        '        FROM score_logs '
+        '        WHERE user_id = %s '
+        '    ) AS ranked_logs '
+        '    WHERE rn = 1 '
+        ') AS sl '
         'JOIN users u ON sl.user_id = u.id '
         'JOIN maps m ON sl.map_md5 = m.md5 '
         'LEFT JOIN users sniped_user ON sl.got_sniped_by = sniped_user.name '
-        'WHERE sl.user_id = %s '
-        'ORDER BY sl.timestamp DESC LIMIT 10', [id]
+        'ORDER BY sl.timestamp DESC LIMIT 5', [id]
     )
 
     mode_strings = {
-        0: "(osu!std)",
-        4: "(osu!rx)",
-        8: "(osu!ap)"
+        '0': "(osu!std)",
+        '4': "(osu!rx)",
+        '8': "(osu!ap)"
     }
 
     user_rank_1_maps = set()
