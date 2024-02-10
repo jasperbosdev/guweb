@@ -169,14 +169,16 @@
                 has achieved #1 on
                 <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version
                     }}]</a>
-                {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp) }}</span>
+                {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp)
+                    }}</span>
                 {% elif score_logs.event == 'sniped' %}
                 <i class="fa-solid fa-angles-down"></i>
                 <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
                 has lost first place on
                 <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version
                     }}]</a>
-                {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp) }}</span>
+                {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp)
+                    }}</span>
                 {% else %}
                 Error: Unknown event
                 {% endif %}
@@ -194,10 +196,17 @@
             <i class="fas fa-star"></i> {{ title }}
         </div>
     </div>
-    <div v-if="data.scores.best.out.length != 0" class="scores">
-        <div class="performance-block">
-            <div class="score-type1-title"><i class="fa-solid fa-trophy" style="margin-right: 4px;"></i>Top Scores</div>
-            <!-- Best Scores Section -->
+    <div v-if="data.scores.best.out.length > 0 || data.scores.recent.out.length > 0" class="scores">
+        <!-- Best Scores Section -->
+        <div v-if="data.scores.best.out.length > 0" class="performance-block">
+            <div class="score-title-block">
+                <div class="score-type1-title">
+                    <i class="fa-solid fa-trophy" style="margin-right: 8px;"></i>Top Scores
+                </div>
+                <div class="total-count">
+                    <% totalScoreCount %>
+                </div>
+            </div>
             <div class="scores-container">
                 <div v-for="(map, index) in data.scores.best.out" class="map-single"
                     :style="`background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg); background-size: cover; border-radius: 18px;`">
@@ -235,7 +244,7 @@
                                             <template v-for="(modPair, index) in getModPairs(map.mods_readable)">
                                                 <img v-bind:src="getModIconUrl(modPair)" :key="index">
                                             </template>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <div class="score-details_pp-block">
                                         <div class="map-pp">
@@ -245,7 +254,8 @@
                                                 <% map.acc.toFixed(2) %>%
                                             </b></div>
                                     </div>
-                                    <div class="score-menu-btn" v-bind:data--score-id="map.id" onclick="scoreMenu(this);">
+                                    <div class="score-menu-btn" v-bind:data--score-id="map.id"
+                                        onclick="scoreMenu(this);">
                                         <i class="fa-solid fa-lg fa-ellipsis-vertical"></i>
                                     </div>
                                 </div>
@@ -253,36 +263,36 @@
                         </div>
                     </div>
                 </div>
-                <div v-else-if="data.scores.best.out.length == 0" class="stats-block">
-                    <div class="columns is-marginless">
-                        <div class="column is-1">
-                            <h1 class="title">: (</h1>
-                        </div>
-                        <div class="column">
-                            <h1 class="title is-6">No scores available</h1>
-                            <p class="subtitle is-7">Try playing something?</p>
-                        </div>
-                    </div>
-                </div>
                 <div v-if="data.scores.best.more.full == false" class="extra-block">
                     <a class="show-button" @click="AddLimit('bestscore')">Show more</a>
                 </div>
             </div>
-            <!-- Recent Scores Section -->
-            <div class="score-type-title">
-                <div class="score-type-left">
-                    <i class="fa-solid fa-clock-rotate-left" style="margin-right: 4px;"></i>Recent Scores
-                </div>
-                <div class="score-type-right">
-                    <div class="failedcheckbox">
-                        <input @click="LoadScores('recent')" type="checkbox" id="hidefailed">
-                        <label>Toggle failed scores</label>
+        </div>
+        <!-- Recent Scores Section -->
+        <div class="score-type-title">
+            <div class="score-type-left">
+                <div class="score-title-block" style="margin: 0;">
+                    <div class="score-type1-title">
+                        <i class="fa-solid fa-clock-rotate-left" style="margin-right: 8px;"></i>Recent Scores (48h)
                     </div>
                 </div>
             </div>
+            <div class="score-type-right">
+                <div class="failedcheckbox">
+                    <input @click="LoadScores('recent')" type="checkbox" id="hidefailed">
+                    <label>Toggle failed scores</label>
+                </div>
+            </div>
+        </div>
+        <div v-if="data.scores.recent.out.length > 0" class="performance-block">
             <div class="scores-container">
                 <div v-for="(map, index) in data.scores.recent.out" class="map-single"
-                    :style="`background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg); background-size: cover; border-radius: 18px;`">
+                    :style="{
+                        'background': `linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg)`,
+                        'background-size': 'cover',
+                        'border-radius': '18px',
+                        'margin': data.scores.recent.out.length === 1 ? '0' : '10px' // Adjust padding as needed
+                    }">
                     <!-- Recent Scores Content -->
                     <div class="map-data">
                         <div class="map-content1">
@@ -317,7 +327,7 @@
                                             <template v-for="(modPair, index) in getModPairs(map.mods_readable)">
                                                 <img v-bind:src="getModIconUrl(modPair)" :key="index">
                                             </template>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <div class="score-details_pp-block">
                                         <div class="map-pp">
@@ -335,20 +345,35 @@
                         </div>
                     </div>
                 </div>
-                <div v-else-if="data.scores.recent.out.length == 0" class="stats-block">
+                <div v-if="data.scores.recent.more.full == false" class="extra-block">
+                    <a class="show-button" @click="AddLimit('recentscore')">Show more</a>
+                </div>
+            </div>
+        </div>
+        <div v-else class="performance-block">
+            <div class="no-scores-block">
+                <div class="no-scores">
                     <div class="columns is-marginless">
                         <div class="column is-1">
                             <h1 class="title">: (</h1>
                         </div>
                         <div class="column">
-                            <h1 class="title is-6">No scores available</h1>
+                            <h1 class="title is-6">No recent scores available</h1>
                             <p class="subtitle is-7">Try playing something?</p>
                         </div>
                     </div>
                 </div>
-                <div v-if="data.scores.recent.more.full == false" class="extra-block">
-                    <a class="show-button" @click="AddLimit('recentscore')">Show more</a>
-                </div>
+            </div>
+        </div>
+    </div>
+    <div v-else class="stats-block">
+        <div class="columns is-marginless">
+            <div class="column is-1">
+                <h1 class="title">: (</h1>
+            </div>
+            <div class="column">
+                <h1 class="title is-6">No scores available</h1>
+                <p class="subtitle is-7">Try playing something?</p>
             </div>
         </div>
     </div>
@@ -469,7 +494,8 @@
             onError="this.onerror=null; this.src='/banners/c6.jpg';">
             <div class="rank-banner-block anime-girl">
                 <div class="global-rank">
-                    <span class="global-txt">🌎 <% '#' + data.stats.out[modegulag].rank %></span>
+                    <span class="global-txt"><img src="/static/images/globe.svg" class="rank-profile-flag" style="height:22px;">
+                        <% '#' + data.stats.out[modegulag].rank %></span>
                 </div>
                 <div class="country-rank">
                     <span class="country-txt"><img src="/static/images/flags/{{ user['country']|upper }}.png"
@@ -735,6 +761,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 {% endblock %}
