@@ -47,14 +47,24 @@ new Vue({
             playerLevel: 1, // Initialize player level
             levelProgress: 0, // Initialize level progress
             totalScore: 0, // Initialize total score
-            level_progress: 0 // Define level_progress within the data object
+            level_progress: 0, // Define level_progress within the data object
+            totalScoreCount: 0
         };
     },
     created() {
         // starting a page
         this.modegulag = this.StrtoGulagInt();
-        this.LoadProfileData();
-        this.LoadAllofdata();
+        // Use Promise.all() to wait for multiple asynchronous operations to complete
+        Promise.all([this.LoadProfileData(), this.LoadAllofdata()])
+            .then(() => {
+                // Once both LoadProfileData() and LoadAllofdata() have completed,
+                // call fetchScoresCount()
+                this.fetchScoresCount();
+            })
+            .catch(error => {
+                // Handle errors if any of the promises fail
+                console.error('Error loading profile data or all data:', error);
+            });
         this.LoadUserStatus();
     },
     methods: {
@@ -126,7 +136,7 @@ new Vue({
             this.destroyChart();
         
             const modDict = {
-                'std': { 'vn': 0, 'rx': 4 },
+                'std': { 'vn': 0, 'rx': 4},
                 'taiko': { 'vn': 1, 'rx': 5 },
                 'catch': { 'vn': 2, 'rx': 6 },
                 'mania': { 'vn': 3 }
@@ -275,29 +285,42 @@ new Vue({
                 }
             });
         },
-        LoadAllofdata() {
-            this.LoadMostBeatmaps();
-            this.LoadScores('best');
-            this.LoadScores('recent');
-            this.fetchData();
-        },
         LoadProfileData() {
-            this.$set(this.data.stats, 'load', true);
-            this.$axios.get(`${window.location.protocol}//api.${domain}/v1/get_player_info`, {
-                    params: {
-                        id: this.userid,
-                        scope: 'all'
-                    }
-                })
-                .then(res => {
-                    this.$set(this.data.stats, 'out', res.data.player.stats);
-                    this.data.stats.load = false;
-                    // Store tscore in a variable accessible within the Vue instance
-                    this.totalScore = res.data.player.stats[this.modegulag].tscore;
-                    // Call calculateLevel function after obtaining tscore
-                    this.calculateLevel();
-                });
-        },        
+            return new Promise((resolve, reject) => {
+                this.$set(this.data.stats, 'load', true);
+                this.$axios.get(`${window.location.protocol}//api.${domain}/v1/get_player_info`, {
+                        params: {
+                            id: this.userid,
+                            scope: 'all'
+                        }
+                    })
+                    .then(res => {
+                        this.$set(this.data.stats, 'out', res.data.player.stats);
+                        this.data.stats.load = false;
+                        // Store tscore in a variable accessible within the Vue instance
+                        this.totalScore = res.data.player.stats[this.modegulag].tscore;
+                        // Call calculateLevel function after obtaining tscore
+                        this.calculateLevel();
+                        resolve(); // Resolve the promise once data is loaded successfully
+                    })
+                    .catch(error => {
+                        console.error('Error loading profile data:', error);
+                        reject(error); // Reject the promise if an error occurs
+                    });
+            });
+        },
+        LoadAllofdata() {
+            return new Promise((resolve, reject) => {
+                this.LoadMostBeatmaps();
+                // No need to call fetchScoresCount() here
+                this.LoadScores('best');
+                this.LoadScores('recent');
+                this.fetchData();
+        
+                // Resolve the promise after all necessary data loading operations
+                resolve();
+            });
+        },
         LoadScores(sort) {
             this.$set(this.data.scores[sort], 'load', true); // Removed unnecessary template literals
             const params = { // Create params object to pass parameters to the API
@@ -373,6 +396,8 @@ new Vue({
             this.data.scores.best.more.limit = 5;
             this.data.maps.most.more.limit = 6;
         
+            this.fetchScoresCount();
+
             // Reload all data and recalculate the level
             this.LoadAllofdata();
             this.calculateLevel();
@@ -565,6 +590,16 @@ new Vue({
             };
             return modImageMapping[modPair] || ""; // Return empty string if mod pair is not found
         },
+        fetchScoresCount() {
+            this.$axios.get(`https://api.${domain}/v1/get_player_scores?id=${this.userid}&mode=${this.modegulag}&scope=best&limit=100`)
+              .then(res => {
+                const scores = res.data.scores;
+                this.totalScoreCount = scores.length; // Update totalScoreCount with the actual count from the response
+              })
+              .catch(error => {
+                console.error("Error fetching scores count:", error);
+              });
+          },
     },
     computed: {}
 });
