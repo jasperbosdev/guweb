@@ -529,8 +529,8 @@ async def settings_password_post():
     return await flash('success', 'Your password has been changed! Please log in again.', 'login')
 
 
-@frontend.route('/u/<id>')
-async def profile_select(id):
+@frontend.route('/old/u/<id>')
+async def old_profile_select(id):
 
     mode = request.args.get('mode', 'std', type=str) # 1. key 2. default value
     mods = request.args.get('mods', 'vn', type=str)
@@ -557,7 +557,7 @@ async def profile_select(id):
         return (await render_template('404.html'), 404)
 
     user_data['customisation'] = utils.has_profile_customizations(user_data['id'])
-    return await render_template('profile.html', user=user_data, mode=mode, mods=mods)
+    return await render_template('old_profile.html', user=user_data, mode=mode, mods=mods)
 
 
 @frontend.route('/leaderboard')
@@ -1146,8 +1146,8 @@ async def friends_page():
 
     return await render_template('friends.html', friends=friends, timeago=timeago)
 
-@frontend.route('/wip/u/<id>')
-async def wip_profile_select(id):
+@frontend.route('/u/<id>')
+async def profile_select(id):
 
     mode = request.args.get('mode', 'std', type=str) # 1. key 2. default value
     mods = request.args.get('mods', 'vn', type=str)
@@ -1357,7 +1357,7 @@ async def wip_profile_select(id):
 
     user_rank_1_maps = set()
 
-    return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
+    return await render_template('profile.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
                                  badges=badges, meta_stats=meta_stats, recent_activity=recent_activity, mode_strings=mode_strings, 
                                  user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count)
