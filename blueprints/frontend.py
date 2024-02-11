@@ -1192,6 +1192,22 @@ async def wip_profile_select(id):
         (id, utils.get_safe_name(id))
     )
 
+    favourites_data = await glob.db.fetchall(
+        'SELECT f.userid, f.setid, f.created_at, m.status, m.creator, m.artist, m.title '
+        'FROM favourites f '
+        'JOIN maps m ON f.setid = m.set_id '
+        'WHERE f.userid IN (%s) '
+        'GROUP BY f.userid, f.setid, f.created_at, m.status, m.creator, m.artist, m.title ',
+        [id]
+    )
+
+    favourites_count = await glob.db.fetch(
+        'SELECT COUNT(DISTINCT setid) AS fav_count '
+        'FROM favourites '
+        'WHERE userid in (%s) ',
+        [id]
+    )
+
     #Make badges
     user_priv = Privileges(user_data['priv'])
     group_list = []
@@ -1343,5 +1359,5 @@ async def wip_profile_select(id):
 
     return await render_template('profile-wip.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
-                                 badges=badges, meta_stats=meta_stats, recent_activity=recent_activity,
-                                 mode_strings=mode_strings, user_rank_1_maps=user_rank_1_maps)
+                                 badges=badges, meta_stats=meta_stats, recent_activity=recent_activity, mode_strings=mode_strings, 
+                                 user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count)
