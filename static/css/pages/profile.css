@@ -22,6 +22,10 @@
   font-weight: 400;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .my-con {
   margin-bottom: 42px;
 }
@@ -212,6 +216,7 @@
 .profile-flag {
   height: 24px;
   margin-right: 6px;
+  border-radius: 4px;
 }
 
 .is-striped {
@@ -1565,7 +1570,7 @@ label {
   width: 100%;
 }
 
-.profile-block-body>div:last-child {
+.profile-block-body > div:last-child {
   padding-bottom: 0;
   margin-bottom: 0;
   border-bottom: none;
@@ -1587,7 +1592,9 @@ label {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  transition: 120ms box-shadow, 240ms transform;
+  transition:
+    120ms box-shadow,
+    240ms transform;
   will-change: box-shadow, transform;
 }
 
@@ -1595,7 +1602,7 @@ label {
   transform: translateY(-5px);
 }
 
-a[href^='/b/'] {
+a[href^="/b/"] {
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -1672,4 +1679,109 @@ a[href^='/b/'] {
 .songname_version {
   font-size: 14px;
   opacity: 0.9;
+}
+
+.badge-container {
+  padding: 12px 0.75rem 0 0.75em;
+}
+
+.tourney-badge {
+  height: 92px;
+  background-size: cover;
+}
+
+/* .tourney-badge:first-child {
+  border-top: 2px solid hsl(var(--main), 90%, 55%);
+} */
+
+.tourney-badge:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.tourney-badge:first-child {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+/* spoiler box attempt */
+
+.custom-spoilerbox .spoilerbox-body {
+  color: hsl(var(--hsl-c2));
+  display: none;
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.custom-spoilerbox.open .spoilerbox-body {
+  display: block;
+}
+
+.spoilerbox-link {
+  display: flex;
+  align-items: center;
+}
+
+.custom-spoilerbox .spoilerbox-link {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  border: none;
+  color: hsl(var(--hsl-l2));
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 700;
+  margin: 0;
+  max-width: 100%;
+  outline: none;
+  overflow-wrap: anywhere;
+  padding: 0;
+  text-align: left;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.custom-spoilerbox .spoilerbox-link:active,
+.custom-spoilerbox .spoilerbox-link:focus,
+.custom-spoilerbox .spoilerbox-link:hover {
+  color: hsl(var(--hsl-l1));
+  text-decoration: underline;
+}
+
+.custom-spoilerbox .spoilerbox-link-icon {
+  display: block;
+  flex: none;
+  width: 20px;
+}
+
+.custom-spoilerbox .spoilerbox-link-icon:before {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: hsl(var(--hsl-c1));
+  content: "\f105";
+  display: inline-block;
+  flex: none;
+  font-family: Font Awesome\ 5 Free;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 900;
+  line-height: 1;
+  text-align: left;
+  text-rendering: auto;
+}
+
+.custom-spoilerbox .spoilerbox-link-icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+
+.custom-spoilerbox .spoilerbox-link-icon:before.fa-pull-right {
+  margin-left: .3em;
+}
+
+.well {
+  background: hsl(var(--main), 10.7%, 14.7%);
+  border: 3px solid hsl(var(--main), 10.7%, 28.7%);
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
 }
