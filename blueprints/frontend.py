@@ -87,14 +87,15 @@ def bbcode(value):
         (r'\[code\](.+?)\[/code\]', r'<tt>\1</tt>'),
         (r'\[big\](.+?)\[/big\]', r'<big>\1</big>'),
         (r'\[small\](.+?)\[/small\]', r'<small>\1</small>'),
-        (r'\[box\](.+?)\[/box\]', r'<div class="box"><div class="box-header"><div class="box-title">Box</div><div class="box-options"><a class="box-collapse btn btn-mini btn-link" href="#"><i class="icon-chevron-up"></i></a></div></div><div class="box-content">\1</div></div>'),
-        ]
+        (r'\[box=(.+?)\](.+?)\[/box\]', r'<div class="custom-spoilerbox" id="spoilerbox-\1"><a class="spoilerbox-link" href="#" onclick="toggleSpoilerBox(&quot;spoilerbox-\1&quot;)"><span class="spoilerbox-link-icon"></span>\1</a><div class="spoilerbox-content" style="display: none;">\2</div></div>'),
+        (r'\[notice\](.*?)\[/notice\]', r'<div class="well">\1</div>')
+    ]
 
     for bbset in bbdata:
         p = re.compile(bbset[0], re.DOTALL)
         value = p.sub(bbset[1], value)
 
-    #The following two code parts handle the more complex list statements
+    # Handling lists
     temp = ''
     p = re.compile(r'\[list\](.+?)\[/list\]', re.DOTALL)
     m = p.search(value)
