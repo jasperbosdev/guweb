@@ -3,7 +3,7 @@
 
 {% macro userpage(user) %}
 {% if user['userpage_content'] != "" and user['userpage_content'] != None %}
-<div class="log-block">
+<div class="log-block" id="aboutme">
     <div class="header">
         <div class="title">
             <i class="fa-solid fa-address-card"></i> About me
@@ -149,11 +149,11 @@
             </div>
         </div>
     </div>
-</div>
+</div id="statistics">
 {% endmacro %}
 
 {% macro activblock() %}
-<div class="log-block">
+<div class="log-block" id="recentact">
     <div class="header">
         <div class="title">
             <i class="fa-solid fa-clock-rotate-left"></i> Recent Activity
@@ -190,7 +190,7 @@
 {% endmacro %}
 
 {% macro scores(title) %}
-<div class="log-block" v-bind:class="{ 'load' : data.scores.best.load || data.scores.recent.load }">
+<div class="log-block" v-bind:class="{ 'load' : data.scores.best.load || data.scores.recent.load }" id="performance">
     <div class="header">
         <div class="title">
             <i class="fas fa-star"></i> {{ title }}
@@ -381,7 +381,7 @@
 {% endmacro %}
 
 {% macro maps(title, id) %}
-<div class="log-block" v-bind:class="{ 'load' : data.maps.most.load }">
+<div class="log-block" v-bind:class="{ 'load' : data.maps.most.load }" id="historical">
     <div class="header">
         <div class="title">
             <i class="fa-solid fa-chart-column"></i> Historical
@@ -839,26 +839,21 @@
 
         </div> -->
     </div>
+
+    {% if user['id'] == 3 %} <!-- tournament badges -->
+    <!-- <div class="badge-container">
+        <div class="tourney-badge" style="background: url(/static/images/badges/test-badge.png); background-size: cover; background-position: center;"></div>
+    </div> -->
+    {% else %}
+    {% endif %}
+
+
     <div class="quick-nav">
         <div class="quick-nav-block">
-            <a class="quick-nav-item" href="#">
-                Statistics
-            </a>
-            <a class="quick-nav-item" href="#">
-                Recent Activity
-            </a>
-            <a class="quick-nav-item" href="#">
-                Performance
-            </a>
-            <a class="quick-nav-item" href="#">
-                Historical
-            </a>
-            <a class="quick-nav-item" href="#">
-                Beatmaps
-            </a>
-            <a class="quick-nav-item" href="#">
-                Achievements
-            </a>
+            <a class="quick-nav-item" href="#recentact">Recent Activity</a>
+            <a class="quick-nav-item" href="#performance">Performance</a>
+            <a class="quick-nav-item" href="#historical">Historical</a>
+            <a class="quick-nav-item" href="#">Achievements</a>
         </div>
     </div>
     <div class="second-block">
@@ -879,6 +874,7 @@
 
 {% block bottom %}
 <script src="/static/js/asserts/vue-flags.js"></script>
+<script src="/static/js/pages/profilebbcode.js"></script>
 <script src="/static/js/pages/profile.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
