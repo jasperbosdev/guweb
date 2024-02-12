@@ -1,0 +1,221 @@
+.main-block {
+    margin: 0 auto !important;
+    width: 1200px !important;
+}
+
+.doc-banner {
+    width: 1250px !important;
+}
+
+.main-selector1 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    color: #fff;
+    font-size: 14px;
+    justify-content: center;
+    position: relative;
+    padding: 24px;
+}
+
+.mode-select1 {
+    cursor: pointer;
+    text-align: center;
+    padding-bottom: 2px;
+    margin-right: 12px;
+    color: #fff;
+    font-size: 15px;
+    margin-left: 12px;
+    opacity: 0.7;
+    transition: 0.2s ease;
+    content: center;
+}
+
+.mode-select1:hover {
+    border-bottom-width: 3px;
+    opacity: 1;
+    color: #fff;
+}
+
+.selector1 {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    height: 27px;
+    z-index: 2;
+    width: 100%;
+}
+
+.selector1 .right {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.selector1 .left {
+    display: flex;
+    flex-direction: row;
+}
+
+.simple-banner-switch1 {
+    text-shadow: -1px 2px 2px rgba(0, 0, 0, 0.33);
+    padding: 0 12px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 14px;
+    margin: 10px 8px;
+}
+
+.simple-banner-switch2 {
+    color: #ffffff;
+    text-shadow: -1px 2px 2px rgba(0, 0, 0, 0.33);
+    padding: 0 12px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 14px;
+    margin: 10px 8px;
+}
+
+.simple-banner-switch-active {
+    border-bottom-width: 6px;
+    opacity: 1;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.simple-banner-switch1:hover {
+    opacity: 1;
+}
+
+.mode-select1.active,
+.simple-banner-switch1.active {
+    border-bottom-width: 6px;
+    opacity: 1;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.newmaps-color {
+    color: #36ffab;
+}
+
+.block-header {
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.posts-row, .beatmaps-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+    padding: 0 20px 20px 20px;
+}
+
+.beatmap-block {
+    display: flex;
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: 700;
+    line-height: 1.3;
+    align-items: center;
+    overflow: hidden;
+    height: 93px;
+    transition: 0.2s ease;
+}
+
+.beatmap-block:hover {
+    transform: translateY(-5px);
+    box-shadow: rgba(30,30,30,.85);
+}
+
+.beatmap-block {
+    transition: 120ms box-shadow, 120ms margin-top, 120ms background-color, 120ms transform;
+    will-change: transform;
+}
+
+.beatmap-preview {
+    width: 100px;
+    height: auto;
+    border-radius: 6px;
+    background-position: center;
+    background-size: cover;
+    margin-right: 10px;
+}
+
+.avatar-picture {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.avatar-picture {
+    width: auto;
+    border-radius: 6px;
+    /* margin-right: 8px; */
+}
+
+.beatmap-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.popular-color {
+    color: #fdf537;
+}
+
+.beatmap-title, .beatmap-artist, .beatmap-mapper, .donor-info .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.beatmap-title {
+    color: #fff;
+}
+
+.beatmap-artist {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.beatmap-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+span.beatmap-mapper {
+    padding-right: 8px;
+}
+
+.beatmap-title, .beatmap-artist, .beatmap-mapper, .donor-info .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.beatmap-footer .target-button {
+    background-color: #d7d7d7;
+    border-radius: 6px;
+    padding: 4.5px 7px;
+    font-size: 12px;
+    margin-left: 10px;
+    transition: 200ms background-color;
+}
+
+.beatmap-footer .target-button {
+    background-color: hsl(var(--main), 10%, 30%);
+}

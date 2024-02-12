@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+
+{% block header %}
+<script src="/static/js/asserts/vue.js"></script>
+<script src="/static/js/asserts/vue-axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+<link rel="stylesheet" href="/static/css/pages/stats.css">
+<script>
+    var domain = "{{ domain() }}";
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="col-lg-12">
+        <div class="main-banner doc-banner">
+            <div class="banner-text">Statistics</div>
+            <h2 style="font-size: 23px;"></h2>
+        </div>
+    </div>
+</div>
+<div class="home-bg-tops main-block">
+    <div class="beatmaps-categories">
+        <div class="main-selector1 selectmode1">
+            <div class="top-right1">
+                <div class="select-right1">
+                    <a class="mode-select1" onclick="setActive('std_vn')">
+                        <i class="mode-icon mode-osu"></i><span class="modetext1"> osu!</span></a>
+                    <a class="mode-select1" onclick="setActive('std_rx')">
+                        <i class="mode-icon mode-osu"></i><span class="modetext1"> osu!relax</span></a>
+                    <a class="mode-select1" onclick="setActive('std_ap')">
+                        <i class="mode-icon mode-osu"></i><span class="modetext1"> osu!autopilot</span></a>
+                    <!--<a class="mode-select1" v-bind:class="">
+                <i class="mode-icon mode-taiko"></i><span class="modetext1"> osu!taiko</span>
+                </a>
+                <a class="mode-select1" onclick="setActive('std_catch')">
+                <i class="mode-icon mode-catch"></i><span class="modetext1"> osu!catch</span>
+                </a>
+                <a class="mode-select1" onclick="setActive('std_mania')">
+                <i class="mode-icon mode-mania"></i><span class="modetext1"> osu!mania</span>
+                </a>-->
+                    <a class="mode-select1" onclick="setActive('most_played')">
+                        <i class="fa-solid fa-square-poll-vertical"></i><span class="modetext1"> most played</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-header newmaps-color" style="text-align: center;"> </div>
+    <script>
+        var active = 'std_vn';
+
+        var sections = ["std_vn", "std_rx", "std_ap", "most_played"]
+
+        function setActive(id) {
+            active = id;
+
+            //zet alles 'none' tenzij id zelfde is als active, dan 'block' ofzo
+            for (let i = 0; i < sections.length; i++) {
+                document.getElementById(sections[i]).style.display = sections[i] === id ? "block" : "none";
+            }
+        }
+
+        window.onload = () => { setActive('std_vn'); }
+    </script>
+    <div id="std_vn" style="display: none;">
+        <div class="block-header newmaps-color" style="text-align: center;"> </div>
+        
+        <div class="beatmaps-row">
+            {% if top_score_vn %}
+            {% for result in top_score_vn %}
+            <a href="/score/{{ result.id }}" class="beatmap-block"
+                style="background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('https://assets.ppy.sh/beatmaps/{{ result.set_id }}/covers/card.jpg');">
+                <div class="beatmap-preview">
+                    <img src="https://a.komako.pw/{{ result.userid }}" class="avatar-picture" style="width: 80px;">
+                </div>
+                <div class="beatmap-stats">
+                    <span class="beatmap-title"> {{ result.title }} </span>
+                    
+                    <span class="beatmap-artist"> {{ result.version }} </span>
+                    
+                    <div class="beatmap-footer">
+                        <span class="beatmap-mapper">by
+                            <span class="newmaps-color"> {{ result.name }} </span>
+                            
+                        </span>
+                        <div class="d-flex align-items-baseline">
+                            <span>{{ result.pp }}pp</span>
+                            <div class="target-button newmaps-color">
+                                {% if result.grade == "XH" %}
+                                <span style="font-size: 20; color: #cde7e7">{{ result.grade }}</span>
+                                {% elif result.grade == "X" %}
+                                <span style="font-size: 20; color: #ffcc22">{{ result.grade }}</span>
+                                {% elif result.grade == "SH" %}
+                                <span style="font-size: 20; color: #cde7e7">{{ result.grade }}</span>
+                                {% elif result.grade == "S" %}
+                                <span style="font-size: 20; color: #ffcc22">{{ result.grade }}</span>
+                                {% elif result.grade == "A" %}
+                                <span style="font-size: 20; color: #3FFF3F">{{ result.grade }}</span>
+                                {% elif result.grade == "B" %}
+                                <span style="font-size: 20; color: #3d97ff">{{ result.grade }}</span>
+                                {% elif result.grade == "C" %}
+                                <span style="font-size: 20; color: #ff56da">{{ result.grade }}</span>
+                                {% elif result.grade == "D" %}
+                                <span style="font-size: 20; color: #ff5959">{{ result.grade }}</span>
+                                {% else %}
+                                <span>{{ result.grade }}</span>
+                                {% endif %}
+                            </div>
+                            <!--
+                  {% if result.mods == 0 %}
+                  {% else %}
+                  <div class="target-button newmaps-color">
+                    {{ result.mods }}
+                  </div>
+                  {% endif %}-->
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div id="std_rx" style="display: none;">
+        <div class="block-header newmaps-color" style="text-align: center;"> </div>
+        
+        <div class="beatmaps-row">
+            {% if top_score_rx %}
+            {% for result in top_score_rx %}
+            <a href="/score/{{ result.id }}" class="beatmap-block"
+                style="background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('https://assets.ppy.sh/beatmaps/{{ result.set_id }}/covers/card.jpg');">
+                <div class="beatmap-preview">
+                    <img src="https://a.komako.pw/{{ result.userid }}" class="avatar-picture" style="width: 80px;"
+                        style="width: 80px;">
+                </div>
+                <div class="beatmap-stats">
+                    <span class="beatmap-title"> {{ result.title }} </span>
+                    
+                    <span class="beatmap-artist"> {{ result.version }} </span>
+                    
+                    <div class="beatmap-footer">
+                        <span class="beatmap-mapper">by
+                            <span class="newmaps-color"> {{ result.name }} </span>
+                            
+                        </span>
+                        <div class="d-flex align-items-baseline">
+                            <span>{{ result.pp }}pp</span>
+                            <div class="target-button newmaps-color">
+                                {% if result.grade == "XH" %}
+                                <span style="font-size: 20; color: #cde7e7">{{ result.grade }}</span>
+                                {% elif result.grade == "X" %}
+                                <span style="font-size: 20; color: #ffcc22">{{ result.grade }}</span>
+                                {% elif result.grade == "SH" %}
+                                <span style="font-size: 20; color: #cde7e7">{{ result.grade }}</span>
+                                {% elif result.grade == "S" %}
+                                <span style="font-size: 20; color: #ffcc22">{{ result.grade }}</span>
+                                {% elif result.grade == "A" %}
+                                <span style="font-size: 20; color: #3FFF3F">{{ result.grade }}</span>
+                                {% elif result.grade == "B" %}
+                                <span style="font-size: 20; color: #3d97ff">{{ result.grade }}</span>
+                                {% elif result.grade == "C" %}
+                                <span style="font-size: 20; color: #ff56da">{{ result.grade }}</span>
+                                {% elif result.grade == "D" %}
+                                <span style="font-size: 20; color: #ff5959">{{ result.grade }}</span>
+                                {% else %}
+                                <span>{{ result.grade }}</span>
+                                {% endif %}
+                            </div>
+                            <!--
+                  {% if result.mods == 0 %}
+                  {% else %}
+                  <div class="target-button newmaps-color">
+                    {{ result.mods }}
+                  </div>
+                  {% endif %}-->
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div id="std_ap" style="display: none;">
+        <div class="block-header newmaps-color" style="text-align: center;"> </div>
+        
+        <div class="beatmaps-row">
+            {% if top_score_ap %}
+            {% for result in top_score_ap %}
+            <a href="/score/{{ result.id }}" class="beatmap-block"
+                style="background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('https://assets.ppy.sh/beatmaps/{{ result.set_id }}/covers/card.jpg');">
+                <div class="beatmap-preview">
+                    <img src="https://a.komako.pw/{{ result.userid }}" class="avatar-picture" style="width: 80px;">
+                </div>
+                <div class="beatmap-stats">
+                    <span class="beatmap-title"> {{ result.title }} </span>
+                    
+                    <span class="beatmap-artist"> {{ result.version }} </span>
+                    
+                    <div class="beatmap-footer">
+                        <span class="beatmap-mapper">by
+                            <span class="newmaps-color"> {{ result.name }} </span>
+                            
+                        </span>
+                        <div class="d-flex align-items-baseline">
+                            <span>{{ result.pp }}pp</span>
+                            <div class="target-button newmaps-color">
+                                {% if result.grade == "XH" %}
+                                <span style="font-size: 20; color: #cde7e7">{{ result.grade }}</span>
+                                {% elif result.grade == "X" %}
+                                <span style="font-size: 20; color: #ffcc22">{{ result.grade }}</span>
+                                {% elif result.grade == "SH" %}
+                                <span style="font-size: 20; color: #cde7e7">{{ result.grade }}</span>
+                                {% elif result.grade == "S" %}
+                                <span style="font-size: 20; color: #ffcc22">{{ result.grade }}</span>
+                                {% elif result.grade == "A" %}
+                                <span style="font-size: 20; color: #3FFF3F">{{ result.grade }}</span>
+                                {% elif result.grade == "B" %}
+                                <span style="font-size: 20; color: #3d97ff">{{ result.grade }}</span>
+                                {% elif result.grade == "C" %}
+                                <span style="font-size: 20; color: #ff56da">{{ result.grade }}</span>
+                                {% elif result.grade == "D" %}
+                                <span style="font-size: 20; color: #ff5959">{{ result.grade }}</span>
+                                {% else %}
+                                <span>{{ result.grade }}</span>
+                                {% endif %}
+                            </div>
+                            <!--
+                  {% if result.mods == 0 %}
+                  {% else %}
+                  <div class="target-button newmaps-color">
+                    {{ result.mods }}
+                  </div>
+                  {% endif %}-->
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div id="most_played" style="display: none;">
+        <div class="beatmaps-row">
+            {% if most_played_maps %}
+            {% for maps in most_played_maps %}
+            <a href="/b/{{ maps.id }}" class="beatmap-block"
+                style="background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url('https://assets.ppy.sh/beatmaps/{{ maps.set_id }}/covers/card.jpg');">
+                <div class="beatmap-stats">
+                    <span class="beatmap-title"> {{ maps.title }} </span>
+                    <span class="beatmap-artist"> {{ maps.version }} </span>
+                    <div class="beatmap-footer">
+                        <span class="beatmap-mapper">
+                            by <span class="popular-color"> {{ maps.creator }} </span>
+                        </span>
+                        <div class="d-flex align-items-baseline">
+                            <span>{{ maps.plays }} plays</span>
+                            <div class="target-button popular-color">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script src="/static/js/pages/stats.js"></script>
+
+{% endblock %}

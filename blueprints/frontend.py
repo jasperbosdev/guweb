@@ -1362,3 +1362,39 @@ async def profile_select(id):
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
                                  badges=badges, meta_stats=meta_stats, recent_activity=recent_activity, mode_strings=mode_strings, 
                                  user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count)
+
+@frontend.route('/stats')
+async def stats():
+
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    # fetch data from database
+    dash_data = await glob.db.fetch(
+        'SELECT COUNT(id) count, '
+        '(SELECT name FROM users ORDER BY id DESC LIMIT 1) lastest_user, '
+        '(SELECT COUNT(id) FROM users WHERE NOT priv & 1) banned '
+        'FROM users'
+    )
+
+    top_score_vn = await glob.db.fetchall('SELECT scores.*, maps.*, scores.userid, users.priv, users.name '
+    'FROM scores '
+    'JOIN maps ON scores.map_md5 = maps.md5 '
+    'LEFT JOIN users ON scores.userid = users.id WHERE scores.mode = 0 AND users.priv <> 1 '
+    'AND scores.status = 2 and maps.status = 2 ORDER BY scores.pp DESC LIMIT 48')
+    top_score_rx = await glob.db.fetchall('SELECT scores.*, maps.*, scores.userid, users.priv, users.name '
+    'FROM scores '
+    'JOIN maps ON scores.map_md5 = maps.md5 '
+    'LEFT JOIN users ON scores.userid = users.id WHERE scores.mode = 4 AND users.priv <> 1 '
+    'AND scores.status = 2 and maps.status = 2 ORDER BY scores.pp DESC LIMIT 48')
+    top_score_ap = await glob.db.fetchall('SELECT scores.*, maps.*, scores.userid, users.priv, users.name '
+    'FROM scores '
+    'JOIN maps ON scores.map_md5 = maps.md5 '
+    'LEFT JOIN users ON scores.userid = users.id WHERE scores.mode = 8 AND users.priv <> 1 '
+    'AND scores.status = 2 and maps.status = 2 ORDER BY scores.pp DESC LIMIT 48')
+
+    most_played_maps = await glob.db.fetchall('SELECT * FROM maps ORDER BY maps.plays DESC LIMIT 48')
+
+    tops = await glob.db.fetchall('SELECT * FROM scores where mode=0 and status=2 ORDER BY pp DESC LIMIT 6')
+
+    return await render_template('stats.html', dashdata=dash_data, datetime=datetime, timeago=timeago, top_score_vn=top_score_vn, top_score_rx=top_score_rx, top_score_ap=top_score_ap, most_played_maps=most_played_maps)
