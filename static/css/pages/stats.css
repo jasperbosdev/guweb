@@ -219,3 +219,45 @@ span.beatmap-mapper {
 .beatmap-footer .target-button {
     background-color: hsl(var(--main), 10%, 30%);
 }
+
+@media (max-width: 1339px) {
+    .doc-banner {
+        width: 950px !important;
+        margin: 0 auto;
+    }
+    .main-block {
+        width: 925px !important;
+    }
+    .beatmaps-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 1023px) {
+    .doc-banner {
+        width: 650px !important;
+        margin: 0 auto;
+    }
+    .main-block {
+        width: 625px !important;
+    }
+    .beatmaps-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .doc-banner {
+        width: 350px !important;
+        margin: 0 auto;
+    }
+    .main-block {
+        width: 325px !important;
+    }
+    .beatmaps-row {
+        display: flex;
+        flex-direction: column;
+    }
+}
