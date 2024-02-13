@@ -1785,3 +1785,84 @@ a[href^="/b/"] {
   padding: 10px;
   border-radius: 8px;
 }
+
+@media (max-width: 1339px) {
+  .stats-container {
+    flex-direction: column;
+    gap: 15px;
+  } 
+}
+
+@media (max-width: 1023px) {
+  .stats-container {
+    flex-direction: column;
+  }
+  .quick-nav-block {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stats-container {
+    gap: 15px;
+  }
+  .main-stats {
+    min-width: unset !important;
+    flex-direction: column;
+  }
+  .rank-stats-text {
+    font-size: 15px;
+  }
+  .level-text {
+    margin-left: 0 !important;
+    justify-content: center;
+  }
+  .score-details_mods-block {
+    display: none !important;
+  }
+  .diff-title {
+    display: none !important;
+  }
+  .mostplayed_grid {
+    grid-template-columns: 1fr;
+  }
+  .heading-selector:last-child {
+    margin: 10px auto 0px auto;
+
+  }
+}
+
+@media (max-width: 767px) {
+  .stats-container {
+    flex-direction: column;
+  }
+  .quick-nav-block {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stats-container {
+    gap: 15px;
+  }
+  .main-stats {
+    min-width: unset !important;
+    flex-direction: column;
+  }
+  .rank-stats-text {
+    font-size: 15px;
+  }
+  .level-text {
+    margin-left: 0 !important;
+    justify-content: center;
+  }
+  .score-details_mods-block {
+    display: none !important;
+  }
+  .diff-title {
+    display: none !important;
+  }
+  .mostplayed_grid {
+    grid-template-columns: 1fr;
+  }
+  .heading-selector:last-child {
+    margin: 10px auto 0px auto;
+
+  }
+}
