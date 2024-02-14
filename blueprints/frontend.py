@@ -1160,7 +1160,12 @@ async def profile_select(id):
     )
 
     #about_me/userpage_content
-    rendered_bbcode = bbcode(escape(user_data['userpage_content']))
+    if user_data and 'userpage_content' in user_data and user_data['userpage_content'] is not None and user_data['userpage_content'] != "":
+        rendered_bbcode = bbcode(escape(user_data['userpage_content']))
+    else:
+        # Handle the case where user_data or userpage_content is not available
+        # You might want to provide a default value or handle the situation accordingly
+        rendered_bbcode = ""
 
     # no user
     if not user_data:
@@ -1398,3 +1403,4 @@ async def stats():
     tops = await glob.db.fetchall('SELECT * FROM scores where mode=0 and status=2 ORDER BY pp DESC LIMIT 6')
 
     return await render_template('stats.html', dashdata=dash_data, datetime=datetime, timeago=timeago, top_score_vn=top_score_vn, top_score_rx=top_score_rx, top_score_ap=top_score_ap, most_played_maps=most_played_maps)
+
