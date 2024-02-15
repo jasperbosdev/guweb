@@ -3,24 +3,37 @@
 
 {% block header %}
 <link rel="stylesheet" href="/static/css/pages/404.css">
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
 <style>html {--main: 355;}</style>
 {% endblock %}
 
 {% block content %}
-<div class="main-block">
-	<div class="title-block">
-		<span>404</span>
-		<h2 class="error-title">
-			Page not found
-		</h2>
+<div class="container">
+	<div class="col-lg-12">
+		<div class="main-banner doc-banner">
+			<div class="banner-text">404</div>
+			<h2 style="font-size: 23px;">Page not found</h2>
+		</div>
 	</div>
-	<div class="error-block">
-		<h3 class="error-subtitle">Where am I?</h3>
-		<ol>
-			<li>- Check that the URL you entered is correct.</li>
-			<li>- Make sure that the place you are visiting isn't under maintenance!</li>
-			<li></li>
-		</ol>
+</div>
+<div class="container">
+	<div class="col-lg-12">
+		<div class="doc-main-bg main-block">
+			<div class="col-lg-12 404-block" style="color: #fff;">
+				<div class="error-block">
+					<h3 class="error-subtitle">This page could not be found</h3>
+					<img src="/static/images/404.gif" alt="404" class="error-img">
+				</div>
+				<div class="error-block">
+					<h3 class="error-subtitle">Where am I?</h3>
+					<ol>
+						<li>- Check that the URL you entered is correct.</li>
+						<li>- Make sure that the place you are visiting isn't under maintenance!</li>
+						<li></li>
+					</ol>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 {% endblock %}
