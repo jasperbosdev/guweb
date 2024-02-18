@@ -1,0 +1,40 @@
+{% extends 'admin/base.html' %}
+{% block title %} News {% endblock %}
+{% block header %}
+<script src="/static/js/asserts/vue.js"></script>
+<script src="/static/js/asserts/vue-axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<script>
+    var domain = "{{ domain() }}";
+</script>
+<link rel="stylesheet" href="/static/css/pages/admin/key.css">
+<link rel="stylesheet" href="/static/css/pages/admin/news.css">
+{% endblock%}
+
+{% block content %}
+
+<div id="settingsboard">
+    <div class="invite-title">
+    </div>
+    <div class="main-block" style="background-color: transparent;">
+        <div class="leaderboard-main-bg table-responsive ug-settings rechts-teilung leaderboard-main-bg card invite-card">
+            <form method="post">
+                <div class="news-title">Change Home Video</div>
+                <div class="input-group">
+                    <div>
+                        <span class="input-title">Youtube URL</span>
+                        <br>(make sure to include the full embed URL)
+                        <input name="videourl" placeholder="https://youtube.com/embed/" class="input" type="text"
+                            value="">
+                    </div>
+                </div>
+                <div class="invite-btn pt-5">
+                    <input type="submit" name="submit" class="button is-primary" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+    </a>
+</div>
+
+{% endblock %}

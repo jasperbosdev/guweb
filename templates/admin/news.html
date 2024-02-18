@@ -1,0 +1,50 @@
+{% extends 'admin/base.html' %}
+{% block title %} News {% endblock %}
+{% block header %}
+<script src="/static/js/asserts/vue.js"></script>
+<script src="/static/js/asserts/vue-axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<script>
+    var domain = "{{ domain() }}";
+</script>
+<link rel="stylesheet" href="/static/css/pages/admin/key.css">
+<link rel="stylesheet" href="/static/css/pages/admin/news.css">
+{% endblock%}
+
+{% block content %}
+
+<div id="settingsboard">
+    <div class="invite-title">
+    </div>
+    <div class="main-block" style="background-color: transparent;">
+        <div class="leaderboard-main-bg table-responsive ug-settings rechts-teilung leaderboard-main-bg card invite-card">
+            <form method="post">
+                <div class="news-title">Create New Post</div>
+                <div class="input-group">
+                    <div>
+                        <span class="input-title">Icon</span>
+                        <input name="icon" placeholder="Post Icon, e.g; 'fas fa-newspaper'" class="input" type="text"
+                            value="{{ post_icon }}">
+                    </div>
+                    <div>
+                        <span class="input-title">Title</span>
+                        <input name="title" placeholder="Post Title" class="input" type="text"
+                            value="{{ post_title }}">
+                    </div>
+                    <div>
+                        <span class="input-title">Content</span>
+                        <p class="control">
+                            <textarea name="content" class="textarea" placeholder="Post Content"></textarea>
+                        </p>
+                    </div>
+                </div>
+                <div class="invite-btn pt-5">
+                    <input type="submit" name="submit" class="button is-primary" value="Submit Post">
+                </div>
+            </form>
+        </div>
+    </div>
+    </a>
+</div>
+
+{% endblock %}

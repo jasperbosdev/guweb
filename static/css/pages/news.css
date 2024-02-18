@@ -1,0 +1,111 @@
+.main-banner {
+    min-height: 0 !important;
+    height: 210px;
+}
+
+.news-block {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    border-radius: 18px;
+    width: 950px;
+}
+
+.news-posts {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    gap: 0 20px;
+    border-radius: 18px;
+    background-color: hsl(var(--main), 10.7%, 24.7%);
+}
+
+.news-item {
+    width: 950px; /* normalle 600px, but I removed the feed section, for now atleast */
+    height: fit-content;
+}
+
+.header-title {
+    font-size: 26px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.header-date {
+    font-size: 18px;
+    color: #aeadad;
+    font-weight: 400;
+}
+
+.news-item-field {
+    padding: 24px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.news-item-header {
+    border-radius: 18px 18px 0 0;
+    padding: 12px 24px;
+    line-height: normal;
+}
+
+.news-feed {
+    width: 300px;
+    color: #fff;
+}
+
+/* news feed */
+.news-feed {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    gap: 0 20px;
+    border-radius: 18px;
+    background-color: hsl(var(--main), 10.7%, 24.7%);
+}
+
+.feed-item {
+    width: 300px;
+    height: fit-content;
+}
+
+.news-feed-header {
+    border-radius: 18px 18px 0 0;
+    padding: 12px 24px;
+    line-height: normal;
+}
+
+.feed-title {
+    display: flex;
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+    align-items: center;
+}
+
+.feed-date {
+    font-size: 16px;
+    color: #aeadad;
+    font-weight: 400;
+}
+
+.news-feed-field {
+    padding: 24px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.feed-header-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.feed-avatar {
+    width: 48px;
+    border-radius: 8px;
+}
+
+.feed-title img {
+    margin-right: 10px;
+}

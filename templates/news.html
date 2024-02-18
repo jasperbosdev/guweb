@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %} News {% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/pages/documentation.css">
+<link rel="stylesheet" href="/static/css/pages/news.css">
+{% endblock %}
+
+{% block content %}
+
+{% if flash %}
+<div class='noti-banner noti-banner-warning'>
+    <div class="container">
+        <div class="noti-column">
+            <div class='noti-col noti-col-icon'></div>
+            <div class='noti-col noti-col-label'>
+                <div class='noti-bannertype'>
+                    {% if status=='error' %}
+                    Warning
+                    {% elif status=='success' %}
+                    Notice
+                    {% endif %}
+                </div>
+                <div class='noti-bannertext'>
+                    {% if status=='error' %}
+                    Uh oh! Be careful!
+                    {% elif status=='success' %}
+                    Hey! Listen!
+                    {% endif %}
+                </div>
+            </div>
+            <div class='noti-banner-text'>
+                {{ flash }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="content">
+    <div id="Documentation">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="main-selector"></div>
+                <div class="main-banner doc-banner">
+                    <div class="banner-text">News</div>
+                    <h2 style="font-size: 23px;">Updates & Changes</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="doc-main-bg main-block">
+                    <div class="col-lg-12 text-block">
+                        <div class="news-block">
+                            {% for news_item in news_data %}
+                            <div class="news-posts">
+                                <div class="news-item">
+                                    <div class="news-item-header"
+                                        style="background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(/static/images/banner.jpg); background-size: cover; background-position: center;">
+                                        <div class="header-title">
+                                            <i class="{{ news_item.icon }}" style="margin-right: 5px"></i> {{ news_item.title }}
+                                        </div>
+                                        <div class="header-date">
+                                            posted {{ timeago.format(news_item.date_posted) }}
+                                        </div>
+                                    </div>
+                                    <div class="news-item-field">
+                                        {{ news_item.content }}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="news-feed">
+                                <div class="feed-item">
+                                    <div class="news-feed-header"
+                                        style="background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(/banners/{{ news_item.posted_by }}); background-size: cover; background-position: center;">
+                                        <div class="feed-title">
+                                            <img src="https://a.{{ domain() }}/{{ news_item.posted_by }}" class="feed-avatar"> {{ news_item.poster_name }}
+                                        </div>
+                                        <div class="feed-date">
+                                            {{ news_item.date_posted }}
+                                        </div>
+                                    </div>
+                                    <div class="news-feed-field">
+                                        idk yet?
+                                    </div>
+                                </div>
+                            </div> -->
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

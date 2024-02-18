@@ -4,6 +4,7 @@ __all__ = ()
 
 import datetime
 
+import time
 import json
 import string
 import random
@@ -62,9 +63,13 @@ async def home():
     score_count = await glob.db.fetch('SELECT MAX(id) AS max_id FROM scores')
 
     return await render_template(
-        'admin/home.html', dashdata=dash_data,
-        recentusers=recent_users, recentscores=recent_scores,
-        datetime=datetime, timeago=timeago, admin_data=admin_data,
+    'admin/home.html',
+        dashdata=dash_data,
+        recentusers=recent_users,
+        recentscores=recent_scores,
+        datetime=datetime,
+        timeago=timeago,
+        admin_data=admin_data,
         score_count=score_count
     )
 
@@ -291,3 +296,66 @@ async def gen_invite():
             return await flash('error', 'You do not have permissions to do this!', 'key')
     else:
         return await flash('error', 'The use of keys is currently disabled/unneeded!', 'home')
+    
+@admin.route('/news')
+async def news():
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session['user_data']['is_staff']:
+        return await flash('error', f'You have insufficient privileges.', 'home')
+    
+    # create some kind of query for existing news post to display previous posts on the page
+
+    return await render_template('admin/news.html')
+
+@admin.route('/news', methods=['POST'])
+async def post_news():
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session['user_data']['is_staff']:
+        return await flash('error', f'You have insufficient privileges.', 'home')
+
+    form = await request.form
+    icon = form['icon']
+    title = form['title']
+    content = form['content']
+    posted_by = session['user_data']['id']
+    poster_name = session['user_data']['name']
+    date_posted = time.strftime('%Y-%m-%d %H:%M:%S')
+
+    await glob.db.execute(
+        'INSERT INTO news (icon, title, content, posted_by, poster_name, date_posted) VALUES (%s, %s, %s, %s, %s, %s)',
+        [icon, title, content, posted_by, poster_name, date_posted]
+    )
+
+    return await flash('success', 'News post has been successfully posted!', 'admin/news')
+
+@admin.route('/edithome')
+async def edithome():
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session['user_data']['is_staff']:
+        return await flash('error', f'You have insufficient privileges.', 'home')
+
+    return await render_template('admin/homepage.html')
+
+@admin.route('/edithome', methods=['POST'])
+async def post_homepage():
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session['user_data']['is_staff']:
+        return await flash('error', f'You have insufficient privileges.', 'home')
+
+    form = await request.form
+    videourl = form['videourl']
+
+    await glob.db.execute(
+        'UPDATE misc SET home_video = %s',
+        [videourl]
+    )
+
+    return await flash('success', 'Homepage has been successfully updated!', 'admin/homepage')
