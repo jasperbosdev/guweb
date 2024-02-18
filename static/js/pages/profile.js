@@ -26,6 +26,14 @@ new Vue({
                             limit: 5,
                             full: true
                         }
+                    },
+                    first: {
+                        out: [],
+                        load: true,
+                        more: {
+                            limit: 5,
+                            full: true
+                        }
                     }
                 },
                 maps: {
@@ -48,7 +56,8 @@ new Vue({
             levelProgress: 0, // Initialize level progress
             totalScore: 0, // Initialize total score
             level_progress: 0, // Define level_progress within the data object
-            totalScoreCount: 0
+            totalScoreCount: 0,
+            firstPlaces: null
         };
     },
     created() {
@@ -66,8 +75,20 @@ new Vue({
                 console.error('Error loading profile data or all data:', error);
             });
         this.LoadUserStatus();
+        this.fetchDataCount();
     },
     methods: {
+        async fetchDataCount() {
+            try {
+                const response = await fetch(`https://api.${domain}/v1/get_player_scores?id=${userid}&mode=${this.modegulag}&scope=best&limit=5`);
+                const data = await response.json();
+                console.log('Data fetched successfully:', data); // Log the fetched data
+                this.firstPlaces = data.first_places;
+                // Handle other data variables if needed
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        },
         calculateLevel() {
             // Recalculate total score based on the new mode
             this.totalScore = this.data.stats.out[this.modegulag].tscore;
@@ -315,6 +336,7 @@ new Vue({
                 // No need to call fetchScoresCount() here
                 this.LoadScores('best');
                 this.LoadScores('recent');
+                this.LoadScores('first');
                 this.fetchData();
         
                 // Resolve the promise after all necessary data loading operations
@@ -394,6 +416,7 @@ new Vue({
             // Update the data limits
             this.data.scores.recent.more.limit = 5;
             this.data.scores.best.more.limit = 5;
+            this.data.scores.first.more.limit = 5;
             this.data.maps.most.more.limit = 6;
         
             this.fetchScoresCount();
@@ -401,6 +424,7 @@ new Vue({
             // Reload all data and recalculate the level
             this.LoadAllofdata();
             this.calculateLevel();
+            this.fetchDataCount();
         },        
         AddLimit(which) {
             if (window.event)
@@ -412,6 +436,9 @@ new Vue({
             } else if (which == 'recentscore') {
                 this.data.scores.recent.more.limit += 5;
                 this.LoadScores('recent');
+            } else if (which == 'firstscore') {
+                this.data.scores.first.more.limit += 5;
+                this.LoadScores('first');
             } else if (which == 'mostplay') {
                 this.data.maps.most.more.limit += 4;
                 this.LoadMostBeatmaps();
