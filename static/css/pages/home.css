@@ -210,11 +210,15 @@ iframe.video-block {
 }
 
 .category-link {
-  color: #f6a;
+  color: hsl(var(--main), 90%, 55%);
   font-weight: 600;
   display: flex;
   align-items: baseline;
   transition: 150ms color, 150ms margin-left;
+}
+
+a.category-link:hover {
+  color: hsl(var(--main),90%,90%);
 }
 
 a.category-link .fas {
@@ -326,7 +330,7 @@ span.beatmap-mapper {
 }
 
 .beatmap-footer .target-button {
-  background-color: hsl(var(--base), 10%, 30%);
+  background-color: hsl(var(--main), 10%, 30%);
 }
 
 .block-header:not(:first-child) {

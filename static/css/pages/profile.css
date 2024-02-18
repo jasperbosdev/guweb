@@ -404,6 +404,7 @@ html {
   background: hsl(var(--main), 25%, 25%);
   transition: 0.2s ease;
   cursor: pointer;
+  background-size: cover !important;
 }
 
 .map-data {
@@ -430,6 +431,7 @@ html {
     0 16px 24px rgba(0, 0, 0, 0.04),
     0 24px 32px rgba(0, 0, 0, 0.04);
   background: hsl(var(--main), 30%, 30%);
+  background-size: cover;
 }
 
 .map-single:first-child {
@@ -1064,9 +1066,30 @@ span.heading-title {
   line-height: 1.4;
 }
 
+.left-flag span {
+  font-weight: 600;
+}
+
 [data-title] {
   position: relative;
   cursor: help;
+  transition: all 240ms;
+}
+
+[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  bottom: -32px;
+  left: -100px;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 2px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-family: outfit;
+  white-space: nowrap;
+  border-radius: 7px;
 }
 
 .ranks-block {
@@ -1129,7 +1152,7 @@ span.heading-title {
   display: flex;
   flex-direction: row;
   font-weight: 600;
-  align-items: baseline;
+  align-items: center;
   /* color: hsl(var(--main), 90%, 55%); */
   color: #fff;
 }
@@ -1138,6 +1161,50 @@ span.heading-title {
   color: hsl(var(--main), 90%, 55%);
   font-size: 14px;
   margin-right: 6px;
+}
+
+/* private profile badge */
+.private-content {
+  padding: 8px 12px;
+  background-color: hsl(var(--main), 90%, 55%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.remove-content {
+  padding: 8px 12px;
+  background-color: hsl(var(--main), 1.4%, 17.5%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.add-content {
+  padding: 8px 12px;
+  background-color: hsl(var(--main), 1.4%, 17.5%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.private-content:hover,
+.remove-contant:hover,
+.add-content:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+}
+
+.private-content i,
+.remove-content i,
+.add-content i {
+  margin-right: 3px;
+}
+
+.private-content,
+.remove-content,
+.add-content {
+  transition: all ease-in-out 120ms;
 }
 
 .badges-list {
@@ -1188,6 +1255,13 @@ span.heading-title,
   margin: 6px 2px;
   border-radius: 8px;
   line-height: 1.3;
+  transition: all ease-in-out 120ms;
+}
+
+.profile-tag:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  box-shadow: #0000003d 2px 2px 20px;
 }
 
 .user-badge,
@@ -1246,7 +1320,7 @@ span.heading-title,
 .quick-nav-item {
   border-radius: 8px;
   background-color: hsl(var(--main), 1.4%, 17.5%);
-  min-width: 175px;
+  min-width: 200px;
   color: #fff;
   padding: 3px 0;
   text-align: center;
@@ -1667,8 +1741,12 @@ a[href^="/b/"] {
 }
 
 .songname_title {
-  color: #fff;
+  color: hsl(var(--main),65%,70%);
   font-weight: 700;
+}
+
+.songname_title:hover {
+  color: hsl(var(--main),90%,90%);
 }
 
 .beatmap-link {
