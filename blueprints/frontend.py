@@ -87,7 +87,7 @@ def bbcode(value):
         (r'\[code\](.+?)\[/code\]', r'<tt>\1</tt>'),
         (r'\[big\](.+?)\[/big\]', r'<big>\1</big>'),
         (r'\[small\](.+?)\[/small\]', r'<small>\1</small>'),
-        (r'\[box=(.+?)\](.+?)\[/box\]', r'<div class="custom-spoilerbox" id="spoilerbox-\1"><a class="spoilerbox-link" href="#" onclick="toggleSpoilerBox(&quot;spoilerbox-\1&quot;)"><span class="spoilerbox-link-icon"></span>\1</a><div class="spoilerbox-content" style="display: none;">\2</div></div>'),
+        (r'\[box=(.+?)\](.+?)\[/box\]', r'<div class="custom-spoilerbox" id="spoilerbox-\1"><a class="spoilerbox-link" onclick="toggleSpoilerBox(&quot;spoilerbox-\1&quot;)"><span class="spoilerbox-link-icon"></span>\1</a><div class="spoilerbox-content" style="display: none;">\2</div></div>'),
         (r'\[notice\](.*?)\[/notice\]', r'<div class="well">\1</div>')
     ]
 
@@ -127,6 +127,8 @@ def login_required(func):
 @frontend.route('/home')
 @frontend.route('/')
 async def home():
+
+    get_misc = await glob.db.fetch('SELECT home_video FROM misc')
 
     pp_records = await glob.db.fetchall(
         '(SELECT scores.*, maps.*, scores.userid, users.priv, users.name, 0 as mode '
@@ -182,7 +184,7 @@ async def home():
 
     user_rank_1_maps = set()
 
-    return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active,
+    return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active, get_misc=get_misc,
                                  timeago=timeago, recent_activity=recent_activity, user_rank_1_maps=user_rank_1_maps, mode_strings=mode_strings)
 
 @frontend.route('/home/account/edit')
@@ -342,6 +344,23 @@ async def settings_profile_post():
         await glob.db.execute("UPDATE users SET play_style=%s WHERE id=%s", (playstyle, session['user_data']['id']))
 
     playstyle_value = playstyle  # This is the updated play_style value from the database
+
+    # private mode
+    updated_private_mode = False
+    private_mode = 0
+    
+    # Check if "priv_true" or "priv_false" is in the form data
+    if 'priv_true' in form:
+        updated_private_mode = True
+        private_mode = 1
+    elif 'priv_false' in form:
+        updated_private_mode = True
+        private_mode = 0
+    
+    if updated_private_mode:
+        await glob.db.execute("UPDATE users SET private_mode=%s WHERE id=%s", (private_mode, session['user_data']['id']))
+    
+    private_mode_value = private_mode  # This is the updated private_mode value from the database
 
     # no data has changed; deny post
     if (
@@ -593,7 +612,7 @@ async def login_post():
     # check if account exists
     user_info = await glob.db.fetch(
         'SELECT id, name, email, priv, '
-        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content, username_aka '
+        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content, username_aka, private_mode '
         'FROM users '
         'WHERE safe_name = %s',
         [utils.get_safe_name(username)]
@@ -664,6 +683,7 @@ async def login_post():
         'location': user_info['location_content'],
         'interest': user_info['interest_content'],
         'username_aka': user_info['username_aka'],
+        'private_mode': user_info['private_mode'],
         'silence_end': user_info['silence_end'],
         'stats': {
             'pp': user_info_stats['pp']
@@ -1147,6 +1167,46 @@ async def friends_page():
 
     return await render_template('friends.html', friends=friends, timeago=timeago)
 
+async def add_friend_function(sender_id, receiver_id):
+    """
+    Function to add a friend relationship between two users.
+    """
+    try:
+        # Your logic to add a friend here
+        # For example, you can execute a database query
+        await glob.db.execute(
+            "REPLACE INTO relationships (user1, user2, type) VALUES (:user1, :user2, 'friend')",
+            {"user1": sender_id, "user2": receiver_id},
+        )
+        # Optionally, you can perform additional operations or logging here
+    except Exception as e:
+        # Handle any errors that occur during the friend adding process
+        raise e
+
+@frontend.route('/add_friend', methods=['POST'])
+async def add_friend():
+    if not session.get('authenticated'):
+        return (await render_template('404.html'), 404)  # Unauthorized access
+    
+    # Await the form coroutine to get form data
+    form = await request.form
+
+    user_id = request.form.get('user_id')
+    
+    # Check if the current user is authorized to add friend
+    if session['user_data']['id'] != user_id:
+        return (await render_template('404.html'), 404)  # Forbidden
+    
+    try:
+        # Call the add_friend function here with appropriate parameters
+        await add_friend_function(session['user_data']['id'], user_id)
+        
+        # Optionally, you can return a success message or status code
+        return await flash('success', 'Friend added successfully', 'profile')
+    except Exception as e:
+        # Handle any errors that occur during the friend adding process
+        return await flash('error', 'Something went wrong', 'profile')
+
 @frontend.route('/u/<id>')
 async def profile_select(id):
 
@@ -1363,10 +1423,65 @@ async def profile_select(id):
 
     user_rank_1_maps = set()
 
+    if 'authenticated' in session and session['authenticated']:
+        relationship_query = """
+            SELECT CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM relationships
+                    WHERE user1 = %s
+                    AND user2 = %s
+                )
+                THEN 'yes'
+                ELSE 'no'
+            END AS relationship_exists
+        """
+
+        frenadded_query = """
+            SELECT CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM relationships
+                    WHERE user1 = %s
+                    AND user2 = %s
+                )
+                THEN 'yes'
+                ELSE 'no'
+            END AS is_friends
+        """
+
+        if user_data is not None and 'id' in user_data and session is not None and 'user_data' in session and 'id' in session['user_data']:
+            relationship_result = await glob.db.fetch(relationship_query, [user_data['id'], session['user_data']['id']])
+            frenadded_result = await glob.db.fetch(frenadded_query, [session['user_data']['id'], user_data['id']])
+        else:
+            # Handle the case when user_data, session, or their respective keys are None or missing
+            # You can raise an exception or return an appropriate response
+            relationship_exists = 'no'
+            is_friends = 'no'
+            frenadded_result = None  # Define frenadded_result with a default value if not authenticated
+
+        # Get the value of relationship_exists and is_friends
+        relationship_exists = relationship_result['relationship_exists']
+        is_friends = frenadded_result['is_friends'] if frenadded_result is not None else None
+    else:
+        # Handle the case when the user is not authenticated
+        relationship_exists = None  # or any other appropriate value
+        is_friends = None
+        frenadded_result = None
+
+    private_profile = await glob.db.fetch(
+        'SELECT private_mode '
+        'FROM users '
+        'WHERE safe_name IN (%s) OR id IN (%s) ',
+        [id, utils.get_safe_name(id)]
+    )
+
     return await render_template('profile.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
                                  badges=badges, meta_stats=meta_stats, recent_activity=recent_activity, mode_strings=mode_strings, 
-                                 user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count)
+                                 user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count,
+                                 private_profile=private_profile, relationship_exists=relationship_exists, frenadded_result=frenadded_result,
+                                 is_friends=is_friends)
 
 @frontend.route('/stats')
 async def stats():
@@ -1404,3 +1519,10 @@ async def stats():
 
     return await render_template('stats.html', dashdata=dash_data, datetime=datetime, timeago=timeago, top_score_vn=top_score_vn, top_score_rx=top_score_rx, top_score_ap=top_score_ap, most_played_maps=most_played_maps)
 
+@frontend.route('/news')
+@login_required
+async def news():
+
+    news_data = await glob.db.fetchall('SELECT * FROM news ORDER BY date_posted DESC, id DESC LIMIT 1')
+
+    return await render_template('news.html', news_data=news_data, timeago=timeago)
