@@ -27,13 +27,13 @@
                         community
                     </a>
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="#">
+                        <!-- <a class="navbar-item" href="/news">
                             <i class="fa-solid fa-newspaper"></i>&nbsp; news
-                        </a>
-                        <a class="navbar-item" href="#">
+                        </a> -->
+                        <a class="navbar-item" href="#" onclick="soon()">
                             <i class="fa-solid fa-gamepad"></i>&nbsp; tournaments
                         </a>
-                        <a class="navbar-item" href="#">
+                        <a class="navbar-item" href="#" onclick="soon()">
                             <i class="fa-solid fa-video"></i>&nbsp; livestreams
                         </a>
                         {% if session.authenticated %}
@@ -44,6 +44,11 @@
                         {% endif %}
                     </div>
                 </div>
+                <script>
+                    function soon() {
+                        alert('Coming soon!');
+                    }
+                </script>
             
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link navtem">
@@ -91,7 +96,7 @@
                     </div>
                 </div>
                 
-                <a href="/support" class="header-button druzban-button router-link " data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="Support us!"><i class="fas fa-heart"></i></a>
+                <a onclick="soon()" href="#" class="header-button druzban-button router-link " data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="Support us!"><i class="fas fa-heart"></i></a>
                 <div class="navbar-item navtem nav-profile has-dropdown is-hoverable" style="margin: 0 0.5em !important;">
                     <a class="header-avatar" style="background-image:url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></a>
                     <a class="navbar-link" style=":hover {background-color: transparent;}">
