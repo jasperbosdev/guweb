@@ -201,6 +201,18 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+@media only screen and (max-height: 250px) {
+    .container {
+        content: "go on pc bruh";
+    }
+}
+
+@media only screen and (max-height: 980px) {
+    .register-block {
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 770px) {
     .is-auth {
         width: 500px;

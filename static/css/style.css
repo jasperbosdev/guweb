@@ -749,6 +749,8 @@ span.user-card-data_angle {
   opacity: 1;
   /* margin-top: 28px; */
   border-radius: 10px;
+  position: relative;
+  z-index: 999;
 }
 
 .paper-snackbar.is-success {
