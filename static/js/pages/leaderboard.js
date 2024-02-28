@@ -168,86 +168,86 @@ new Vue({
     }
 });
 
-Vue.component('user-profile', {
-    props: ['user', 'mode', 'domain'],
-    template: `
-    <span :id="user.player_id" class="user-name" @mouseover="showProfile" @mouseout="hideProfile">
-        <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
-          <div class="player-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + ')'"></div>
-          <a :title="flags[user.country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'" class="player-flag">
-            <div class="flag-dropdown">
-              {{ flags[user.country.toUpperCase()] }}
-            </div>
-          </a>
-          {{ user.name }}
-        </a>
-        <div class="profile-panel" v-bind:style="{ display: profileStyle }">
-            <div class="profile-panel-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + ')'"></div>
-            <div class="profile-panel-background" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% / cover, linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://' + domain + '/banners/' + user.player_id + '); background-size: cover; background-position-y: center;'"></div>
-            <div class="profile-panel-info">
-            <div class="name">
-              {{ user.name }}
-            </div>
-            <div class="activity">
-              Last seen {{ formatTimeAgo(user.latest_activity) }}
-            </div>
-            </div>
-        </div>
-    </span>
-    `,
-    data: function() {
-        return {
-            profileVisible: false,
-            badgePopupVisible: false,
-            badgePopupTop: 0,
-            badgePopupLeft: 0,
-        };
-    },
-    methods: {
-        showProfile: function() {
-            this.profileVisible = true;
-        },
-        hideProfile: function() {
-            this.profileVisible = false;
-        },
-        showBadgePopup: function(event, badge) {
-            if (this.badgePopupVisible != badge.id) {
-                this.badgePopupVisible = badge.id;
-                // Calculate the position of the badge popup relative to the badge icon
-                const badgeIcon = event.target;
-                const badgeIconRect = badgeIcon.getBoundingClientRect();
-                this.badgePopupTop = badgeIconRect.top + badgeIconRect.height + 'px';
-                this.badgePopupLeft = badgeIconRect.left + 'px';
-            }
-        },
-        hideBadgePopup: function() {
-            this.badgePopupVisible = false;
-        },
-        formatTimeAgo: function(timestamp) {
-            const now = new Date().getTime();
-            const secondsPast = Math.floor((now - timestamp * 1000) / 1000);
+// Vue.component('user-profile', {
+//     props: ['user', 'mode', 'domain'],
+//     template: `
+//     <span :id="user.player_id" class="user-name" @mouseover="showProfile" @mouseout="hideProfile">
+//         <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
+//           <div class="player-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + ')'"></div>
+//           <a :title="flags[user.country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'" class="player-flag">
+//             <div class="flag-dropdown">
+//               {{ flags[user.country.toUpperCase()] }}
+//             </div>
+//           </a>
+//           {{ user.name }}
+//         </a>
+//         <div class="profile-panel" v-bind:style="{ display: profileStyle }">
+//             <div class="profile-panel-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + ')'"></div>
+//             <div class="profile-panel-background" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% / cover, linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://' + domain + '/banners/' + user.player_id + '); background-size: cover; background-position-y: center;'"></div>
+//             <div class="profile-panel-info">
+//             <div class="name">
+//               {{ user.name }}
+//             </div>
+//             <div class="activity">
+//               Last seen {{ formatTimeAgo(user.latest_activity) }}
+//             </div>
+//             </div>
+//         </div>
+//     </span>
+//     `,
+//     data: function() {
+//         return {
+//             profileVisible: false,
+//             badgePopupVisible: false,
+//             badgePopupTop: 0,
+//             badgePopupLeft: 0,
+//         };
+//     },
+//     methods: {
+//         showProfile: function() {
+//             this.profileVisible = true;
+//         },
+//         hideProfile: function() {
+//             this.profileVisible = false;
+//         },
+//         showBadgePopup: function(event, badge) {
+//             if (this.badgePopupVisible != badge.id) {
+//                 this.badgePopupVisible = badge.id;
+//                 // Calculate the position of the badge popup relative to the badge icon
+//                 const badgeIcon = event.target;
+//                 const badgeIconRect = badgeIcon.getBoundingClientRect();
+//                 this.badgePopupTop = badgeIconRect.top + badgeIconRect.height + 'px';
+//                 this.badgePopupLeft = badgeIconRect.left + 'px';
+//             }
+//         },
+//         hideBadgePopup: function() {
+//             this.badgePopupVisible = false;
+//         },
+//         formatTimeAgo: function(timestamp) {
+//             const now = new Date().getTime();
+//             const secondsPast = Math.floor((now - timestamp * 1000) / 1000);
         
-            if (secondsPast < 60) {
-                return parseInt(secondsPast) + 's ago';
-            } else if (secondsPast < 3600) {
-                return parseInt(secondsPast / 60) + 'm ago';
-            } else if (secondsPast < 86400) {
-                return parseInt(secondsPast / 3600) + 'h ago';
-            } else if (secondsPast < 2592000) { // 30 days (roughly a month)
-                const days = Math.floor(secondsPast / (3600 * 24));
-                return days > 1 ? days + ' days ago' : '1 day ago';
-            } else if (secondsPast < 31536000) { // 365 days (roughly a year)
-                const months = Math.floor(secondsPast / (3600 * 24 * 30));
-                return months > 1 ? months + ' months ago' : '1 month ago';
-            } else {
-                const years = Math.floor(secondsPast / 31536000);
-                return years > 1 ? years + ' years ago' : '1 year ago';
-            }
-        },
-    },
-    computed: {
-        profileStyle: function() {
-            return this.profileVisible ? 'flex !important' : 'none !important';
-        }
-    }
-});
+//             if (secondsPast < 60) {
+//                 return parseInt(secondsPast) + 's ago';
+//             } else if (secondsPast < 3600) {
+//                 return parseInt(secondsPast / 60) + 'm ago';
+//             } else if (secondsPast < 86400) {
+//                 return parseInt(secondsPast / 3600) + 'h ago';
+//             } else if (secondsPast < 2592000) { // 30 days (roughly a month)
+//                 const days = Math.floor(secondsPast / (3600 * 24));
+//                 return days > 1 ? days + ' days ago' : '1 day ago';
+//             } else if (secondsPast < 31536000) { // 365 days (roughly a year)
+//                 const months = Math.floor(secondsPast / (3600 * 24 * 30));
+//                 return months > 1 ? months + ' months ago' : '1 month ago';
+//             } else {
+//                 const years = Math.floor(secondsPast / 31536000);
+//                 return years > 1 ? years + ' years ago' : '1 year ago';
+//             }
+//         },
+//     },
+//     computed: {
+//         profileStyle: function() {
+//             return this.profileVisible ? 'flex !important' : 'none !important';
+//         }
+//     }
+// });

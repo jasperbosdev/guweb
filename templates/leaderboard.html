@@ -145,7 +145,7 @@
                             </div>
                             <div class="middle-content">
                                 <div class="first-player-name">
-                                    <a class="first-player-avatar" :href="'/u/' + boards[0].player_id" 
+                                    <a class="first-player-avatar" :href="'/u/' + boards[0].player_id+'?mode='+mode+'&mods='+mods" 
                                         :style="'background-image: url(https://a.{{ domain() }}/' + boards[0].player_id + ')'">
                                     </a>
                                 </div>
@@ -173,7 +173,17 @@
                             <tr class="leaderboard-column" :style="{ 'background-color': user.latest_activity >= 1677200400 ? 'hsl(var(--main), 15%, 25%)' : 'hsl(var(--main), 15%, 18%)' }">
                                 <td class="column-player-rank" :style="{ 'background-color': user.latest_activity >= 1677200400 ? 'hsl(var(--main), 10.7%, 24.7%)' : 'hsl(var(--main), 15%, 18%) !important' }">#<% (currentPage - 1) * limit + index + 2 %></td>
                                 <td class="column-player-name text-left">
-                                    <user-profile :user="user" :mode="mode" :domain="domain"></user-profile>
+                                    <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
+                                        <div class="player-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + ')'"></div>
+                                        <a :title="flags[user.country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'" class="player-flag">
+                                          <div class="flag-dropdown">
+                                            <% flags[user.country.toUpperCase()] %>
+                                          </div>
+                                        </a>
+                                        <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
+                                        <% user.name %>
+                                        </a>
+                                    </a>
                                 </td>
                                 <td v-if="sort == 'pp' || sort == 'rscore'">
                                     <% (sort=='pp' ? user.pp+'pp' : "" ) %>
