@@ -1406,13 +1406,15 @@ async def profile_select(id):
         '               ROW_NUMBER() OVER(PARTITION BY map_md5 ORDER BY timestamp DESC) AS rn '
         '        FROM score_logs '
         '        WHERE user_id = %s '
+        '          AND timestamp >= DATE_SUB(NOW(), INTERVAL 2 WEEK) '  # Condition for activities within the last two weeks
         '    ) AS ranked_logs '
         '    WHERE rn = 1 '
         ') AS sl '
         'JOIN users u ON sl.user_id = u.id '
         'JOIN maps m ON sl.map_md5 = m.md5 '
         'LEFT JOIN users sniped_user ON sl.got_sniped_by = sniped_user.name '
-        'ORDER BY sl.timestamp DESC LIMIT 5', [id]
+        'ORDER BY sl.timestamp DESC LIMIT 5',
+        [id]
     )
 
     mode_strings = {
