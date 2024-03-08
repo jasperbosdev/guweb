@@ -537,7 +537,7 @@ a.foot-link {
   width: auto;
   padding-left: 8px;
   padding-right: 8px;
-  left: -60%;
+  left: 0%;
 }
 
 .input,
@@ -634,6 +634,7 @@ span.user-card-data_angle {
   width: 230px;
   padding-left: 8px;
   padding-right: 8px;
+  left: -60%;
 }
 
 .prof-navtem i {
