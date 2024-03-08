@@ -1228,6 +1228,20 @@ body::-webkit-scrollbar-thumb {
     margin-left: unset !important;
     left: 0%;
   }
+  
+  .navbar.is-primary.is-active {
+    background-color: #282727 !important;
+  }
+  
+  .navbar.is-primary.is-active .navbar-menu {
+    background-color: #282727 !important;
+    width: 100%;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    margin-top: 0 !important;
+    z-index: -1;
+  }
 }
 
 @media (max-width: 767px) {
@@ -1248,5 +1262,19 @@ body::-webkit-scrollbar-thumb {
   .navbar-dropdown-profile {
     margin-left: unset !important;
     left: 0%;
+  }
+  
+  .navbar.is-primary.is-active {
+    background-color: #282727 !important;
+  }
+  
+  .navbar.is-primary.is-active .navbar-menu {
+    background-color: #282727 !important;
+    width: 100%;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    margin-top: 0 !important;
+    z-index: -1;
   }
 }
