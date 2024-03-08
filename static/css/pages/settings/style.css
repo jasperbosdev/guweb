@@ -1244,3 +1244,9 @@ input[type="checkbox"]::before {
 .patreon-btn i {
   margin-right: 5px;
 }
+
+.help-msg {
+  background-color: #362B2F;
+  border-radius: 8px;
+  padding: 1em;
+}
