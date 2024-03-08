@@ -655,9 +655,6 @@ a.donor-block:before {
 /* authed responsive */
 
 @media (max-width: 1339px) {
-  .container.is-fullhd {
-    margin: 0 auto;
-  }
   .container-home {
     padding: 30px;
     margin-top: 50px;
@@ -665,9 +662,6 @@ a.donor-block:before {
 }
 
 @media (max-width: 1023px) {
-  .container.is-fullhd {
-    margin: 0 auto;
-  }
   .container-home {
     padding: 30px;
     margin-top: 50px;
@@ -719,9 +713,6 @@ a.donor-block:before {
 }
 
 @media (max-width: 767px) {
-  .container.is-fullhd {
-    margin: 0 auto;
-  }
   .container-home {
     padding: 30px;
     margin-top: 50px;
