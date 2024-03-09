@@ -426,6 +426,7 @@ a.donor-block:before {
   font-size: 1.5rem;
   color: #fff;
   font-weight: 600;
+  text-wrap: nowrap;
 }
 
 .donor-info {
@@ -435,6 +436,7 @@ a.donor-block:before {
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  overflow: hidden;
 }
 
 .my-con {
