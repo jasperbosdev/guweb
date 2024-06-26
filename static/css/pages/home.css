@@ -477,16 +477,15 @@ a.donor-block:before {
 
 .modimg-plane {
   position: absolute;
-  top: -100px;
-  left: -200px;
+  bottom: -60%;
+  left: -10%;
   z-index: -2;
 }
 
 .modimg-relax {
   position: absolute;
-  top: -110px;
-  left: 1150px;
-  right: -80px;
+  top: -30%;
+  right: -5%;
   z-index: -2;
 }
 
@@ -504,6 +503,16 @@ a.donor-block:before {
   animation: appear 0.4s ease;
 }
 
+@media only screen and (max-width: 1315px) {
+  .modimg-plane {
+    display: none;
+  }
+
+  .modimg-relax {
+    display: none;
+  }
+}
+
 @-webkit-keyframes appear {
   0% {
     -webkit-transform: translateY(-50px);
@@ -512,24 +521,6 @@ a.donor-block:before {
   100% {
     -webkit-transform: translateY(0);
     opacity: 1;
-  }
-}
-
-@media screen and (max-width: 1725px) {
-  .modimg-plane {
-    display: none;
-  }
-  .modimg-relax {
-    display: none;
-  }
-}
-
-@media screen and (min-width: 1870px) {
-  .modimg-plane {
-    display: none;
-  }
-  .modimg-relax {
-    display: none;
   }
 }
 
