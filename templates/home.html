@@ -17,6 +17,36 @@
 
 {% if not session.authenticated %}
 
+<style>
+  .home-contain {
+    background-color: hsl(var(--main),10%,10%);
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .abovebg {
+    display: none !important;
+  }
+
+  .viewport,
+  .viewport-blur {
+    display: none;
+  }
+
+  .navbar {
+    background-color: hsl(var(--main),10%,10%) !important;
+  }
+
+  .scroll-bg {
+    background-color: hsla(var(--main), 1.4%, 15.5%, 0.7) !important;
+  }
+
+  section {
+    background-color: hsl(var(--main),10%,10%) !important;
+  }
+</style>
+
 {% if flash %}
 <div class='noti-banner noti-banner-warning'>
   <div class="container">
@@ -46,7 +76,8 @@
 </div>
 {% endif %}
 
-<div class="hero splash p-less" id="home-hero">
+<div class="home-contain">
+  <div class="hero splash p-less" id="home-hero">
   <div class="home-bg">
     <div class="home-container flex">
       <div class="columns flex-vcenter">
@@ -116,6 +147,7 @@
     </div>
   </div>
 </section>
+</div>
 
 {% endif %}
 
