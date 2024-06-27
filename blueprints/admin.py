@@ -18,6 +18,8 @@ from quart import Blueprint
 from quart import render_template
 from quart import session
 from quart import request
+from quart import redirect
+from quart import url_for
 
 from objects import glob
 from objects.utils import flash
@@ -197,7 +199,8 @@ async def user_edit(id):
 
     user_data = await glob.db.fetch(
         'SELECT id, name, email, priv, country, silence_end, donor_end, '
-        'creation_time, latest_activity, clan_id, clan_priv '
+        'creation_time, latest_activity, clan_id, clan_priv, '
+        'discord_content, occupation_content, location_content, interest_content '
         'FROM users '
         'WHERE safe_name IN (%s) OR id IN (%s) LIMIT 1',
         [id, get_safe_name(id)]
@@ -259,6 +262,54 @@ async def user_edit(id):
 
     return await render_template('admin/edit_user.html', user_data=user_data, logs_data=logs_data, admin=admin, access_denied=access_denied,
                                  online_status=online_status)
+
+from quart import redirect, flash
+
+@admin.route('/users/wipe_socials/<id>', methods=['POST'])
+async def wipe_socials(id):
+    """Wipe user social information."""
+    
+    # Ensure user is authenticated and has sufficient privileges
+    if not 'authenticated' in session:
+        flash('error', 'Please login first.', 'login')
+        return redirect(url_for('auth.login'))  # Adjust the login route as per your application
+
+    author = await glob.db.fetch("SELECT priv FROM users WHERE id=%s", session['user_data']['id'])
+    session['user_data']['priv'] = author['priv']
+    author = Privileges(int(author['priv']))
+    
+    if Privileges.Admin not in author:
+        flash('error', 'You have insufficient privileges. If you have privileges, try entering your profile to reload them.', 'home')
+        return redirect(url_for('home'))  # Adjust the home route as per your application
+
+    # Check if the user to be edited exists
+    user_data = await glob.db.fetch('SELECT id, priv FROM users WHERE id=%s', id)
+    if not user_data:
+        flash('error', 'User not found.', 'home')
+        return redirect(url_for('home'))  # Adjust the home route as per your application
+
+    usrprv = Privileges(int(user_data['priv']))
+    admpriv = Privileges(int(session['user_data']['priv']))
+
+    # Check permissions to edit user
+    if int(user_data['id']) in [3, 4] and int(session['user_data']['id']) not in [3, 4]:
+        flash('error', "You don't have permissions to edit Owners", 'admin_edit_user')
+        return redirect(url_for('admin_edit_user'))  # Adjust the admin_edit_user route as per your application
+    if Privileges.Dangerous in usrprv and int(session['user_data']['id']) not in [3, 4]:
+        flash('error', "You don't have permissions to edit Developers", 'admin_edit_user')
+        return redirect(url_for('admin_edit_user'))  # Adjust the admin_edit_user route as per your application
+    if Privileges.Admin in usrprv and Privileges.Dangerous not in admpriv:
+        flash('error', "You don't have permissions to edit Admins", 'admin_edit_user')
+        return redirect(url_for('admin_edit_user'))  # Adjust the admin_edit_user route as per your application
+
+    # Perform the update
+    await glob.db.execute(
+        'UPDATE users SET discord_content = NULL, occupation_content = NULL, location_content = NULL, interest_content = NULL WHERE id = %s',
+        [id]
+    )
+
+    # Redirect to the user edit page
+    return redirect(url_for('admin.user_edit', id=id))
 
 @admin.route('/invite')
 async def invitegen():
@@ -339,8 +390,10 @@ async def edithome():
 
     if not session['user_data']['is_staff']:
         return await flash('error', f'You have insufficient privileges.', 'home')
+    
+    misc_data = await glob.db.fetch('SELECT * FROM misc')
 
-    return await render_template('admin/homepage.html')
+    return await render_template('admin/homepage.html', misc_data=misc_data)
 
 @admin.route('/edithome', methods=['POST'])
 async def post_homepage():
