@@ -80,6 +80,7 @@ def bbcode(value):
         (r'\[img\](.+?)\[/img\]', r'<img src="\1">'),
         (r'\[img=(.+?)\](.+?)\[/img\]', r'<img src="\1" alt="\2">'),
         (r'\[b\](.+?)\[/b\]', r'<b>\1</b>'),
+        (r'\[br\](.*?)', r'<br>\1'),
         (r'\[i\](.+?)\[/i\]', r'<i>\1</i>'),
         (r'\[u\](.+?)\[/u\]', r'<u>\1</u>'),
         (r'\[quote\](.+?)\[/quote\]', r'<div style="margin-left: 1cm">\1</div>'),
@@ -88,12 +89,23 @@ def bbcode(value):
         (r'\[big\](.+?)\[/big\]', r'<big>\1</big>'),
         (r'\[small\](.+?)\[/small\]', r'<small>\1</small>'),
         (r'\[box=(.+?)\](.+?)\[/box\]', r'<div class="custom-spoilerbox" id="spoilerbox-\1"><a class="spoilerbox-link" onclick="toggleSpoilerBox(&quot;spoilerbox-\1&quot;)"><span class="spoilerbox-link-icon"></span>\1</a><div class="spoilerbox-content" style="display: none;">\2</div></div>'),
-        (r'\[notice\](.*?)\[/notice\]', r'<div class="well">\1</div>')
+        (r'\[notice\](.*?)\[/notice\]', r'<div class="well">\1</div>'),
+        (r'\[color=(#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6})\](.*?)\[/color\]', r'<span style="color: \1;">\2</span>')
     ]
 
+    # Define a function to handle nested [box] tags recursively
+    def replace_box(match):
+        box_id, box_content = match.group(1), match.group(2)
+        box_html = f'<div class="custom-spoilerbox" id="spoilerbox-{box_id}"><a class="spoilerbox-link" onclick="toggleSpoilerBox(&quot;spoilerbox-{box_id}&quot;)"><span class="spoilerbox-link-icon"></span>{box_id}</a><div class="spoilerbox-content" style="display: none;">{bbcode(box_content)}</div></div>'
+        return box_html
+
+    # Apply the regex replacements
     for bbset in bbdata:
         p = re.compile(bbset[0], re.DOTALL)
         value = p.sub(bbset[1], value)
+
+    # Handle nested [box] tags
+    value = re.sub(r'\[box=(.+?)\](.+?)\[/box\]', replace_box, value)
 
     # Handling lists
     temp = ''
@@ -123,6 +135,8 @@ def login_required(func):
             return await flash('error', 'You must be logged in to access that page.', 'login')
         return await func(*args, **kwargs)
     return wrapper
+
+
 
 @frontend.route('/home')
 @frontend.route('/')
@@ -173,6 +187,7 @@ async def home():
         'JOIN users u ON sl.user_id = u.id '
         'JOIN maps m ON sl.map_md5 = m.md5 '
         'LEFT JOIN users sniped_user ON sl.got_sniped_by = sniped_user.name '
+        'WHERE (sl.event != "new_rank_1" OR sl.user_id != 3) '
         'ORDER BY sl.timestamp DESC LIMIT 10'
     )
 
