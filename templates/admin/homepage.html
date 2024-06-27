@@ -9,6 +9,28 @@
 </script>
 <link rel="stylesheet" href="/static/css/pages/admin/key.css">
 <link rel="stylesheet" href="/static/css/pages/admin/news.css">
+
+<style>
+    iframe.video-block {
+        margin: -33px;
+        position: relative;
+        border-radius: 8px;
+        width: calc(100% + 66px);
+    }
+
+    .rounded-block.stream-block {
+        height: 278px;
+        background-size: cover;
+        background-position: center;
+        align-items: baseline;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        padding: 33px;
+        color: white !important;
+    }
+</style>
 {% endblock%}
 
 {% block content %}
@@ -17,7 +39,8 @@
     <div class="invite-title">
     </div>
     <div class="main-block" style="background-color: transparent;">
-        <div class="leaderboard-main-bg table-responsive ug-settings rechts-teilung leaderboard-main-bg card invite-card">
+        <div
+            class="leaderboard-main-bg table-responsive ug-settings rechts-teilung leaderboard-main-bg card invite-card">
             <form method="post">
                 <div class="news-title">Change Home Video</div>
                 <div class="input-group">
@@ -30,6 +53,13 @@
                 </div>
                 <div class="invite-btn pt-5">
                     <input type="submit" name="submit" class="button is-primary" value="Save">
+                </div>
+                <div class="pt-5">
+                    <div class="news-title">Current:</div>
+                    <div class="rounded-block stream-block">
+                        <iframe src="{{ misc_data['home_video'] }}" height="278px" frameborder="0"
+                            class="video-block"></iframe>
+                    </div>
                 </div>
             </form>
         </div>
