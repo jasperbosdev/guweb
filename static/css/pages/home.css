@@ -28,14 +28,14 @@
 .home-block {
   border-radius: 8px;
   padding: 21px 35px;
-  margin: 25 auto;
+  margin: 25px auto;
   background-color: hsl(var(--main), 1.4%, 15.5%);
   width: 100%;
 }
 
 .container-home {
   flex-grow: 1;
-  margin: 25 auto;
+  margin: 25px auto;
   position: relative;
   width: auto;
   max-width: 1244px;
