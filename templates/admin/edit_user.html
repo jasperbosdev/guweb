@@ -46,6 +46,34 @@
                 </div>
             </div>
         </div>
+        {% if flash %}
+        <div class='noti-banner noti-banner-warning'>
+            <div class="container">
+                <div class="noti-column">
+                    <div class='noti-col noti-col-icon'></div>
+                    <div class='noti-col noti-col-label'>
+                        <div class='noti-bannertype'>
+                            {% if status=='error' %}
+                            Warning
+                            {% elif status=='success' %}
+                            Notice
+                            {% endif %}
+                        </div>
+                        <div class='noti-bannertext'>
+                            {% if status=='error' %}
+                            Uh oh! Be careful!
+                            {% elif status=='success' %}
+                            Hey! Listen!
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class='noti-banner-text'>
+                        {{ flash }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <div class="page-body">
@@ -59,7 +87,8 @@
                 <div class="user-info-card">
                     <div class="avatar-part-info">
                         <div class="user-info-avatar">
-                            <a href="/u/{{ user_data['id'] }}"><img src="https://a.{{ domain() }}/{{ user_data['id'] }}"
+                            <a href="/u/{{ user_data['id'] }}"><img
+                                    src="https://a.{{ domain() }}/{{ user_data['id'] }}?t={{ current_time }}"
                                     class="user-avatar"></a>
                         </div>
                     </div>
@@ -86,10 +115,6 @@
                                     class="profile-flag"> {{ user_data['country'] }}</div>
                             <div class="extra-item">{{ user_data['email'] }}</div>
                             <div class="extra-item">Joined {{ user_data['creation_time'] }}</div>
-                            <div class="extra-item">About: <i class="fab fa-discord"></i> {{ user_data['discord_content']
-                                }}, <i class="fas fa-suitcase"></i> {{ user_data['occupation_content'] }}, 
-                                <i class="fas fa-location-dot"></i> {{ user_data['location_content'] }}, 
-                                <i class="fas fa-heart"></i> {{ user_data['interest_content'] }}</div>
                         </div>
                     </div>
                     <!-- <div class="user-divider"></div> -->
@@ -99,75 +124,321 @@
                     <div class="actions-field">
                         <div class="main-actions">
                             <div class="input-fields-group">
-                                <div class="input-container">
-                                    <div class="input-title">Username</div>
-                                    <div class="field-body">
-                                        <div class="field">
-                                            <p class="control">
-                                                <input placeholder="username" class="input" type="text" name="username"
-                                                    value="{{ user_data['name'] }}">
-                                            </p>
+                                <form action="{{ url_for('admin.update_userinfo', id=user_data['id']) }}" method="POST">
+                                    <div class="input-container">
+                                        <h3>Main Information</h3>
+                                        <div class="input-title">Username</div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control">
+                                                    <input placeholder="username" class="input" type="text"
+                                                        name="username" value="{{ user_data['name'] }}">
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="input-container">
-                                    <div class="input-title">AKA</div>
-                                    <div class="field-body">
-                                        <div class="field">
-                                            <p class="control">
-                                                <input placeholder="username" class="input" type="text"
-                                                    name="username_aka" value="{{ user_data['username_aka'] }}">
-                                            </p>
+                                    <div class="input-container">
+                                        <div class="input-title">Safename (convert username spaces to underscore)</div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control">
+                                                    <input placeholder="safe_name" class="input" type="text"
+                                                        name="safename" value="{{ user_data['safe_name'] }}">
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="input-container">
-                                    <div class="input-title">Email</div>
-                                    <div class="field-body">
-                                        <div class="field">
-                                            <p class="control">
-                                                <input placeholder="username" class="input" type="email" name="email"
-                                                    value="{{ user_data['email'] }}">
-                                            </p>
+                                    <div class="input-container">
+                                        <div class="input-title">AKA</div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control d-flex">
+                                                    <input placeholder="AKA" class="input" type="text"
+                                                        name="username_aka" value="{{ user_data['username_aka'] }}">
+                                                    <button class="ml-2 button is-danger is-small"
+                                                        style="font-size: 15px; border-radius: 0.4em;" type="button"
+                                                        onclick="clearAka()">Clear</button>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="input-container">
-                                    <div class="input-title">Country</div>
-                                    <div class="field-body">
-                                        <div class="field">
-                                            <p class="control">
-                                                <input placeholder="username" class="input" type="text" name="country"
-                                                    value="{{ user_data['country'] }}">
-                                            </p>
+                                    <div class="input-container">
+                                        <div class="input-title">Email</div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control">
+                                                    <input placeholder="email" class="input" type="email" name="email"
+                                                        value="{{ user_data['email'] }}">
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="input-container">
+                                        <div class="input-title">Country</div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control">
+                                                    <select class="input" name="country" id="country-select"></select>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="custom-button buttons mt-2">
+                                            <button class="button is-primary" type="submit" onclick="example(event)">
+                                                <span class="icon is-small"><i class="fas fa-check"></i></span>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const countrySelect = document.getElementById('country-select');
+                                        const userCountry = '{{ user_data["country"] }}'.toLowerCase();
+
+                                        for (const [code, name] of Object.entries(window.flags)) {
+                                            const option = document.createElement('option');
+                                            option.value = code.toLowerCase();
+                                            option.textContent = name;
+                                            if (code.toLowerCase() === userCountry) {
+                                                option.selected = true;
+                                            }
+                                            countrySelect.appendChild(option);
+                                        }
+                                    });
+
+                                    function clearAka() {
+                                        document.querySelector('input[name="username_aka"]').value = '';  // Set to empty string to clear, adjust as needed
+                                    }
+                                </script>
                             </div>
-                            <div class="input-title">Quick actions</div>
+                            <div class="input-title">
+                                <h2>(Dangerous Area)</h2>
+                                Quick actions
+                            </div>
                             <div class="quick-action-group">
+                                {% if not user_data['id'] == 3 %}
                                 {% if not access_denied.higher_group %}
-                                    <form action="{{ url_for('admin.wipe_socials', id=user_data['id']) }}" method="POST">
-                                        <span class="quick-action-item action-btn-safe" onclick="example()">
-                                            <button type="submit" class="">Clear Socials</button>
-                                        </span>
-                                    </form>
+                                <form action="{{ url_for('admin.wipe_socials', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-safe">
+                                        <button type="submit" class="">Clear Socials</button>
+                                    </span>
+                                </form>
                                 {% endif %}
-                                <span onclick="example()" class="quick-action-item action-btn-safe">Remove Banner</span>
-                                <span onclick="example()" class="quick-action-item action-btn-safe">Remove pfp</span>
-                                <span onclick="example()" class="quick-action-item action-btn-safe">Clear About</span>
-                                <span onclick="example()" class="quick-action-item action-btn-safe">Private
-                                    Profile</span>
-                                <span onclick="example()" class="quick-action-item action-btn-safe">Clear Graphs</span>
-                                <span onclick="example()" class="quick-action-item action-btn-dngr">Restrict User</span>
-                                <span onclick="example()" class="quick-action-item action-btn-dngr">Wipe Account</span>
-                                <span onclick="example()" class="quick-action-item action-btn-good">Verify Legit</span>
+                                {% if not access_denied.higher_group %}
+                                <form action="{{ url_for('admin.clear_banner', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-safe">
+                                        <button type="submit" class="">Remove Banner</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% if not access_denied.higher_group %}
+                                <form action="{{ url_for('admin.clear_background', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-safe">
+                                        <button type="submit" class="">Remove BG</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% if not access_denied.higher_group %}
+                                <form action="{{ url_for('admin.clear_avatar', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-safe">
+                                        <button type="submit" class="">Remove PFP</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% if not access_denied.higher_group %}
+                                <form action="{{ url_for('admin.clear_aboutme', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-safe">
+                                        <button type="submit" class="">Clear AboutMe</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% if not access_denied.higher_group %}
+                                {% if user_data['private_mode'] == 1 %}
+                                <form id="privateProfileForm"
+                                    action="{{ url_for('admin.private_profile', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-good">
+                                        <button type="submit" class="">Unprivate Profile</button>
+                                    </span>
+                                </form>
+                                {% else %}
+                                <form id="privateProfileForm"
+                                    action="{{ url_for('admin.private_profile', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-good">
+                                        <button type="submit" class="">Private Profile</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% endif %}
+                                {% if not access_denied.higher_group %}
+                                {% if user_data['is_legit'] == 0 %}
+                                <form id="legitVerifiyForm"
+                                    action="{{ url_for('admin.verified_user', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-good">
+                                        <button type="submit" class="">Verify Legit</button>
+                                    </span>
+                                </form>
+                                {% else %}
+                                <form id="legitVerifiyForm"
+                                    action="{{ url_for('admin.verified_user', id=user_data['id']) }}" method="POST"
+                                    onsubmit="example(event)">
+                                    <span class="quick-action-item action-btn-good">
+                                        <button type="submit" class="">Unverify Legit</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% endif %}
+                                {% if not access_denied.higher_group and not user_data['id'] == 3 %}
+                                <form id="GraphForm" action="{{ url_for('admin.clear_graphs', id=user_data['id']) }}"
+                                    method="POST" onsubmit="exampleDGR(event)">
+                                    <span class="quick-action-item action-btn-dngr">
+                                        <button type="submit" class="">Clear Graphs</button>
+                                    </span>
+                                </form>
+                                {% else %}
+                                <span class="quick-action-item action-btn-dngr">
+                                    <button type="button" id="">not happening</button>
+                                </span>
+                                {% endif %}
+                                {% if not access_denied.higher_group %}
+                                {% if user_data['priv'] == 2 %}
+                                <form id="unrestrictForm"
+                                    action="{{ url_for('admin.unrestrict_user', id=user_data['id']) }}" method="POST">
+                                    <input type="hidden" name="reason" id="reasonUnrestrict">
+                                    <span class="quick-action-item action-btn-safe">
+                                        <button type="button" id="unrestrictButton">Unrestrict User</button>
+                                    </span>
+                                </form>
+                                {% elif user_data['id'] == 3 %}
+                                <span class="quick-action-item action-btn-dngr">
+                                    <button type="button" id="">not happening</button>
+                                </span>
+                                {% else %}
+                                <form id="restrictForm"
+                                    action="{{ url_for('admin.restrict_user', id=user_data['id']) }}" method="POST">
+                                    <input type="hidden" name="reason" id="reasonRestrict">
+                                    <span class="quick-action-item action-btn-dngr">
+                                        <button type="button" id="restrictButton">Restrict User</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% endif %}
+                                {% if not access_denied.higher_group and not user_data['id'] == 3 %}
+                                <form id="WipeForm" action="{{ url_for('admin.wipe_account', id=user_data['id']) }}"
+                                    method="POST">
+                                    <input type="hidden" name="reason" id="reasonWipe">
+                                    <span class="quick-action-item action-btn-death">
+                                        <button type="button" id="WipeButton">Wipe Account</button>
+                                    </span>
+                                </form>
+                                {% endif %}
+                                {% else %}
+                                You can't manage the server owner...
+                                {% endif %}
                                 <!-- <span onclick="example()" class="quick-action-item action-btn-dngr">Example Button</span> -->
+                                <!-- confirm pop up -->
+                                <div id="notification" class="hidden notification-w">
+                                    <div class="notification-content" id="confirmationDialog">
+                                        <p>Please type Confirm clearing graphs for {{ user_data['name'] }}" to proceed:
+                                        </p>
+                                        <input class="input" type="text" id="confirmInput">
+                                        <button class="button is-primary" id="confirmButton">Confirm</button>
+                                        <button class="button cancel" id="cancelButton">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- Restrict Confirmation Dialog -->
+                                <div id="confirmationDialogRestrict" class="hidden notification-w">
+                                    <div class="notification-content">
+                                        <p>Please type "Confirm restriction for {{ user_data['name'] }}" to proceed:</p>
+                                        <input type="text" id="confirmInputRestrict"
+                                            placeholder="Type confirmation message" class="input mb-2">
+                                        <input type="text" id="reasonInputRestrict" placeholder="Reason for restriction"
+                                            class="input">
+                                        <button id="confirmButtonRestrict" class="button is-primary">Confirm</button>
+                                        <button id="cancelButtonRestrict" class="button cancel">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- Unrestrict Confirmation Dialog -->
+                                <div id="confirmationDialogUnrestrict" class="hidden notification-w">
+                                    <div class="notification-content">
+                                        <p>Please type "Confirm unrestriction for {{ user_data['name'] }}" to proceed:
+                                        </p>
+                                        <input type="text" id="confirmInputUnrestrict"
+                                            placeholder="Type confirmation message" class="input mb-2">
+                                        <input type="text" id="reasonInputUnrestrict"
+                                            placeholder="Reason for unrestriction" class="input">
+                                        <button id="confirmButtonUnrestrict" class="button is-primary">Confirm</button>
+                                        <button id="cancelButtonUnrestrict" class="button cancel">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- Wipe Confirmation Dialog -->
+                                <div id="confirmationDialogWipe" class="hidden notification-w">
+                                    <div class="notification-content">
+                                        <p>Please type "Confirm wipe for {{ user_data['name'] }}" to proceed:<br>
+                                            THERE IS NO GOING BACK!
+                                        </p>
+                                        <input type="text" id="confirmInputWipe" placeholder="Type confirmation message"
+                                            class="input mb-2">
+                                        <input type="text" id="reasonInputWipe" placeholder="Reason for Wipe"
+                                            class="input">
+                                        <button id="confirmButtonWipe" class="button is-primary">Confirm</button>
+                                        <button id="cancelButtonWipe" class="button cancel">Cancel</button>
+                                    </div>
+                                </div>
+                                <style>
+                                    .hidden {
+                                        display: none !important;
+                                    }
+
+                                    .notification-content .input {
+                                        max-width: 50% !important;
+                                    }
+
+                                    .notification-content .cancel {
+                                        background-color: green !important;
+                                        border: 0px solid transparent !important;
+                                    }
+
+                                    .notification-w {
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        right: 0;
+                                        bottom: 0;
+                                        background: rgba(0, 0, 0, 0.5);
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        z-index: 11;
+                                    }
+
+                                    .notification-content {
+                                        background: hsl(var(--main), 10.7%, 24.7%);
+                                        border: 3px solid hsl(var(--main), 1.4%, 15.5%);
+                                        color: #fff;
+                                        padding: 20px;
+                                        border-radius: 17px;
+                                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                                        text-align: center;
+                                    }
+                                </style>
+                                <!-- end confirm pop up -->
                             </div>
                         </div>
                         <div class="edit-divider"></div>
                         <div class="input-fields-group">
                             <div class="input-container">
+                                <h3 class="">Privileges (0/2 done)</h3>
                                 <div class="input-title">User's privilege groups</div>
                                 <div class="field-body">
                                     <div class="field">
@@ -206,6 +477,38 @@
                             <div class="custom-button buttons mt-6">
                                 <button class='button is-primary' type='submit'><span class='icon is-small'><i
                                             class='fas fa-check'></i></span><span>Save</span></button>
+                            </div>
+                        </div>
+                        <div class="edit-divider"></div>
+                        <div class="input-field-groups">
+                            <h3 class="mb-4">Customisations preview</h3>
+                            <div class="preview-block" id="avatar">
+                                <div class="top-block"></div>
+                                <div class="bottom-block">
+                                    <div class="profile-avatar-area">
+                                        <img id="avatar-img" src="https://a.{{ domain() }}/{{ user_data['id']}}"
+                                            alt="avatar" class="rounded-avatar profile-avatar">
+                                    </div>
+                                </div>
+                                <div class="bottom-block social-block">
+                                    Social: <i class="fab fa-discord"></i> {{
+                                    user_data['discord_content']
+                                    }}, <i class="fas fa-suitcase"></i> {{ user_data['occupation_content'] }},
+                                    <i class="fas fa-location-dot"></i> {{ user_data['location_content'] }},
+                                    <i class="fas fa-heart"></i> {{ user_data['interest_content'] }}
+                                </div>
+                                <div class="profile-aboutme">
+                                    <div class="about-box">
+                                        <div class="about-titlebox">
+                                            <div class="about-title">
+                                                <i class="fas fa-address-card mr-2"></i>About me
+                                            </div>
+                                        </div>
+                                        <div class="about-content">
+                                            {{ user_data['userpage_content'] }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -282,9 +585,27 @@
 
             {% endif %}
         </div>
-
     </div>
 </div>
+
+<style>
+    .preview-block {
+        background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)),
+        url("/backgrounds/{{ user_data['id'] }}");
+        background-size: cover !important;
+        background-position: center !important;
+    }
+
+    #avatar .top-block {
+        width: 100%;
+        height: 100px;
+        background: url("/banners/{{ user_data['id'] }}");
+        background-position: center;
+        background-size: cover;
+        border-top-left-radius: 9px;
+        border-top-right-radius: 9px;
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
@@ -369,12 +690,234 @@
     });
 </script>
 
+<!-- windows for dngr buttons -->
 <script>
-    function example() {
-        confirm("Are you sure? This cannot be undone!");
+    function exampleDGR(event) {
+        event.preventDefault(); // Prevent the form from submitting immediately
+        document.getElementById('notification').classList.remove('hidden');
+    }
+
+    // Cancel button
+    const cancelButton = document.getElementById('cancelButton');
+    if (cancelButton) {
+        cancelButton.addEventListener('click', function () {
+            document.getElementById('notification').classList.add('hidden');
+        });
+    } else {
+        console.error("Cancel Button for Clear Graphs not found");
+    }
+
+    // confirmation button
+    const confirmButton = document.getElementById('confirmButton');
+    if (confirmButton) {
+        confirmButton.addEventListener('click', function () {
+            const userInput = document.getElementById('confirmInput').value;
+            const correctInput = `Confirm clearing graphs for {{ user_data['name'] }}`;
+            console.log("Confirm button clicked for Clear Graphs");
+
+            if (userInput === correctInput) {
+                console.log("Clear graphs confirmed");
+                document.getElementById('confirmationDialog').classList.add('hidden');
+                document.getElementById('GraphForm').submit();
+            } else {
+                alert(`Incorrect input. Please type "${correctInput}" to proceed.`);
+            }
+        });
+    } else {
+        console.error("Confirm Button for Clear Graphs not found");
     }
 </script>
-    
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Document loaded and ready");
+
+        // Function to handle restriction
+        function exampleRestrict(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+            const restrictDialog = document.getElementById('confirmationDialogRestrict');
+            if (restrictDialog) {
+                console.log("Restrict button clicked");
+                restrictDialog.classList.remove('hidden');
+                console.log("Removed 'hidden' class from Restrict Dialog");
+            } else {
+                console.error("Restrict Dialog element not found");
+            }
+        }
+
+        // Function to handle unrestriction
+        function exampleUnrestrict(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+            const unrestrictDialog = document.getElementById('confirmationDialogUnrestrict');
+            if (unrestrictDialog) {
+                console.log("Unrestrict button clicked");
+                unrestrictDialog.classList.remove('hidden');
+                console.log("Removed 'hidden' class from Unrestrict Dialog");
+            } else {
+                console.error("Unrestrict Dialog element not found");
+            }
+        }
+
+        // Check if restrict button exists and attach event listener
+        const restrictButton = document.getElementById('restrictButton');
+        if (restrictButton) {
+            restrictButton.addEventListener('click', exampleRestrict);
+            console.log("Restrict button event listener attached");
+        } else {
+            console.error("Restrict Button element not found");
+        }
+
+        // Check if unrestrict button exists and attach event listener
+        const unrestrictButton = document.getElementById('unrestrictButton');
+        if (unrestrictButton) {
+            unrestrictButton.addEventListener('click', exampleUnrestrict);
+            console.log("Unrestrict button event listener attached");
+        } else {
+            console.error("Unrestrict Button element not found");
+        }
+
+        // Restrict confirmation button
+        const confirmButtonRestrict = document.getElementById('confirmButtonRestrict');
+        if (confirmButtonRestrict) {
+            confirmButtonRestrict.addEventListener('click', function () {
+                const userInput = document.getElementById('confirmInputRestrict').value;
+                const reason = document.getElementById('reasonInputRestrict').value;
+                const correctInput = `Confirm restriction for {{ user_data['name'] }}`;
+                console.log("Confirm button clicked for restriction");
+
+                if (userInput === correctInput) {
+                    console.log("Restriction confirmed");
+                    document.getElementById('confirmationDialogRestrict').classList.add('hidden');
+                    document.getElementById('reasonRestrict').value = reason;
+                    document.getElementById('restrictForm').submit();
+                } else {
+                    alert(`Incorrect input. Please type "${correctInput}" to proceed.`);
+                }
+            });
+        } else {
+            console.error("Confirm Button for Restrict not found");
+        }
+
+        // Unrestrict confirmation button
+        const confirmButtonUnrestrict = document.getElementById('confirmButtonUnrestrict');
+        if (confirmButtonUnrestrict) {
+            confirmButtonUnrestrict.addEventListener('click', function () {
+                const userInput = document.getElementById('confirmInputUnrestrict').value;
+                const reason = document.getElementById('reasonInputUnrestrict').value;
+                const correctInput = `Confirm unrestriction for {{ user_data['name'] }}`;
+                console.log("Confirm button clicked for unrestriction");
+
+                if (userInput === correctInput) {
+                    console.log("Unrestriction confirmed");
+                    document.getElementById('confirmationDialogUnrestrict').classList.add('hidden');
+                    document.getElementById('reasonUnrestrict').value = reason;
+                    document.getElementById('unrestrictForm').submit();
+                } else {
+                    alert(`Incorrect input. Please type "${correctInput}" to proceed.`);
+                }
+            });
+        } else {
+            console.error("Confirm Button for Unrestrict not found");
+        }
+
+        // Cancel unrestriction button
+        const cancelButtonUnrestrict = document.getElementById('cancelButtonUnrestrict');
+        if (cancelButtonUnrestrict) {
+            cancelButtonUnrestrict.addEventListener('click', function () {
+                document.getElementById('confirmationDialogUnrestrict').classList.add('hidden');
+            });
+        } else {
+            console.error("Cancel Button for Unrestrict not found");
+        }
+
+        // Cancel restriction button
+        const cancelButtonRestrict = document.getElementById('cancelButtonRestrict');
+        if (cancelButtonRestrict) {
+            cancelButtonRestrict.addEventListener('click', function () {
+                document.getElementById('confirmationDialogRestrict').classList.add('hidden');
+            });
+        } else {
+            console.error("Cancel Button for Restrict not found");
+        }
+
+        console.log("Event listeners attached");
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Document loaded and ready");
+
+        // Function to handle wipe
+        function exampleWipe(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+            const WipeDialog = document.getElementById('confirmationDialogWipe');
+            if (WipeDialog) {
+                console.log("Wipe button clicked");
+                WipeDialog.classList.remove('hidden');
+                console.log("Removed 'hidden' class from Wipe Dialog");
+            } else {
+                console.error("Wipe Dialog element not found");
+            }
+        }
+
+        // Check if wipe button exists and attach event listener
+        const WipeButton = document.getElementById('WipeButton');
+        if (WipeButton) {
+            WipeButton.addEventListener('click', exampleWipe);
+            console.log("Wipe button event listener attached");
+        } else {
+            console.error("Wipe Button element not found");
+        }
+
+        // Wipe confirmation button
+        const confirmButtonWipe = document.getElementById('confirmButtonWipe');
+        if (confirmButtonWipe) {
+            confirmButtonWipe.addEventListener('click', function () {
+                const userInput = document.getElementById('confirmInputWipe').value;
+                const reason = document.getElementById('reasonInputWipe').value;
+                const correctInput = `Confirm wipe for {{ user_data['name'] }}`;
+                console.log("Confirm button clicked for wipe");
+
+                if (userInput === correctInput) {
+                    console.log("Wipe confirmed");
+                    document.getElementById('confirmationDialogWipe').classList.add('hidden');
+                    document.getElementById('reasonWipe').value = reason;
+                    document.getElementById('WipeForm').submit();
+                } else {
+                    alert(`Incorrect input. Please type "${correctInput}" to proceed.`);
+                }
+            });
+        } else {
+            console.error("Confirm Button for Wipe not found");
+        }
+
+        // Cancel restriction button
+        const cancelButtonWipe = document.getElementById('cancelButtonWipe');
+        if (cancelButtonWipe) {
+            cancelButtonWipe.addEventListener('click', function () {
+                document.getElementById('confirmationDialogWipe').classList.add('hidden');
+            });
+        } else {
+            console.error("Cancel Button for Wipe not found");
+        }
+
+        console.log("Event listeners attached");
+    });
+</script>
+
+<script>
+    function example(event) {
+        // Show the confirmation dialog
+        const userConfirmed = confirm("Are you sure? This cannot be undone!");
+
+        // If the user clicked "No" (userConfirmed is false), prevent the form submission
+        if (!userConfirmed) {
+            event.preventDefault();
+        }
+    }
+</script>
+
 <script src="/static/js/asserts/vue-flags.js"></script>
 
 {% endblock %}
