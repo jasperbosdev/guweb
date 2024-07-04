@@ -602,7 +602,10 @@ async def old_profile_select(id):
 @frontend.route('/leaderboard/<mode>/<sort>/<mods>')
 @frontend.route('/lb/<mode>/<sort>/<mods>')
 async def leaderboard(mode='std', sort='pp', mods='vn'):
-    return await render_template('leaderboard.html', mode=mode, sort=sort, mods=mods)
+
+    current_time = int(time.time())
+
+    return await render_template('leaderboard.html', mode=mode, sort=sort, mods=mods, current_time=current_time, timeago=timeago)
 
 @frontend.route('/login')
 async def login():
