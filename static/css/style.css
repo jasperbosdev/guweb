@@ -266,6 +266,7 @@ footer {
 .nav-profile {
   align-items: center !important;
   padding: 0 6px 0 6px !important;
+  position: relative !important;
 }
 
 .header-avatar {
@@ -549,7 +550,6 @@ a.foot-link {
   width: auto;
   padding-left: 8px;
   padding-right: 8px;
-  left: 0%;
   transition: 0.4s ease all;
 }
 
@@ -575,19 +575,6 @@ a.foot-link {
   color: #fff;
   position: relative;
   overflow: hidden;
-}
-
-a.user-card {
-  display: flex;
-  align-items: center;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-  /* min-height: 65px; */
-  background: linear-gradient(hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 60%)), url(/banners/3);
-  background-size: cover;
-  background-position-y: center;
-  padding: 8px;
 }
 
 .user-dropdown-avatar {
@@ -645,9 +632,11 @@ span.user-card-data_angle {
   background-color: hsl(var(--main), 1.4%, 15.5%);
   border-radius: 18px;
   width: 230px;
+  max-width: 230px;
   padding-left: 8px;
   padding-right: 8px;
-  left: -60%;
+  right: 0%;
+  left: unset !important;
 }
 
 .prof-navtem i {
@@ -1217,7 +1206,8 @@ body::-webkit-scrollbar-thumb {
 @media (max-width: 1339px) {
   .navbar-dropdown-profile {
     margin-left: -85px !important;
-    left: 0%;
+    right: 0%;
+    left: unset !important;
   }
 }
 
@@ -1236,7 +1226,8 @@ body::-webkit-scrollbar-thumb {
   }
   .navbar-dropdown-profile {
     margin-left: unset !important;
-    left: 0%;
+    right: 0%;
+    left: unset !important;
   }
 
   .navbar.is-primary.is-active {
@@ -1271,7 +1262,8 @@ body::-webkit-scrollbar-thumb {
   }
   .navbar-dropdown-profile {
     margin-left: unset !important;
-    left: 0%;
+    right: 0%;
+    left: unset !important;
   }
 
   .navbar.is-primary.is-active {
