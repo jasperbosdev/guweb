@@ -164,27 +164,31 @@
     <div class="scores">
         <div class="activity-content">
             {% if recent_activity %}
-                {% for score_logs in recent_activity %}
-                <span class="activity-text">
-                    {% if score_logs.event == 'new_rank_1' %}
-                    <i class="fa-solid fa-trophy"></i>
-                    <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
-                    has achieved #1 on
-                    <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a>
-                    {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp) }}</span>
-                    {% elif score_logs.event == 'sniped' %}
-                    <i class="fa-solid fa-angles-down"></i>
-                    <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
-                    has lost first place on
-                    <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version }}]</a>
-                    {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp) }}</span>
-                    {% else %}
-                    Error: Unknown event
-                    {% endif %}
-                </span>
-                {% endfor %}
+            {% for score_logs in recent_activity %}
+            <span class="activity-text">
+                {% if score_logs.event == 'new_rank_1' %}
+                <i class="fa-solid fa-trophy"></i>
+                <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
+                has achieved #1 on
+                <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version
+                    }}]</a>
+                {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp)
+                    }}</span>
+                {% elif score_logs.event == 'sniped' %}
+                <i class="fa-solid fa-angles-down"></i>
+                <a href="/u/{{ score_logs.user_id }}" class="act-player">{{ score_logs.name }}</a>
+                has lost first place on
+                <a href="/b/{{ score_logs.map_id }}" class="act-title">{{ score_logs.map_title }} [{{ score_logs.version
+                    }}]</a>
+                {{ mode_strings[score_logs.mode] }} <span class="date-text">{{ timeago.format(score_logs.timestamp)
+                    }}</span>
+                {% else %}
+                Error: Unknown event
+                {% endif %}
+            </span>
+            {% endfor %}
             {% else %}
-                No recent activity
+            No recent activity
             {% endif %}
         </div>
     </div>
@@ -285,7 +289,7 @@
                 </div>
             </div>
         </div>
-    {% if private_profile['private_mode'] == 1 and not session.authenticated or session.authenticated and session.user_data['id'] != user['id'] and relationship_exists == 'no' and private_profile['private_mode'] == 1 %}
+        {% if private_profile['private_mode'] == 1 and not session.authenticated or session.authenticated and session.user_data['id'] != user['id'] and relationship_exists == 'no' and private_profile['private_mode'] == 1 %}
         {% else %}
         <!-- First Place Scores Section -->
         <div class="score-type-title">
@@ -300,7 +304,8 @@
         </div>
         <div v-if="data.scores.first.out.length > 0" class="performance-block">
             <div class="scores-container">
-                <div v-for="(map, index) in data.scores.first.out" class="map-single" :style="`background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg); background-size: cover; border-radius: 18px;`">
+                <div v-for="(map, index) in data.scores.first.out" class="map-single"
+                    :style="`background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg); background-size: cover; border-radius: 18px;`">
                     <!-- First Place Scores Content -->
                     <div class="map-data">
                         <div class="map-content1">
@@ -374,19 +379,19 @@
                 </div>
             </div>
         </div>
-    {% endif %}
-</div>
-<div v-else class="stats-block">
-    <div class="columns is-marginless">
-        <div class="column is-1">
-            <h1 class="title">: (</h1>
-        </div>
-        <div class="column">
-            <h1 class="title is-6">No scores available</h1>
-            <p class="subtitle is-7">Try playing something?</p>
+        {% endif %}
+    </div>
+    <div v-else class="stats-block">
+        <div class="columns is-marginless">
+            <div class="column is-1">
+                <h1 class="title">: (</h1>
+            </div>
+            <div class="column">
+                <h1 class="title is-6">No scores available</h1>
+                <p class="subtitle is-7">Try playing something?</p>
+            </div>
         </div>
     </div>
-</div>
 </div>
 {% endmacro %}
 
@@ -418,7 +423,8 @@
         </div>
         <div v-if="data.scores.recent.out.length > 0" class="performance-block">
             <div class="scores-container">
-                <div v-for="(map, index) in data.scores.recent.out" class="map-single" :style="`background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg); background-size: cover; border-radius: 18px;`">
+                <div v-for="(map, index) in data.scores.recent.out" class="map-single"
+                    :style="`background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% center / cover, linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url(https://assets.ppy.sh/beatmaps/${map.beatmap.set_id}/covers/cover.jpg); background-size: cover; border-radius: 18px;`">
                     <!-- Recent Scores Content -->
                     <div class="map-data">
                         <div class="map-content1">
@@ -535,8 +541,7 @@
                                         style="color: #ff69b4; font-size: 1.2em; margin-right: 0.5em;"></i>
                                 </div>
                                 <div class="mostplayed_songname text-wrap">
-                                    <span
-                                        style="cursor: pointer;text-decoration: none;transition: all .2s ease;"
+                                    <span style="cursor: pointer;text-decoration: none;transition: all .2s ease;"
                                         class="songname_title text-wrap beatmap-link"
                                         v-bind:href="'https://{{ domain() }}/b/' + map.id">
                                         <% map.artist %> - <% map.title %>
@@ -547,8 +552,9 @@
                                         </span>
                                     </div>
                                 </div>
-                                <span class="fas fa-play"></span><span style="font-weight: 500;font-size: 20px;">&nbsp; <%
-                                        map.plays %></span>
+                                <span class="fas fa-play"></span><span style="font-weight: 500;font-size: 20px;">&nbsp;
+                                    <% map.plays %>
+                                </span>
                             </div>
                         </div>
                     </a>
@@ -746,11 +752,11 @@
             <div class="d-flex">
                 {% if user['priv'] in [31767, 33556499, 33554451, 19, 33586199, 33554455] %}
                 <div class="left-avatar user-avatar support-pfp left-avatar-support">
-                    <img src="https://a.{{ domain() }}/{{ user['id'] }}">
+                    <img src="https://a.{{ domain() }}/{{ user['id'] }}?t={{ current_time }}">
                 </div>
                 {% else %}
                 <div class="left-avatar user-avatar">
-                    <img src="https://a.{{ domain() }}/{{ user['id'] }}">
+                    <img src="https://a.{{ domain() }}/{{ user['id'] }}?t={{ current_time }}">
                 </div>
                 {% endif %}
 
@@ -768,7 +774,7 @@
 
                     <div class="left-name" style="display: flex; align-items: center;">
                         <span v-if="{{ user['id'] }} == 3" class="bgf user-name"
-                            style="text-shadow: rgb(190, 196, 255) 0px 0px 8px; color: rgb(255, 255, 255); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);">Lionz</span>
+                            style="text-shadow: rgb(190, 196, 255) 0px 0px 8px; color: rgb(255, 255, 255); background: url(https://dl.issou.best/ordr/assets/text_bg/text_bg3.gif);">{{ user['name'] }}</span>
                         <div v-else="" class="user-name bgf">{{ user['name'] }}</div>
 
                         {% if user['priv'] in [31767, 33556499, 33554451, 19, 33586199, 33554455] %}
@@ -779,7 +785,7 @@
                         {% endif %}
 
                         <div class="verify-block" style="display: flex; align-items: center;"
-                            v-if="{{ user['id'] }} == 3">
+                            v-if="{{ user['is_legit'] }} == 1">
                             <img src="/static/images/verified.svg" style="width: 20px;">
                         </div>
 
@@ -834,34 +840,41 @@
                 </div>
             </div>
             <!-- private mode notification -->
-            {% if private_profile['private_mode'] == 1 and not session.authenticated or session.authenticated and session.user_data['id'] != user['id'] and relationship_exists == 'no' and private_profile['private_mode'] == 1 %}
+            {% if private_profile['private_mode'] == 1 and not session.authenticated %}
             <div class="private-block">
                 <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
                     <i class="fa-solid fa-lock"></i>
                     <span class="private-text">Private Profile</span>
                 </div>
             </div>
-            {% elif private_profile['private_mode'] == 0 and not session.user_data['id'] == user['id'] and session.authenticated and session.user_data[id] != user['id'] and is_friends == 'no' %}<!--if visitor = friends w/ current profile page-->
-            <div class="private-block" id="add">
-                <div class="add-content">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span class="private-text">Add Friend</span>
+            {% elif session.authenticated and private_profile['private_mode'] == 1 and session.user_data['id'] != user['id'] and relationship_exists == 'no' %}
+                <div class="private-block">
+                    <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
+                        <i class="fa-solid fa-lock"></i>
+                        <span class="private-text">Private Profile</span>
+                    </div>
                 </div>
-            </div>
-            {% elif private_profile['private_mode'] == 1 and not session.user_data['id'] == user['id'] and session.authenticated and session.user_data[id] != user['id'] and is_friends == 'no' %}<!--if visitor = friends w/ current profile page (no & private true)-->
-            <div class="private-block">
-                <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
-                    <i class="fa-solid fa-lock"></i>
-                    <span class="private-text">Private Profile</span>
+            {% elif session.authenticated and private_profile['private_mode'] == 0 and session.user_data['id'] != user['id'] and is_friends == 'no' %}
+                <div class="private-block" id="add">
+                    <div class="add-content">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span class="private-text">Add Friend</span>
+                    </div>
                 </div>
-            </div>
-            {% elif private_profile['private_mode'] == 0 and not session.user_data['id'] == user['id'] and session.authenticated and session.user_data[id] != user['id'] and is_friends == 'yes' %}<!--if visitor = friends w/ current profile page (yes)-->
-            <div class="private-block">
-                <div class="remove-content">
-                    <i class="fa-solid fa-user-minus"></i>
-                    <span class="private-text">Remove Friend</span>
+            {% elif session.authenticated and private_profile['private_mode'] == 1 and session.user_data['id'] != user['id'] and is_friends == 'no' %}
+                <div class="private-block">
+                    <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
+                        <i class="fa-solid fa-lock"></i>
+                        <span class="private-text">Private Profile</span>
+                    </div>
                 </div>
-            </div>
+            {% elif session.authenticated and private_profile['private_mode'] == 0 and session.user_data['id'] != user['id'] and is_friends == 'yes' %}
+                <div class="private-block">
+                    <div class="remove-content">
+                        <i class="fa-solid fa-user-minus"></i>
+                        <span class="private-text">Remove Friend</span>
+                    </div>
+                </div>
             {% else %}
             {% endif %}
         </div>
@@ -1053,11 +1066,19 @@
         % if user['customisation']['background']==True %
     }
 
+    html {
+        height: 100%;
+    }
+
     body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
         background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)),
         url("/backgrounds/{{ user['id'] }}");
         background-size: cover;
-        background-clip: content-box;
+        background-attachment: fixed;
+        background-position: center;
     }
 
         {
