@@ -317,7 +317,7 @@
       <div class="donors-row">
         {% for user in recent_active %}
         <a href="/u/{{ user.id }}" class="donor-block" style="background: linear-gradient(hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 60%)), url(/banners/{{ user.id }}); background-size: cover; background-position-y: center;">
-          <div class="user-avatar donor-avatar" style="background-image: url(https://a.{{ domain() }}/{{ user.id }});"></div>
+          <div class="user-avatar donor-avatar" style="background-image: url(https://a.{{ domain() }}/{{ user.id }}?t={{ current_time }});"></div>
           <div class="donor-info text-wrap">
             <div class="donor-title"> {{ user.name }} </div>
             <div class="subtitle"> {{ timeago.format(user['latest_activity']) }} </div>
