@@ -198,9 +198,11 @@ async def home():
     }
 
     user_rank_1_maps = set()
+    current_time = int(time.time())
 
     return await render_template('home.html', pp_records=pp_records, most_played=most_played, recent_active=recent_active, get_misc=get_misc,
-                                 timeago=timeago, recent_activity=recent_activity, user_rank_1_maps=user_rank_1_maps, mode_strings=mode_strings)
+                                 timeago=timeago, recent_activity=recent_activity, user_rank_1_maps=user_rank_1_maps, mode_strings=mode_strings,
+                                 current_time=current_time)
 
 @frontend.route('/home/account/edit')
 async def home_account_edit():
@@ -897,24 +899,40 @@ DEFAULT_BANNER_PATH = Path.cwd() / 'static/images/default.jpg'
 BACKGROUND_PATH = Path.cwd() / '.data/backgrounds'
 @frontend.route('/banners/<user_id>')
 async def get_profile_banner(user_id: int):
-    # Check if avatar exists
     for ext in ('jpg', 'jpeg', 'png', 'gif'):
         path = BANNERS_PATH / f'{user_id}.{ext}'
         if path.exists():
-            return await send_file(path)
+            response = await send_file(path)
+            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            return response
 
-    return await send_file(DEFAULT_BANNER_PATH)
-
+    response = await send_file(DEFAULT_BANNER_PATH)
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return response
 
 @frontend.route('/backgrounds/<user_id>')
 async def get_profile_background(user_id: int):
-    # Check if avatar exists
+    # Check if background exists
     for ext in ('jpg', 'jpeg', 'png', 'gif'):
         path = BACKGROUND_PATH / f'{user_id}.{ext}'
         if path.exists():
-            return await send_file(path)
+            # Set cache-control header to prevent caching
+            response = await send_file(path)
+            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            return response
+    
+    # No background found; return nothing (no image)
+    return '', 204  # 204 No Content status code
 
-    return b'{"status":404}'
+# @frontend.route('/backgrounds/<user_id>')
+# async def get_profile_background(user_id: int):
+#     # Check if avatar exists
+#     for ext in ('jpg', 'jpeg', 'png', 'gif'):
+#         path = BACKGROUND_PATH / f'{user_id}.{ext}'
+#         if path.exists():
+#             return await send_file(path)
+
+#     return b'{"status":404}'
 
 @frontend.route('/score/<score_id>')
 @frontend.route('/score/<score_id>/<mods>')
@@ -1056,8 +1074,8 @@ async def beatmappage_id(bid):
         [beatmap_data["set_id"]]
     )
 
-    print(set_data)
-    print(all_diffs)
+    # print(set_data)
+    # print(all_diffs)
 
     return await render_template('beatmap.html',bid=bid,beatmap_data=beatmap_data, set_data=set_data, timeago=timeago, all_diffs=all_diffs)
 
@@ -1228,7 +1246,7 @@ async def profile_select(id):
     mode = request.args.get('mode', 'std', type=str) # 1. key 2. default value
     mods = request.args.get('mods', 'vn', type=str)
     user_data = await glob.db.fetch(
-        'SELECT name, safe_name, id, priv, country, userpage_content, username_aka, latest_activity, creation_time, play_style, occupation_content, location_content, interest_content '
+        'SELECT name, safe_name, id, priv, country, userpage_content, username_aka, latest_activity, creation_time, play_style, occupation_content, location_content, interest_content, is_legit '
         'FROM users '
         'WHERE safe_name = %s OR id = %s LIMIT 1',
         [utils.get_safe_name(id), id]
@@ -1493,12 +1511,14 @@ async def profile_select(id):
         [id, utils.get_safe_name(id)]
     )
 
+    current_time = int(time.time())
+
     return await render_template('profile.html', user=user_data, mode=mode, mods=mods, rendered_bbcode=rendered_bbcode, follow_count=follow_count,
                                  timeago=timeago, playstyle_names_str=playstyle_names_str, datetime=datetime, group_list=group_list,
                                  badges=badges, meta_stats=meta_stats, recent_activity=recent_activity, mode_strings=mode_strings, 
                                  user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count,
                                  private_profile=private_profile, relationship_exists=relationship_exists, frenadded_result=frenadded_result,
-                                 is_friends=is_friends)
+                                 is_friends=is_friends, current_time=current_time)
 
 @frontend.route('/stats')
 async def stats():
