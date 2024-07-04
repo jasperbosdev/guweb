@@ -4,24 +4,24 @@
             <a class="navbar-item navbar-logo" href="/">
                 <img src="https://komako.pw/static/favicon/logo.png" alt="Komako">
             </a>
-        
+
             <a role="button" class="navbar-burger" id="navbar-burger" onclick="togglenavbar()">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
-    
+
         <div id="navbar" class="navbar-menu">
             <div class="navbar-start">
                 <a class="navbar-item navtem" href="/leaderboard">
                     leaderboards
                 </a>
-                
+
                 <a class="navbar-item navtem" href="/maps">
                     beatmaps
                 </a>
-            
+
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link navtem">
                         community
@@ -49,7 +49,7 @@
                         alert('Coming soon!');
                     }
                 </script>
-            
+
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link navtem">
                         help
@@ -73,42 +73,50 @@
                         </a>
                     </div>
                 </div>
-            
+
                 {% if session.authenticated and session.user_data['is_staff'] %}
                 <a class="navbar-item navtem" href="/admin">
                     <i class="fa-solid fa-gear"></i>&nbsp; admin
                 </a>
                 {% endif %}
             </div>
-        
+
             <div class="navbar-end">
                 {% if session.authenticated %}
-            
+
                 <div class="navbar-item">
                     <div class="search-bar">
                         <input id="search-txt" type="text" placeholder="Looking for someone?">
                         <button onclick=search()><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                     <div id="search-results" class="search-results">
-                    <script>
-                        $('#search-results').hide();
-                    </script>
+                        <script>
+                            $('#search-results').hide();
+                        </script>
                     </div>
                 </div>
-                
-                <a onclick="soon()" href="#" class="header-button druzban-button router-link " data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="Support us!"><i class="fas fa-heart"></i></a>
-                <div class="navbar-item navtem nav-profile has-dropdown is-hoverable" style="margin: 0 0.5em !important;">
-                    <a class="header-avatar" style="background-image:url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></a>
+
+                <a onclick="soon()" href="#" class="header-button druzban-button router-link " data-trigger="hover"
+                    data-toggle="popover" data-placement="bottom" data-content="Support us!"><i
+                        class="fas fa-heart"></i></a>
+                <div class="navbar-item navtem nav-profile has-dropdown is-hoverable"
+                    style="margin: 0 0.5em !important;">
+                    <a class="header-avatar"
+                        style="background-image:url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></a>
                     <a class="navbar-link" style=":hover {background-color: transparent;}">
-                    {{ session.user_data['name'] }}
+                        {{ session.user_data['name'] }}
                     </a>
                     <div class="navbar-dropdown navbar-dropdown-profile">
                         <div class="user-card-block">
                             <a href="/u/{{ session.user_data['id'] }}" class="user-card bordered d-flex">
-                                <div class="user-dropdown-avatar" style="background-image: url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');"></div>
+                                <div class="user-dropdown-avatar"
+                                    style="background-image: url('https://a.{{ domain() }}/{{ session.user_data['id'] }}');">
+                                </div>
                                 <div class="text-wrap user-card-data d-flex flex-column ">
                                     <span class="user-card_username">{{ session.user_data['name'] }}</span>
-                                    <span class="user-card_subtitle twemoji" style="padding: 0px; white-space: pre-line;">{{ session.user_data['stats']['pp'] }}pp</span>
+                                    <span class="user-card_subtitle twemoji"
+                                        style="padding: 0px; white-space: pre-line;">{{ session.user_data['stats']['pp']
+                                        }}pp</span>
                                     <span class="user-card-data_angle"><i class="fa-solid fa-angle-right"></i></span>
                                 </div>
                             </a>
@@ -126,22 +134,40 @@
                             </a>
                         </div>
                     </div>
-                {% else %}
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary" href="/register">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light" href="/login">
-                            Log in
-                        </a>
+                    {% else %}
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" href="/register">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a class="button is-light" href="/login">
+                                Log in
+                            </a>
+                        </div>
                     </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
-        </div>
     </div>
+
+    {% if session.authenticated %}
+    <style>
+        a.user-card {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            /* min-height: 65px; */
+            background: linear-gradient(hsl(var(--main), 25%, 25%, 90%), hsl(var(--main), 25%, 25%, 60%)),
+            url(/banners/{{ session.user_data['id'] }});
+            background-size: cover;
+            background-position-y: center;
+            padding: 8px;
+        }
+    </style>
+    {% endif %}
 
     <script src='/static/js/search.js'></script>
 
