@@ -125,7 +125,7 @@
                         </tr>
                     </thead>
                     <!-- leaderboard layout for #1 player -->
-                    <div class="leaderboard-first-child" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://{{ domain() }}/banners/' + boards[0].player_id + '); background-size: cover; background-position-y: center;'"> <!-- stop trying to paste loser lol -->
+                    <div class="leaderboard-first-child" :style="'background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%), linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://{{ domain() }}/banners/' + boards[0].player_id + '?t={{ current_time }}' + '); background-size: cover; background-position-y: center;'"> <!-- stop trying to paste loser lol -->
                         <div v-if="boards.length > 0" class="first-player-container">
                             <div class="rank-content">
                                 <div class="first-player-rank">#<% (currentPage - 1) * limit + 1 %></div>
@@ -146,7 +146,7 @@
                             <div class="middle-content">
                                 <div class="first-player-name">
                                     <a class="first-player-avatar" :href="'/u/' + boards[0].player_id+'?mode='+mode+'&mods='+mods" 
-                                        :style="'background-image: url(https://a.{{ domain() }}/' + boards[0].player_id + ')'">
+                                        :style="'background-image: url(https://a.{{ domain() }}/' + boards[0].player_id + '?t={{ current_time }}' + ')'">
                                     </a>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                                 <td class="column-player-rank" :style="{ 'background-color': user.latest_activity >= 1677200400 ? 'hsl(var(--main), 10.7%, 24.7%)' : 'hsl(var(--main), 15%, 18%) !important' }">#<% (currentPage - 1) * limit + index + 2 %></td>
                                 <td class="column-player-name text-left">
                                     <a :href="'/u/'+user.player_id+'?mode='+mode+'&mods='+mods">
-                                        <div class="player-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + ')'"></div>
+                                        <div class="player-avatar" :style="'background-image: url(https://a.' + domain + '/' + user.player_id + '?t={{ current_time }}' + ')'"></div>
                                         <a :title="flags[user.country.toUpperCase()]" :style="'background-image: url(/static/images/flags/' + user.country.toUpperCase() + '.png)'" class="player-flag">
                                           <div class="flag-dropdown">
                                             <% flags[user.country.toUpperCase()] %>
