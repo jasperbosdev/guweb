@@ -136,6 +136,12 @@ def login_required(func):
         return await func(*args, **kwargs)
     return wrapper
 
+@frontend.context_processor
+async def inject_global_data():
+    notifications = await glob.db.fetchall('SELECT * FROM notifications WHERE active = 1 ORDER BY id DESC')
+    return {
+        'notifications': notifications
+    }
 
 
 @frontend.route('/home')
