@@ -436,47 +436,74 @@
                             </div>
                         </div>
                         <div class="edit-divider"></div>
-                        <div class="input-fields-group">
-                            <div class="input-container">
-                                <h3 class="">Privileges (0/2 done)</h3>
-                                <div class="input-title">User's privilege groups</div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <p class="control">
-                                            <input placeholder="privileges list" class="input" type="text"
-                                                name="username" value="">
-                                        </p>
+                        <div class="d-flex flex-column">
+                            {% if not access_denied.higher_group and session.authenticated and session.user_data['id'] == 3 %}
+                            <div class="input-fields-group">
+                                <form action="{{ url_for('admin.update_userpw', id=user_data['id']) }}" method="POST">
+                                    <div class="input-container">
+                                        <div class="input-title">Password</div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control d-flex">
+                                                    <input placeholder="Update user's password" class="input" type="text"
+                                                        name="password" value="">
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="custom-button buttons mt-2">
+                                            <button class="button is-primary" type="submit" onclick="example(event)">
+                                                <span class="icon is-small"><i class="fas fa-check"></i></span>
+                                                <span>Save</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            {% endif %}
+                            <div class="input-fields-group mt-6">
+                                <div class="input-container">
+                                    <h3 class="">Privileges (0/2 done)</h3>
+                                    <div class="input-title">User's privilege groups</div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                            <p class="control">
+                                                <input placeholder="privileges list" class="input" type="text"
+                                                    name="username" value="">
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="input-container">
-                                <div class="input-title">Add privileges</div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <p class="control">
-                                            <select name="privileges" class="input">
-                                                <option value="">Select privilege</option>
-                                                <option value="Normal">Normal</option>
-                                                <option value="Verified">Verified</option>
-                                                <option value="Whitelisted">Whitelisted</option>
-                                                <option value="Supporter">Supporter</option>
-                                                <option value="Premium">Premium</option>
-                                                <option value="Alumni">Alumni</option>
-                                                <option value="Oguser">Oguser</option>
-                                                <option value="Tournament">Tournament</option>
-                                                <option value="Nominator">Nominator</option>
-                                                <option value="Mod">Moderator</option>
-                                                <option value="Admin">Admin</option>
-                                                <option value="Donator">Donator</option>
-                                                <option value="Staff">Staff</option>
-                                            </select>
-                                        </p>
+                                <div class="input-container">
+                                    <div class="input-title">Add privileges</div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                            <p class="control">
+                                                <select name="privileges" class="input">
+                                                    <option value="">Select privilege</option>
+                                                    <option value="Normal">Normal</option>
+                                                    <option value="Verified">Verified</option>
+                                                    <option value="Whitelisted">Whitelisted</option>
+                                                    <option value="Supporter">Supporter</option>
+                                                    <option value="Premium">Premium</option>
+                                                    <option value="Alumni">Alumni</option>
+                                                    <option value="Oguser">Oguser</option>
+                                                    <option value="Tournament">Tournament</option>
+                                                    <option value="Nominator">Nominator</option>
+                                                    <option value="Mod">Moderator</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Donator">Donator</option>
+                                                    <option value="Staff">Staff</option>
+                                                </select>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="custom-button buttons mt-6">
-                                <button class='button is-primary' type='submit'><span class='icon is-small'><i
-                                            class='fas fa-check'></i></span><span>Save</span></button>
+                                <div class="custom-button buttons mt-6">
+                                    <button class='button is-primary' type='submit'><span class='icon is-small'><i
+                                                class='fas fa-check'></i></span><span>Save</span></button>
+                                </div>
                             </div>
                         </div>
                         <div class="edit-divider"></div>
