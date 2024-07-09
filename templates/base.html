@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 
 <head>
   <!-- Title -->
@@ -36,13 +36,76 @@
   {% endblock %}
 </head>
 
+<style>
+  .viewport {
+    position: fixed;
+    /* Changed from absolute to fixed */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+  }
+
+  @media (prefers-reduced-motion) {
+    .viewport {
+      display: none;
+    }
+  }
+
+  .viewport-blur::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    backdrop-filter: blur(5px);
+  }
+
+  .background-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  /* .viewport,
+  .viewport-blur {
+    width: 100%;
+    height: 100%;
+  } */
+
+  .abovebg {
+    background: linear-gradient(hsl(var(--main), 25%, 25%, 20%), hsl(var(--main), 10%, 10%)), url();
+    background-size: cover;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
 <body>
+  <div class="abovebg"></div>
+  <div class="background-wrapper">
+    <div class="viewport"></div>
+    <div class="viewport-blur"></div>
+  </div>
+
   <!-- Header -->
   {% include 'components/navbar.html' %}
 
   <!-- Content -->
+  <div class="viewport"></div>
+  <div class="viewport-blur"></div>
   <div class="container is-fullhd my-con">
-    <!-- <div class="noti-banner noti-banner-warning" style="margin-bottom: 10px;">
+    {% for notification in notifications %}
+    {% if notification.active == 1 %}
+    <div class="noti-banner noti-banner-warning" style="margin-bottom: 10px;">
         <div class="container">
           <div class="noti-column">
             <div class="noti-col noti-col-icon"></div>
@@ -55,17 +118,19 @@
               </div>
             </div>
             <div class="noti-banner-text">
-              Due to some issues, the backend is currently offline, but we will reinstall the server soon. For more
-              information join our <a href="/discord">/discord</a>
+                {{ notification.message }}
             </div>
           </div>
         </div>
       </div>
+      {% else %}
+      {% endif %}
+      {% endfor %}
       <style>
-        .noti-banner {
+        /* .noti-banner {
           margin-top: 65px;
-        }
-      </style> -->
+        } */
+      </style>
     {% block content %}
     {% endblock %}
   </div>
@@ -75,6 +140,12 @@
 
   <!-- Main JS script -->
   <script src="/static/js/main.js" crossorigin="anonymous"></script>
+
+
+  <!-- Background JS script -->
+  <script src='//cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js'></script>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+  <script src="/static/js/background.js" crossorigin="anonymous"></script>
 
   <!-- fontawesome JS script -->
   <script src="https://kit.fontawesome.com/aaae92f99d.js" crossorigin="anonymous"></script>

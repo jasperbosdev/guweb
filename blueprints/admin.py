@@ -5,6 +5,8 @@ __all__ = ()
 import datetime
 
 import os
+import bcrypt
+import hashlib
 import time
 import json
 import string
@@ -219,7 +221,7 @@ async def user_edit(id):
         'SELECT id, name, safe_name, username_aka, email, priv, country, silence_end, donor_end, '
         'creation_time, latest_activity, clan_id, clan_priv, private_mode, '
         'discord_content, occupation_content, location_content, interest_content, '
-        'userpage_content, is_legit '
+        'userpage_content, is_legit, pw_bcrypt '
         'FROM users '
         'WHERE safe_name IN (%s) OR id IN (%s) LIMIT 1',
         [id, get_safe_name(id)]
@@ -1029,3 +1031,89 @@ async def verified_user(id):
     flash('success', 'User has been verified successfully.', '')
 
     return redirect(url_for('admin.user_edit', id=id))
+
+# pw update password
+@admin.route('/admin/users/update_userpw/<int:id>', methods=['POST'])
+async def update_userpw(id):
+    # Ensure user is authenticated and has sufficient privileges
+    if 'authenticated' not in session:
+        flash('error', 'Please login first.', 'login')
+        return redirect(url_for('auth.login'))  # Adjust the login route as per your application
+
+    author = await glob.db.fetch("SELECT priv FROM users WHERE id=%s", session['user_data']['id'])
+    session['user_data']['priv'] = author['priv']
+    author_priv = Privileges(int(author['priv']))
+
+    if Privileges.Admin not in author_priv:
+        flash('error', 'You have insufficient privileges. If you have privileges, try entering your profile to reload them.', 'home')
+        return redirect(url_for('home'))  # Adjust the home route as per your application
+
+    # Check if the user to be edited exists
+    user_data = await glob.db.fetch(
+        'SELECT id, name, priv '
+        'FROM users '
+        'WHERE id = %s LIMIT 1',
+        [id]
+    )
+
+    if not user_data:
+        flash('error', 'User not found.', 'home')
+        return redirect(url_for('home'))  # Adjust the home route as per your application
+
+    # Extract form data
+    form = await request.form
+    new_password = form.get('password', '').strip()
+
+    # Password validation
+    if not 8 < len(new_password) <= 32:
+        flash('error', 'Password must be 8-32 characters in length.', 'admin_edit_user')
+        return redirect(url_for('admin_edit_user', id=id))
+
+    if len(set(new_password)) <= 3:
+        flash('error', 'Password must have more than 3 unique characters.', 'admin_edit_user')
+        return redirect(url_for('admin_edit_user', id=id))
+
+    # Hash the new password
+    pw_md5 = hashlib.md5(new_password.encode()).hexdigest().encode()
+    pw_bcrypt = bcrypt.hashpw(pw_md5, bcrypt.gensalt())
+
+    # Update password in the database
+    await glob.db.execute(
+        'UPDATE users SET pw_bcrypt = %s WHERE id = %s',
+        [pw_bcrypt, id]
+    )
+
+    flash('success', 'User password has been reset successfully.', '')
+    return redirect(url_for('admin.user_edit', id=id))
+
+# notif manage page
+@admin.route('/notification')
+async def notification():
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session['user_data']['is_staff']:
+        return await flash('error', f'You have insufficient privileges.', 'home')
+    
+    notif_data = await glob.db.fetch('SELECT * FROM notifications')
+    
+    return await render_template('admin/notification.html', notif_data=notif_data)
+
+@admin.route('/notification', methods=['POST'])
+async def post_noti():
+    if not 'authenticated' in session:
+        return await flash('error', 'Please login first.', 'login')
+
+    if not session['user_data']['is_staff']:
+        return await flash('error', f'You have insufficient privileges.', 'home')
+
+    form = await request.form
+    notiMessage = form['notiMessage']
+    active = form.get('active', '0')  # Default to '0' if not provided (usually 'Disable')
+
+    await glob.db.execute(
+        'UPDATE notifications SET message = %s, active = %s',
+        [notiMessage, active]
+    )
+
+    return await flash('success', 'Homepage has been successfully updated!', 'admin/homepage')

@@ -1,0 +1,46 @@
+{% extends 'admin/base.html' %}
+{% block title %} Notification {% endblock %}
+{% block header %}
+<script src="/static/js/asserts/vue.js"></script>
+<script src="/static/js/asserts/vue-axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"></script>
+<script>
+    var domain = "{{ domain() }}";
+</script>
+<link rel="stylesheet" href="/static/css/pages/admin/key.css">
+<link rel="stylesheet" href="/static/css/pages/admin/news.css">
+
+{% endblock%}
+
+{% block content %}
+
+<div id="settingsboard">
+    <div class="invite-title">
+    </div>
+    <div class="main-block" style="background-color: transparent;">
+        <div
+            class="leaderboard-main-bg table-responsive ug-settings rechts-teilung leaderboard-main-bg card invite-card">
+            <form method="POST">
+                <div class="news-title">Manage the notification banner</div>
+                <div class="input-group">
+                    <div>
+                        <span class="input-title">Notification message</span>
+                        <textarea name="notiMessage" class="textarea" type="text" placeholder="This is an example message"></textarea>
+                    </div>
+                    <div>
+                        <select name="active" class="input rounded-lg h-10 pl-5 focus:bg-hsl-20 focus:outline-none pr-10 bg-hsl-15 hover:bg-hsl-20 appearance-none transition duration-300">
+                            <option value="0">Disable</option>
+                            <option value="1">Enable</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="invite-btn pt-5">
+                    <input type="submit" name="submit" class="button is-primary" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+    </a>
+</div>
+
+{% endblock %}
