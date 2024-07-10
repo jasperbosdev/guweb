@@ -32,6 +32,13 @@
   <!-- Custom style -->
   <link rel="stylesheet" href="/static/css/style.css">
 
+  <style>
+    .abovebg,
+    .background-wrapper {
+      display: none;
+    }
+  </style>
+
   {% block header %}
   {% endblock %}
 </head>
@@ -100,37 +107,35 @@
   {% include 'components/navbar.html' %}
 
   <!-- Content -->
-  <div class="viewport"></div>
-  <div class="viewport-blur"></div>
   <div class="container is-fullhd my-con">
     {% for notification in notifications %}
     {% if notification.active == 1 %}
     <div class="noti-banner noti-banner-warning" style="margin-bottom: 10px;">
-        <div class="container">
-          <div class="noti-column">
-            <div class="noti-col noti-col-icon"></div>
-            <div class="noti-col noti-col-label">
-              <div class="noti-bannertype">
-                Notice
-              </div>
-              <div class="noti-bannertext">
-                Hey! Listen!
-              </div>
+      <div class="container">
+        <div class="noti-column">
+          <div class="noti-col noti-col-icon"></div>
+          <div class="noti-col noti-col-label">
+            <div class="noti-bannertype">
+              Notice
             </div>
-            <div class="noti-banner-text">
-                {{ notification.message }}
+            <div class="noti-bannertext">
+              Hey! Listen!
             </div>
+          </div>
+          <div class="noti-banner-text" style="font-size: larger;">
+            {{ notification.message }}
           </div>
         </div>
       </div>
-      {% else %}
-      {% endif %}
-      {% endfor %}
-      <style>
-        /* .noti-banner {
+    </div>
+    {% else %}
+    {% endif %}
+    {% endfor %}
+    <style>
+      /* .noti-banner {
           margin-top: 65px;
         } */
-      </style>
+    </style>
     {% block content %}
     {% endblock %}
   </div>
@@ -154,6 +159,74 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   <!-- Customisation -->
+
+  <script>
+    // Function to set a cookie
+    function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // Function to get a cookie
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    // Function to handle the toggle
+    function handleBackgroundToggle() {
+      var checkbox = document.getElementById('background-toggle');
+      var isDisabled = getCookie('backgroundDisabled') === 'true';
+
+      // Set the initial state of the checkbox based on the cookie
+      if (isDisabled) {
+        checkbox.checked = false;
+        hideBackground();
+      } else {
+        checkbox.checked = true;
+        showBackground();
+      }
+
+      // Add event listener for checkbox toggle
+      checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+          showBackground();
+          setCookie('backgroundDisabled', 'false', 30); // Set cookie for 30 days
+        } else {
+          hideBackground();
+          setCookie('backgroundDisabled', 'true', 30); // Set cookie for 30 days
+        }
+      });
+    }
+
+    // Function to hide background divs
+    function hideBackground() {
+      document.querySelector('.abovebg').style.display = 'none';
+      document.querySelector('.background-wrapper').style.display = 'none';
+    }
+
+    // Function to show background divs
+    function showBackground() {
+      document.querySelector('.abovebg').style.display = 'block';
+      document.querySelector('.background-wrapper').style.display = 'block';
+    }
+
+    // Initialize the toggle when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      handleBackgroundToggle();
+    });
+  </script>
   {% block bottom %}{% endblock %}
 </body>
 

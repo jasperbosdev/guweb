@@ -638,11 +638,14 @@ async def login_post():
     # check if account exists
     user_info = await glob.db.fetch(
         'SELECT id, name, email, priv, '
-        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content, username_aka, private_mode '
+        'pw_bcrypt, silence_end, userpage_content, play_style, occupation_content, location_content, interest_content, username_aka, private_mode, priv_og, is_legit '
         'FROM users '
         'WHERE safe_name = %s',
         [utils.get_safe_name(username)]
     )
+
+    if user_info is None:
+        return await flash('error', 'Account does not exist.', 'login')
 
     # fetch user stats
     user_info_stats = await glob.db.fetch(
@@ -653,9 +656,13 @@ async def login_post():
         [user_info['id']]
     )
 
+    if glob.config.debug:
+        log(f"Query: SELECT * FROM users WHERE safe_name = {utils.get_safe_name(username)}", Ansi.LBLUE)
+        log(f"User info: {user_info}", Ansi.LBLUE)
+
     # user doesn't exist; deny post
     # NOTE: Bot isn't a user.
-    if not user_info or user_info['id'] == 1:
+    if not user_info or user_info['id'] == 1 or user_info is None:
         if glob.config.debug:
             log(f"{username}'s login failed - account doesn't exist.", Ansi.LYELLOW)
         return await flash('error', 'Account does not exist.', 'login')
@@ -708,6 +715,8 @@ async def login_post():
         'occupation': user_info['occupation_content'],
         'location': user_info['location_content'],
         'interest': user_info['interest_content'],
+        'priv_og': user_info['priv_og'],
+        'is_legit': user_info['is_legit'],
         'username_aka': user_info['username_aka'],
         'private_mode': user_info['private_mode'],
         'silence_end': user_info['silence_end'],
