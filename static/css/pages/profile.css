@@ -1189,7 +1189,7 @@ span.heading-title {
 }
 
 .private-content:hover,
-.remove-contant:hover,
+.remove-content:hover,
 .add-content:hover {
   cursor: pointer;
   transform: translateY(-3px);

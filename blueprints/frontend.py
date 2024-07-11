@@ -12,6 +12,7 @@ import asyncio
 import json
 import requests
 import datetime
+import flask
 
 from cmyui.logging import Ansi
 from cmyui.logging import log
@@ -34,6 +35,7 @@ from objects import utils
 from objects.privileges import Privileges
 from objects.utils import flash
 from objects.utils import flash_with_customizations
+from flask import jsonify
 
 VALID_MODES = frozenset({'std', 'taiko', 'catch', 'mania'})
 VALID_MODS = frozenset({'vn', 'rx', 'ap'})
@@ -1218,46 +1220,6 @@ async def friends_page():
 
     return await render_template('friends.html', friends=friends, timeago=timeago)
 
-async def add_friend_function(sender_id, receiver_id):
-    """
-    Function to add a friend relationship between two users.
-    """
-    try:
-        # Your logic to add a friend here
-        # For example, you can execute a database query
-        await glob.db.execute(
-            "REPLACE INTO relationships (user1, user2, type) VALUES (:user1, :user2, 'friend')",
-            {"user1": sender_id, "user2": receiver_id},
-        )
-        # Optionally, you can perform additional operations or logging here
-    except Exception as e:
-        # Handle any errors that occur during the friend adding process
-        raise e
-
-@frontend.route('/add_friend', methods=['POST'])
-async def add_friend():
-    if not session.get('authenticated'):
-        return (await render_template('404.html'), 404)  # Unauthorized access
-    
-    # Await the form coroutine to get form data
-    form = await request.form
-
-    user_id = request.form.get('user_id')
-    
-    # Check if the current user is authorized to add friend
-    if session['user_data']['id'] != user_id:
-        return (await render_template('404.html'), 404)  # Forbidden
-    
-    try:
-        # Call the add_friend function here with appropriate parameters
-        await add_friend_function(session['user_data']['id'], user_id)
-        
-        # Optionally, you can return a success message or status code
-        return await flash('success', 'Friend added successfully', 'profile')
-    except Exception as e:
-        # Handle any errors that occur during the friend adding process
-        return await flash('error', 'Something went wrong', 'profile')
-
 @frontend.route('/u/<id>')
 async def profile_select(id):
 
@@ -1537,6 +1499,102 @@ async def profile_select(id):
                                  user_rank_1_maps=user_rank_1_maps, favourites_data=favourites_data, favourites_count=favourites_count,
                                  private_profile=private_profile, relationship_exists=relationship_exists, frenadded_result=frenadded_result,
                                  is_friends=is_friends, current_time=current_time)
+
+@frontend.route('/u/<int:id>/add_friend', methods=['POST'])
+async def add_friend(id):
+    """Use add session userid to add profile's userid to add someone as friend"""
+    
+    # Make sure user is logged in
+    if 'authenticated' not in session:
+        return jsonify({'message': 'Please login first.'}), 401
+
+    # Retrieve the current user's privileges
+    author = await glob.db.fetch("SELECT priv FROM users WHERE id=%s", [session['user_data']['id']])
+    if not author:
+        return jsonify({'message': 'Error retrieving your profile.'}), 500
+
+    session['user_data']['priv'] = author['priv']
+    author_priv = Privileges(int(author['priv']))
+
+    if Privileges.Verified not in author_priv:
+        return jsonify({'message': 'You have insufficient privileges.'}), 403
+
+    # Check if the user to be added as a friend exists
+    user_data = await glob.db.fetch(
+        'SELECT id, name, priv '
+        'FROM users '
+        'WHERE id = %s LIMIT 1',
+        [id]
+    )
+
+    if not user_data:
+        return jsonify({'message': 'User not found'}), 404
+
+    # Check if the friendship already exists where session user has already added the target user
+    existing_relationship = await glob.db.fetch(
+        'SELECT 1 FROM relationships '
+        'WHERE user1 = %s AND user2 = %s AND type = %s',
+        [session['user_data']['id'], id, 'friend']
+    )
+
+    if existing_relationship:
+        return jsonify({'message': 'You are already friends or have a pending relationship.'}), 400
+
+    # Perform the action to add as friends
+    await glob.db.execute(
+        'INSERT INTO relationships (user1, user2, type) VALUES (%s, %s, %s)',
+        [session['user_data']['id'], id, 'friend']
+    )
+
+    return jsonify({'message': 'Added as friend!'}), 200
+
+@frontend.route('/u/<int:id>/rem_friend', methods=['POST'])
+async def rem_friend(id):
+    """Use remove session userid to remove profile's userid to remove someone as friend"""
+    
+    # Make sure user is logged in
+    if 'authenticated' not in session:
+        return jsonify({'message': 'Please login first.'}), 401
+
+    # Retrieve the current user's privileges
+    author = await glob.db.fetch("SELECT priv FROM users WHERE id=%s", [session['user_data']['id']])
+    if not author:
+        return jsonify({'message': 'Error retrieving your profile.'}), 500
+
+    session['user_data']['priv'] = author['priv']
+    author_priv = Privileges(int(author['priv']))
+
+    if Privileges.Verified not in author_priv:
+        return jsonify({'message': 'You have insufficient privileges.'}), 403
+
+    # Check if the user to be removed as a friend exists
+    user_data = await glob.db.fetch(
+        'SELECT id, name, priv '
+        'FROM users '
+        'WHERE id = %s LIMIT 1',
+        [id]
+    )
+
+    if not user_data:
+        return jsonify({'message': 'User not found'}), 404
+
+    # Check if the friendship exists where the session user has added the target user as a friend
+    existing_relationship = await glob.db.fetch(
+        'SELECT 1 FROM relationships '
+        'WHERE (user1 = %s AND user2 = %s AND type = %s)',
+        [session['user_data']['id'], id, 'friend']
+    )
+
+    if not existing_relationship:
+        return jsonify({'message': 'No friendship found to remove.'}), 400
+
+    # Perform the action to remove the friend
+    await glob.db.execute(
+        'DELETE FROM relationships WHERE (user1 = %s AND user2 = %s AND type = %s)',
+        [session['user_data']['id'], id, 'friend']
+    )
+
+    return jsonify({'message': 'Friend removed!'}), 200
 
 @frontend.route('/stats')
 async def stats():

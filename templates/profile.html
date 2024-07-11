@@ -847,29 +847,45 @@
                     <span class="private-text">Private Profile</span>
                 </div>
             </div>
-            {% elif session.authenticated and private_profile['private_mode'] == 1 and session.user_data['id'] != user['id'] and relationship_exists == 'no' %}
-                <div class="private-block">
-                    <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
-                        <i class="fa-solid fa-lock"></i>
-                        <span class="private-text">Private Profile</span>
-                    </div>
-                </div>
             {% elif session.authenticated and private_profile['private_mode'] == 0 and session.user_data['id'] != user['id'] and is_friends == 'no' %}
-                <div class="private-block" id="add">
+                <div class="private-block" id="add" data-user-id="{{ user['id'] }}">
                     <div class="add-content">
                         <i class="fa-solid fa-user-plus"></i>
                         <span class="private-text">Add Friend</span>
                     </div>
                 </div>
             {% elif session.authenticated and private_profile['private_mode'] == 1 and session.user_data['id'] != user['id'] and is_friends == 'no' %}
-                <div class="private-block">
-                    <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
-                        <i class="fa-solid fa-lock"></i>
-                        <span class="private-text">Private Profile</span>
+                <div class="d-flex">
+                    <div class="private-block mr-2" id="add" data-user-id="{{ user['id'] }}">
+                        <div class="add-content">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span class="private-text">Add Friend</span>
+                        </div>
+                    </div>
+                    <div class="private-block">
+                        <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
+                            <i class="fa-solid fa-lock"></i>
+                            <span class="private-text">Private Profile</span>
+                        </div>
+                    </div>
+                </div>
+            {% elif session.authenticated and private_profile['private_mode'] == 1 and session.user_data['id'] != user['id'] and is_friends == 'yes' %}
+                <div class="d-flex">
+                    <div class="private-block mr-2" id="remove" data-user-id="{{ user['id'] }}">
+                        <div class="remove-content">
+                            <i class="fa-solid fa-user-minus"></i>
+                            <span class="private-text">Remove Friend</span>
+                        </div>
+                    </div>
+                    <div class="private-block">
+                        <div class="private-content" data-title="Ask them to add you as a friend if you want to see more details">
+                            <i class="fa-solid fa-lock"></i>
+                            <span class="private-text">Private Profile</span>
+                        </div>
                     </div>
                 </div>
             {% elif session.authenticated and private_profile['private_mode'] == 0 and session.user_data['id'] != user['id'] and is_friends == 'yes' %}
-                <div class="private-block">
+                <div class="private-block" id="remove" data-user-id="{{ user['id'] }}">
                     <div class="remove-content">
                         <i class="fa-solid fa-user-minus"></i>
                         <span class="private-text">Remove Friend</span>
@@ -1034,6 +1050,73 @@
     </div>
 </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const addButton = document.getElementById('add');
+        
+        if (addButton) {
+            addButton.addEventListener('click', async () => {
+                const userId = addButton.getAttribute('data-user-id');
+                
+                try {
+                    const response = await fetch(`/u/${userId}/add_friend`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+    
+                    if (response.ok) {
+                        // Refresh the page to show updated state
+                        window.location.reload();
+                    } else {
+                        const error = await response.json();
+                        alert(`Error: ${error.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error adding friend:', error);
+                    window.location.reload();
+                    // alert('An error occurred while trying to add friend.');
+                }
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const remButton = document.getElementById('remove');
+        
+        if (remButton) {
+            remButton.addEventListener('click', async () => {
+                const userId = remButton.getAttribute('data-user-id');
+                
+                try {
+                    const response = await fetch(`/u/${userId}/rem_friend`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+    
+                    if (response.ok) {
+                        // Refresh the page to show updated state
+                        window.location.reload();
+                    } else {
+                        const error = await response.json();
+                        alert(`Error: ${error.message}`);
+                    }
+                } catch (error) {
+                    console.error('Error adding friend:', error);
+                    window.location.reload();
+                    // alert('An error occurred while trying to add friend.');
+                }
+            });
+        }
+    });
+</script>
 
 {% endblock %}
 
