@@ -37,12 +37,14 @@
                 <div class="col-lg-12">
                     <div class="main-selector"></div>
                     <div class="main-banner doc-banner">
-                        <div class="banner-text">Friends</div>
+                        <div class="banner-text">
+                            Friends
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="home-bg main-block">
-                <!-- <div class="friends-tab">
+                <div class="friends-tab">
                     <div class="friends-status-section">
                         <div class="friends-all">
                             <a class="friends-lnk" href="#">
@@ -66,6 +68,20 @@
                             </a>
                         </div>
                     </div>
+                    {% if session.authenticated and session.user_data['is_donator'] %}
+                        <div class="friends-followers-toggle">
+                            <a>
+                                <div class="ff-btn" onclick="setActive('friends')">
+                                    <span>Friends</span>
+                                </div>
+                            </a>
+                            <a>
+                                <div class="ff-btn" onclick="setActive('followers')">
+                                    <span>Followers</span>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
                     <div class="friends-sort-section">
                         <span class="friends-sort-txt">Sort by</span>
                         <div class="friends-recent-btn">
@@ -78,7 +94,7 @@
                             <span>Name</span>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <div id="friends" style="display: none;">
                     <div class="block-header newmaps-color" style="text-align: center;"></div>
                     <div class="beatmaps-row">
@@ -126,6 +142,71 @@
                                 </div>
                                 <span class="beatmap-artist">
                                     {% if friend.priv == 2 %}
+                                    <span style="color: #FF0000;">restricted </span><i style="color: #FF0000;"
+                                        class="fa-solid fa-ban"></i>
+                                    {% else %}
+                                    {% endif %}
+                                </span>
+                                <div class="beatmap-footer">
+                                    <span class="beatmap-mapper">
+                                        <span class="newmaps-color"> </span>
+                                    </span>
+                                    <div class="d-flex align-items-baseline">
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="followers" style="display: none;">
+                    <div class="block-header newmaps-color" style="text-align: center;"></div>
+                    <div class="beatmaps-row">
+                        {% for follower in followers %}
+                        <a href="/u/{{ follower.user1 }}"
+                            class="beatmap-block {% if follower['mutual'] %} mutual{% endif %}"
+                            style="min-height: 123px;background: linear-gradient(rgba(71, 67, 67, 0.5) 0%, rgba(71, 67, 67, 0) 100%) 50% / cover, linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url('https://{{ domain() }}/banners/{{ follower.user1 }}'); background-size: cover; background-position-y: center;">
+                            <div class="beatmap-preview">
+                                <div class="avatar-container">
+                                    <img src="https://a.{{ domain() }}/{{ follower.user1 }}" class="avatar-picture">
+                                </div>
+                            </div>
+                            <div class="beatmap-stats">
+                                <span class="beatmap-title" style="padding-right: 3px;">
+                                    <img src="https://{{ domain() }}/static/images/flags/{{ follower.country|upper }}.png"
+                                        class="profile-flag" style="width: 25px !important;">
+                                    {% if follower.priv in [31767, 33556499, 33554451, 19, 33586199, 33554455] %}
+                                    <img data-title="Supporter" id="user-img" src="/static/images/supporter.svg" style="width: 20px;">
+                                    {% endif %}
+                                    {% if follower.id in [3, 47, 33, 10, 34, 6, 4, 5, 21] %}
+                                    <img data-title="Supporter" id="user-img" src="/static/images/verified.svg" style="width: 20px;">
+                                    {% endif %}
+                                    {% if follower.status == True %}
+                                    <i class="fas fa-circle" style="color: gold; vertical-align: middle;"></i>
+                                    {% elif follower.status == False %}
+                                    <i class="fas fa-circle" style="color: black; vertical-align: middle;"></i>
+                                    {% else %}
+                                    <i class="fa-solid fa-bug"></i>
+                                    {% endif %}
+                                </span>
+                                <span class="beatmap-title" style="margin-top: 5px;">
+                                    {{ follower.name }}
+                                </span>
+                                <div class="beatmap-artist" style="margin-top: 5px;">
+                                    <span>last seen {{ follower.last_seen }}</span>
+                                </div>
+                                <div class="beatmap-artist" style="margin-top: 5px;">
+                                    {% if follower.status == False %}
+                                    <span>offline</span>
+                                    {% elif follower.status == True %}
+                                    <span>online</span>
+                                    {% else %}
+                                    <span>error</span>
+                                    {% endif %}
+                                </div>
+                                <span class="beatmap-artist">
+                                    {% if follower.priv == 2 %}
                                     <span style="color: #FF0000;">restricted </span><i style="color: #FF0000;"
                                         class="fa-solid fa-ban"></i>
                                     {% else %}

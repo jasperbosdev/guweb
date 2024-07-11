@@ -1167,6 +1167,12 @@ async def friends_page():
         [user_id]
     )
 
+    followers = await glob.db.fetchall(
+        'SELECT user1 FROM relationships '
+        'WHERE user2 = %s AND type = "friend"',
+        [user_id]
+    )
+
     async def get_friend_info(friend_id):
         if friend_id == 1:  # bot
             bot_info = await glob.db.fetch(
@@ -1218,7 +1224,58 @@ async def friends_page():
     friends_info = await asyncio.gather(*[get_friend_info(friend['user2']) for friend in friends])
     friends = [dict(friend, **info) for friend, info in zip(friends, friends_info)]
 
-    return await render_template('friends.html', friends=friends, timeago=timeago)
+    async def get_follower_info(follower_id):
+        if follower_id == 1:  # bot
+            bot_info = await glob.db.fetch(
+                'SELECT name, country FROM users '
+                'WHERE id = 1'
+            )
+            return {
+                'id': bot_info['id'],
+                'name': bot_info['name'],
+                'country': bot_info['country'],
+                'priv': bot_info['priv'],
+                'status': True,
+                'customisation': utils.has_profile_customizations(follower_id),
+                'mutual': False
+            }
+
+        follower_status = requests.get(f'http://bancho/v1/get_player_status?id={follower_id}', headers={'Host':'api.meow.nya'})
+        follower_status = json.loads(follower_status.content)
+        status = follower_status['player_status']['online']
+        if 'player_status' in follower_status and 'last_seen' in follower_status['player_status']:
+            last_seen = "just now!" if status is None else timeago.format(follower_status['player_status']['last_seen'], time.time())
+        else:
+            last_seen = "just now!"  # or assign a default value if needed
+
+        follower_data = requests.get(f'http://bancho/v1/get_player_info?id={follower_id}&scope=info', headers={'Host':'api.meow.nya'})
+        follower_data = json.loads(follower_data.content)
+        name = follower_data['player']['info']['name']
+        country = follower_data['player']['info']['country']
+        priv = follower_data['player']['info']['priv']
+        id = follower_data['player']['info']['id']
+
+        mutual_relationship = await glob.db.fetchall(
+            'SELECT user2 FROM relationships '
+            'WHERE user2 = %s AND user1 = %s AND type = "friend"',
+            [follower_id, user_id]
+        )
+        
+        return {
+            'id': id,
+            'name': name,
+            'country': country,
+            'priv': priv,
+            'status': status,
+            'last_seen': last_seen,
+            'customisation': utils.has_profile_customizations(follower_id),
+            'mutual': mutual_relationship
+        }
+
+    followers_info = await asyncio.gather(*[get_follower_info(follower['user1']) for follower in followers])
+    followers = [dict(follower, **info) for follower, info in zip(followers, followers_info)]
+
+    return await render_template('friends.html', friends=friends, followers=followers, timeago=timeago)
 
 @frontend.route('/u/<id>')
 async def profile_select(id):
