@@ -16,20 +16,48 @@
 
 <script>
     var active = 'friends';
-
-    var sections = ["friends", "followers"]
+    var sections = ["friends", "followers"];
 
     function setActive(id) {
         active = id;
 
-        //zet alles 'none' tenzij id zelfde is als active, dan 'block' ofzo
         for (let i = 0; i < sections.length; i++) {
             document.getElementById(sections[i]).style.display = sections[i] === id ? "block" : "none";
         }
+
+        updateCount(id);
     }
 
-    window.onload = () => { setActive('friends'); }
+    function updateCount(id) {
+        const section = document.getElementById(id);
+        const allCount = section.getElementsByClassName('beatmap-block').length;
+        let onlineCount = 0;
+        let offlineCount = 0;
+
+        const beatmapBlocks = section.getElementsByClassName('beatmap-block');
+
+        for (let block of beatmapBlocks) {
+            const artistSpans = block.getElementsByClassName('beatmap-artist');
+            for (let span of artistSpans) {
+                const statusText = span.innerText.toLowerCase();
+                if (statusText.includes('online')) {
+                    onlineCount++;
+                } else if (statusText.includes('offline')) {
+                    offlineCount++;
+                }
+            }
+        }
+
+        document.getElementById('friends-all-nmbr').innerText = allCount;
+        document.getElementById('friends-online-nmbr').innerText = onlineCount;
+        document.getElementById('friends-offline-nmbr').innerText = offlineCount;
+    }
+
+    window.onload = () => { 
+        setActive('friends'); 
+    }
 </script>
+
 <div id="content">
     <div id="home">
         <div class="container">
@@ -45,26 +73,26 @@
             </div>
             <div class="home-bg main-block">
                 <div class="friends-tab">
-                    <div class="friends-status-section">
+                    <div class="friends-status-section"> <!-- add feature to show each sort of status seperately-->
                         <div class="friends-all">
                             <a class="friends-lnk" href="#">
                                 <div class="friends-all-bar" style="background-color: #fff;"></div>
                                 <p class="friends-all-text">All</p>
-                                <p class="friends-all-nmbr">127</p>
+                                <p class="friends-all-nmbr" id="friends-all-nmbr">loading..</p>
                             </a>
                         </div>
                         <div class="friends-online">
                             <a class="friends-lnk" href="#">
                                 <div class="friends-onl-bar" style="background-color: #B3D944;"></div>
                                 <p class="friends-onl-text">Online</p>
-                                <p class="friends-onl-nmbr">127</p>
+                                <p class="friends-onl-nmbr" id="friends-online-nmbr">loading..</p>
                             </a>
                         </div>
                         <div class="friends-offline">
                             <a class="friends-lnk" href="#">
                                 <div class="friends-off-bar" style="background-color: #000;"></div>
                                 <p class="friends-off-text">Offline</p>
-                                <p class="friends-off-nmbr">127</p>
+                                <p class="friends-off-nmbr" id="friends-offline-nmbr">loading..</p>
                             </a>
                         </div>
                     </div>
@@ -82,18 +110,24 @@
                             </a>
                         </div>
                     {% endif %}
-                    <div class="friends-sort-section">
+                    <!-- <div class="friends-sort-section">
                         <span class="friends-sort-txt">Sort by</span>
-                        <div class="friends-recent-btn">
-                            <span>Recent</span>
-                        </div>
-                        <div class="friends-rank-btn">
-                            <span>Rank</span>
-                        </div>
-                        <div class="friends-name-btn">
-                            <span>Name</span>
-                        </div>
-                    </div>
+                        <a href="">
+                            <div class="friends-recent-btn">
+                                <span>Recent</span>
+                            </div>
+                        </a>
+                        <a href="">
+                            <div class="friends-rank-btn">
+                                <span>Rank</span>
+                            </div>
+                        </a>
+                        <a href="">
+                            <div class="friends-name-btn">
+                                <span>Name</span>
+                            </div>
+                        </a>
+                    </div> -->
                 </div>
                 <div id="friends" style="display: none;">
                     <div class="block-header newmaps-color" style="text-align: center;"></div>
